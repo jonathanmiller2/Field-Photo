@@ -52,7 +52,7 @@ class HomePage extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 0),
                         child: TextField(
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -66,12 +66,11 @@ class HomePage extends StatelessWidget {
                         height: 1,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 0),
                         child: TextField(
                           obscureText: true,
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            fillColor: Colors.blue,
                             hintText: 'Password',
                           ),
                         ),
@@ -94,7 +93,34 @@ class HomePage extends StatelessWidget {
                       ),
                     )
                 ),
-              )
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    'Don\'t have an account?',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey[700],
+                    )
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                child: Center(
+                  child: Text(
+                    'You may capture and geotag photos without an account, but you must have an account to upload them to the University of Oklahoma\'s Earth Observation and Modelling Facility database.',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey[700],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
             ],
           ),
         ),

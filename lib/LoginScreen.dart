@@ -74,16 +74,19 @@ class LoginScreen extends StatelessWidget {
 							Padding(
 								padding: const EdgeInsets.symmetric(
 										horizontal: 0, vertical: 15),
-								child: FlatButton(
-										onPressed: () {},
-										color: Colors.green[700],
-										child: Text(
-											'Sign In',
-											style: TextStyle(
-													color: Colors.white,
-													fontSize: 18
-											),
-										)
+								child: Container(
+									height: 45,
+								  child: FlatButton(
+								  		onPressed: () {},
+								  		color: Colors.green[700],
+								  		child: Text(
+								  			'Sign In',
+								  			style: TextStyle(
+								  					color: Colors.white,
+								  					fontSize: 18
+								  			),
+								  		)
+								  ),
 								),
 							),
 							
@@ -145,46 +148,35 @@ class SignupButton extends StatefulWidget {
 }
 
 class _SignupButtonState extends State<SignupButton> {
-	bool pressed = true;
+	bool pressed = false;
 	@override
 	Widget build(BuildContext context) {
 		return InkWell(
 			child: Center(
-			  child: Text(
-			  	'Sign Up',
-			  	style: TextStyle(
-			  		color: pressed ? Colors.blue[900] : Colors.white,
-						fontSize: 18,
-						fontWeight: FontWeight.bold
-			  	),
+				child: Text(
+					'Sign Up',
+					style: TextStyle(
+							color: pressed ? Colors.white : Colors.blue[900],
+							fontSize: 18,
+							fontWeight: FontWeight.bold
+					),
 				),
 			),
 			onTap: () {
 				setState(() {
-					pressed = true;
+					pressed = false;
 					Navigator.push(
 						context,
 						new MaterialPageRoute(builder: (context) => new SignupScreen()),
 					);
 				});
 			},
-			onTapCancel: () {
+			onTapDown: (a) {
 				setState(() {
-					pressed = false;
-				});
-			},
-			onFocusChange: (a) {
-				setState(() {
-					pressed = false;
-				});
-			},
-			onHighlightChanged: (a) {
-				setState(() {
-					pressed = false;
+					pressed = true;
 				});
 			},
 		);
-		
 	}
 }
 

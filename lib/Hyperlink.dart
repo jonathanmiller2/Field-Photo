@@ -2,27 +2,53 @@ import 'package:flutter/material.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
-class Hyperlink extends StatelessWidget {
-  final String _url;
-  final String _text;
+class Hyperlink extends StatefulWidget {
+  final String url;
+  final String label;
+  
+  const Hyperlink({this.url, this.label});
+  
+  _HyperlinkState createState() {
+    return _HyperlinkState();
+  }
+}
 
-  Hyperlink(this._url, this._text);
-
+class _HyperlinkState extends State<Hyperlink> {
+  
+  bool pressed = false;
+  
   _launchURL() async {
-    if (await canLaunch(_url)) {
-      await launch(_url);
+    if (await canLaunch(widget.url)) {
+      await launch(widget.url);
     } else {
-      throw 'Could not launch $_url';
+      throw 'Could not launch $widget.url';
     }
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      child: Text(
-        _text,
+      child: Center(
+        child: Text(
+          widget.label,
+          style: TextStyle(
+              color: pressed ? Colors.white : Colors.blue[900],
+              fontSize: 18,
+              fontWeight: FontWeight.bold
+          ),
+        ),
       ),
-      onTap: _launchURL,
+      onTap: () {
+        setState(() {
+          pressed = false;
+          _launchURL();
+        });
+      },
+      onTapDown: (a) {
+        setState(() {
+          pressed = true;
+        });
+      },
     );
   }
 }

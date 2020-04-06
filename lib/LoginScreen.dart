@@ -1,3 +1,4 @@
+import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -105,7 +106,15 @@ class LoginScreen extends StatelessWidget {
 							
 							Padding(
 							  padding: const EdgeInsets.all(10.0),
-							  child: SignupButton(),
+							  child: LabelledInvisibleButton(
+									label: 'Sign Up',
+									onPress: () {
+										Navigator.push(
+											context,
+											new MaterialPageRoute(builder: (context) => new SignupScreen()),
+										);
+									}
+								),
 							),
 							
 							Padding(
@@ -139,44 +148,3 @@ class LoginScreen extends StatelessWidget {
 		);
 	}
 }
-
-class SignupButton extends StatefulWidget {
-	@override
-	_SignupButtonState createState() {
-		return _SignupButtonState();
-	}
-}
-
-class _SignupButtonState extends State<SignupButton> {
-	bool pressed = false;
-	@override
-	Widget build(BuildContext context) {
-		return InkWell(
-			child: Center(
-				child: Text(
-					'Sign Up',
-					style: TextStyle(
-							color: pressed ? Colors.white : Colors.blue[900],
-							fontSize: 18,
-							fontWeight: FontWeight.bold
-					),
-				),
-			),
-			onTap: () {
-				setState(() {
-					pressed = false;
-					Navigator.push(
-						context,
-						new MaterialPageRoute(builder: (context) => new SignupScreen()),
-					);
-				});
-			},
-			onTapDown: (a) {
-				setState(() {
-					pressed = true;
-				});
-			},
-		);
-	}
-}
-

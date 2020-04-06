@@ -1,4 +1,5 @@
-import 'package:field_photo/Hyperlink.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -103,24 +104,57 @@ class SignupScreen extends StatelessWidget {
 								),
 							),
 							
-							
-							
 							Padding(
-								padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-								child: Center(
-									child: Text(
-											'Having trouble signing up?',
-											style: TextStyle(
-												fontSize: 15,
-												color: Colors.grey[700],
-											)
-									),
+								padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+								child: Container(
+									height: 45,
+								  child: LabelledInvisibleButton(
+								  	label: 'Cancel',
+								  	onPress: () {
+								  		Navigator.pop(context);
+								  	},
+								  ),
 								),
 							),
 							
+							
+							
 							Padding(
-							  padding: const EdgeInsets.symmetric(horizontal:0, vertical: 15),
-							  child: Hyperlink(url:'http://eomf.ou.edu/accounts/register/', label:'Sign up online'),
+								padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 30),
+								child: Container(
+							  	height: 150,
+							    child: Column(
+							      children: <Widget>[
+							        Padding(
+							        	padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+							        	child: Center(
+							        		child: Text(
+							        				'Having trouble signing up?',
+							        				style: TextStyle(
+							        					fontSize: 15,
+							        					color: Colors.grey[700],
+							        				)
+							        		),
+							        	),
+							        ),
+							    		Padding(
+							    			padding: const EdgeInsets.symmetric(horizontal:0, vertical: 10),
+							    			child: new LabelledInvisibleButton(
+							    				label:'Sign up online',
+							    				onPress: () async {
+							    					String url = 'http://eomf.ou.edu/accounts/register/';
+							    					if (await canLaunch(url)) {
+							    						await launch(url);
+							    					}
+							    					else {
+							    						throw 'Could not launch $url';
+							    					}
+							    				},
+							    			),
+							    		),
+							      ],
+							    ),
+							  ),
 							),
 						],
 					),

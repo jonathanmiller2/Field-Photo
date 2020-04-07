@@ -2,6 +2,7 @@ import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'GeoCameraScreen.dart';
 import 'InfoScreen.dart';
 import 'SignupScreen.dart';
 
@@ -176,7 +177,12 @@ class LoginScreen extends StatelessWidget {
 				),
 			),
 			floatingActionButton: FloatingActionButton(
-				onPressed: () {},
+				onPressed: () {
+					Navigator.push(
+						context,
+						new MaterialPageRoute(builder: (context) => new GeoCameraScreen()),
+					);
+				},
 				child: Icon(Icons.photo_camera),
 			),
 			floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

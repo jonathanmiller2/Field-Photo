@@ -2,6 +2,7 @@ import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'InfoScreen.dart';
 import 'SignupScreen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -119,15 +120,18 @@ class LoginScreen extends StatelessWidget {
 							
 							Padding(
 								padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-								child: Center(
-									child: Text(
-										'You may capture and geotag photos without an account, but you must have an account to upload them to the University of Oklahoma\'s Earth Observation and Modelling Facility database.',
-										style: TextStyle(
-											fontSize: 15,
-											color: Colors.grey[700],
-										),
-										textAlign: TextAlign.center,
-									),
+								child: Container(
+									height: 200,
+								  child: Center(
+								  	child: Text(
+								  		'You may capture and geotag photos without an account, but you must have an account to upload them to the University of Oklahoma\'s Earth Observation and Modelling Facility database.',
+								  		style: TextStyle(
+								  			fontSize: 15,
+								  			color: Colors.grey[700],
+								  		),
+								  		textAlign: TextAlign.center,
+								  	),
+								  ),
 								),
 							),
 						],
@@ -137,7 +141,38 @@ class LoginScreen extends StatelessWidget {
 			bottomNavigationBar: BottomAppBar(
 				shape: const CircularNotchedRectangle(),
 				child: Container(
-						height: 50.0
+					height: 50.0,
+					child: Row(
+						crossAxisAlignment: CrossAxisAlignment.stretch,
+						children: <Widget>[
+							Expanded(
+							  child: Container(
+							  	color: Colors.white,
+							  ),
+							),
+							Expanded(
+								child: Padding(
+								  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+								  child: Align(
+								  	alignment: Alignment.centerRight,
+								    child: IconButton(
+								      icon: Icon(
+								      	Icons.info_outline,
+								  		size: 30,
+								  		color: Colors.blue,
+								      ),
+												onPressed: () {
+													Navigator.push(
+														context,
+														new MaterialPageRoute(builder: (context) => new InfoScreen()),
+													);
+												}
+								    ),
+								  ),
+								),
+							),
+						],
+					)
 				),
 			),
 			floatingActionButton: FloatingActionButton(

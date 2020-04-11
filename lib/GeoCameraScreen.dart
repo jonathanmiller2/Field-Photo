@@ -12,31 +12,40 @@ class GeoCameraScreen extends StatefulWidget {
 }
 
 class _GeoCameraScreenState extends State<GeoCameraScreen> {
-	CameraController controller;
+	CameraController _controller;
+	
 	
 	@override
-	Widget build(BuildContext context) {
-		Future<List<CameraDescription>> _cameras = availableCameras();
-		
-		return FutureBuilder<List<CameraDescription>>(
-			future: _cameras,
-			builder: (BuildContext context, AsyncSnapshot<List<CameraDescription>> snapshot)
-				{
-					if(snapshot.hasData && controller.value.isInitialized)
-						{
-							controller = CameraController(snapshot.data[0], ResolutionPreset.medium);
-							controller.initialize();
-							
-							return AspectRatio(
-									aspectRatio:
-									controller.value.aspectRatio,
-									child: CameraPreview(controller));
-						}
-					else
-						{
-							return Container();
-						}
-				}
-		);
+	void initState()
+	{
+		super.initState();
+		loadCameraController().then((result)
+		{
+			setState(() {
+				_controller = result;
+			});
+		});
+	}
+	
+	@override
+	Widget build(BuildContext context)
+	{
+		if(_controller?.value?.aspectRatio == null)
+			{
+				return Container();
+			}
+		else
+			{
+				return AspectRatio(
+						aspectRatio: _controller.value.aspectRatio,
+						child: CameraPreview(_controller));
+			}
+	}
+	
+	Future<CameraController> loadCameraController() async {
+		List<CameraDescription> cameras = await availableCameras();
+		CameraController res = CameraController(cameras[0], ResolutionPreset.medium);
+		await res.initialize();
+		return res;
 	}
 }

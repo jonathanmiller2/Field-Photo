@@ -3,6 +3,9 @@ import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'MainBottomBar.dart';
+import 'MainCameraButton.dart';
+
 class SignupScreen extends StatelessWidget {
 	@override
 	Widget build(BuildContext context)
@@ -90,17 +93,17 @@ class SignupScreen extends StatelessWidget {
 								padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 15),
 								child: Container(
 									height: 45,
-								  child: FlatButton(
-								  		onPressed: () {},
-								  		color: Colors.blue[700],
-								  		child: Text(
-								  			'Create Account',
-								  			style: TextStyle(
-								  					color: Colors.white,
-								  					fontSize: 18
-								  			),
-								  		)
-								  ),
+									child: FlatButton(
+											onPressed: () {},
+											color: Colors.blue[700],
+											child: Text(
+												'Create Account',
+												style: TextStyle(
+														color: Colors.white,
+														fontSize: 18
+												),
+											)
+									),
 								),
 							),
 							
@@ -108,12 +111,14 @@ class SignupScreen extends StatelessWidget {
 								padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
 								child: Container(
 									height: 45,
-								  child: LabelledInvisibleButton(
-								  	label: 'Cancel',
-								  	onPress: () {
-								  		Navigator.pop(context);
-								  	},
-								  ),
+									child: LabelledInvisibleButton(
+										label: 'Cancel',
+										onPress: () {
+											Navigator.pop(context);
+										},
+										defaultColor: Colors.blue[900],
+										pressedColor: Colors.white,
+									),
 								),
 							),
 							
@@ -122,54 +127,48 @@ class SignupScreen extends StatelessWidget {
 							Padding(
 								padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 30),
 								child: Container(
-							  	height: 150,
-							    child: Column(
-							      children: <Widget>[
-							        Padding(
-							        	padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-							        	child: Center(
-							        		child: Text(
-							        				'Having trouble signing up?',
-							        				style: TextStyle(
-							        					fontSize: 15,
-							        					color: Colors.grey[700],
-							        				)
-							        		),
-							        	),
-							        ),
-							    		Padding(
-							    			padding: const EdgeInsets.symmetric(horizontal:0, vertical: 10),
-							    			child: new LabelledInvisibleButton(
-							    				label:'Sign up online',
-							    				onPress: () async {
-							    					String url = 'http://eomf.ou.edu/accounts/register/';
-							    					if (await canLaunch(url)) {
-							    						await launch(url);
-							    					}
-							    					else {
-							    						throw 'Could not launch $url';
-							    					}
-							    				},
-							    			),
-							    		),
-							      ],
-							    ),
-							  ),
+									height: 150,
+									child: Column(
+										children: <Widget>[
+											Padding(
+												padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+												child: Center(
+													child: Text(
+															'Having trouble signing up?',
+															style: TextStyle(
+																fontSize: 15,
+																color: Colors.grey[700],
+															)
+													),
+												),
+											),
+											Padding(
+												padding: const EdgeInsets.symmetric(horizontal:0, vertical: 10),
+												child: new LabelledInvisibleButton(
+													label:'Sign up online',
+													onPress: () async {
+														String url = 'http://eomf.ou.edu/accounts/register/';
+														if (await canLaunch(url)) {
+															await launch(url);
+														}
+														else {
+															throw 'Could not launch $url';
+														}
+													},
+													defaultColor: Colors.blue[900],
+													pressedColor: Colors.white,
+												),
+											),
+										],
+									),
+								),
 							),
 						],
 					),
 				),
 			),
-			bottomNavigationBar: BottomAppBar(
-				shape: const CircularNotchedRectangle(),
-				child: Container(
-						height: 50.0
-				),
-			),
-			floatingActionButton: FloatingActionButton(
-				onPressed: () {},
-				child: Icon(Icons.photo_camera),
-			),
+			bottomNavigationBar: MainBottomBar(),
+			floatingActionButton: MainCameraButton(),
 			floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 		);
 	}

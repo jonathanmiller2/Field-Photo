@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 
 
 
-class GeoCameraScreen extends StatefulWidget {
+class CameraPassthrough extends StatefulWidget {
 	
 	@override
-	_GeoCameraScreenState createState() => _GeoCameraScreenState();
+	_CameraPassthroughState createState() => _CameraPassthroughState();
 }
 
-class _GeoCameraScreenState extends State<GeoCameraScreen> {
+class _CameraPassthroughState extends State<CameraPassthrough> {
 	CameraController _controller;
 	
 	
@@ -31,15 +31,15 @@ class _GeoCameraScreenState extends State<GeoCameraScreen> {
 	Widget build(BuildContext context)
 	{
 		if(_controller?.value?.aspectRatio == null)
-			{
-				return Container();
-			}
+		{
+			return Center(child: CircularProgressIndicator());
+		}
 		else
-			{
-				return AspectRatio(
-						aspectRatio: _controller.value.aspectRatio,
-						child: CameraPreview(_controller));
-			}
+		{
+			return AspectRatio(
+					aspectRatio: _controller.value.aspectRatio,
+					child: CameraPreview(_controller));
+		}
 	}
 	
 	Future<CameraController> loadCameraController() async {
@@ -48,4 +48,12 @@ class _GeoCameraScreenState extends State<GeoCameraScreen> {
 		await res.initialize();
 		return res;
 	}
+	
+	@override
+	void dispose() {
+		// Dispose of the controller when the widget is disposed.
+		_controller.dispose();
+		super.dispose();
+	}
+	
 }

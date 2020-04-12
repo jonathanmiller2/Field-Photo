@@ -4,8 +4,14 @@ import 'package:flutter/material.dart';
 class LabelledInvisibleButton extends StatefulWidget {
 	final String label;
 	final Function onPress;
+	final Color defaultColor;
+	final Color pressedColor;
+	final bool centered;
+	final FontWeight fontWeight;
+	final double fontSize;
 	
-	const LabelledInvisibleButton({this.label, this.onPress});
+	
+	const LabelledInvisibleButton({this.label, this.onPress, this.defaultColor = Colors.blue, this.pressedColor = Colors.white, this.centered = true, this.fontSize = 18, this.fontWeight = FontWeight.bold});
 	
 	_LabelledInvisibleButtonState createState() {
 		return _LabelledInvisibleButtonState();
@@ -16,28 +22,74 @@ class _LabelledInvisibleButtonState extends State<LabelledInvisibleButton> {
 	bool pressed = false;
 	@override
 	Widget build(BuildContext context) {
-		return InkWell(
-			child: Center(
-				child: Text(
-					widget.label,
-					style: TextStyle(
-							color: pressed ? Colors.white : Colors.blue[900],
-							fontSize: 18,
-							fontWeight: FontWeight.bold
-					),
-				),
+		
+		Text textbody = Text(
+			widget.label,
+			style: TextStyle(
+					color: pressed ? widget.pressedColor : widget.defaultColor,
+					fontSize: widget.fontSize,
+					fontWeight: widget.fontWeight
 			),
-			onTap: () {
-				setState(() {
-					pressed = false; //onTap occurs when the finger is lifted, thus pressed should be set to false
-					widget.onPress();
-				});
-			},
-			onTapDown: (a) {
-				setState(() {
-					pressed = true;
-				});
-			},
 		);
+		
+		if(widget.centered)
+		{
+			return InkWell(
+				child: Center(child: textbody),
+				onTap: () {
+					setState(() {
+						pressed = false; //onTap occurs when the finger is lifted, thus pressed should be set to false
+						widget.onPress();
+					});
+				},
+				onTapDown: (a) {
+					setState(() {
+						pressed = true;
+					});
+				},
+			);
+		}
+		else
+		{
+			return InkWell(
+					child: textbody,
+					onTap: () {
+						setState(() {
+							pressed = false; //onTap occurs when the finger is lifted, thus pressed should be set to false
+							widget.onPress();
+						});
+					},
+					onTapDown: (_) {
+						setState(() {
+							pressed = true;
+						});
+					},
+					onTapCancel: () {
+						setState(() {
+							pressed = false;
+						});
+					},
+					onFocusChange: (_) {
+						setState(() {
+							pressed = false;
+						});
+					},
+					onHighlightChanged: (_) {
+						setState(() {
+							pressed = false;
+						});
+					},
+					onLongPress: () {
+						setState(() {
+							pressed = false;
+						});
+					},
+					onHover: (_) {
+						setState(() {
+							pressed = false;
+						});
+					}
+			);
+		}
 	}
 }

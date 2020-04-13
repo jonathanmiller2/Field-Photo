@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'LoginScreen.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  
+  static var geolocator = Geolocator();
+  
   @override
   Widget build(BuildContext context) {
     

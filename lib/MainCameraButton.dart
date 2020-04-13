@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'CameraScreen.dart';
 
-
 class MainCameraButton extends StatelessWidget {
 	@override
 	Widget build(BuildContext context) {

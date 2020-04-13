@@ -1,7 +1,13 @@
+import 'dart:async';
+
 import 'package:field_photo/CameraPassthrough.dart';
 import 'package:field_photo/LabelledInvisibleButton.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+
+import 'PositionIndicator.dart';
 
 class CameraScreen extends StatefulWidget {
 	@override
@@ -9,23 +15,6 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
-	String label = "Current Position";
-	String position = "35\u00b0 12\' 10\" N\, 97\u00b0 27\' 35\" W";
-	String confidence = "\u00B173\u00b0 / \u00B18yd.";
-	
-	TextStyle mainTextStyle = TextStyle(
-		fontSize: 18,
-		color: Colors.white, // DARKMODE
-		//color: Colors.blue[800], //LIGHTMODE
-	
-	
-	);
-	TextStyle lesserTextStyle = TextStyle(
-		fontSize: 14,
-		color: Colors.white, // DARKMODE
-		//color: Colors.blue[800], //LIGHTMODE
-	);
-	
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
@@ -41,23 +30,7 @@ class _CameraScreenState extends State<CameraScreen> {
 								//color: Colors.black, //DARKMODE
 								//color: Colors.grey[300], //LIGHTMODE
 								child: Center(
-										child: Column(
-											mainAxisAlignment: MainAxisAlignment.center,
-											children: <Widget>[
-												Text(
-														label,
-														style: mainTextStyle
-												),
-												Text(
-														position,
-														style: mainTextStyle
-												),
-												Text(
-														confidence,
-														style: lesserTextStyle
-												),
-											],
-										)
+										child: PositionIndicator()
 								)
 						),
 					)
@@ -113,7 +86,39 @@ class _CameraScreenState extends State<CameraScreen> {
 			floatingActionButton: FloatingActionButton(
 				backgroundColor: Colors.blue[600],
 				onPressed: () {
+					
 					//TODO: Add take picture functionality
+					
+					if(PositionIndicator.getMostRecentPosition() == null)
+					{
+						showDialog(
+								context: context,
+								builder: (BuildContext context) {
+									return AlertDialog(
+											title: Center(
+													child: Text(
+															"Error Retrieving Position"
+													)
+											),
+											content: Text(
+													"There was an error retrieving your position. This app requires your position to geotag photos for our database."
+											)
+									);
+								}
+						);
+					}
+					else {
+						showDialog(
+								context: context,
+								builder: (BuildContext context) {
+									return AlertDialog(
+											content: Text(
+													"pos" + PositionIndicator.getMostRecentPosition().toString()
+											)
+									);
+								}
+						);
+					}
 				},
 				child: Icon(
 						Icons.camera,
@@ -122,5 +127,7 @@ class _CameraScreenState extends State<CameraScreen> {
 			),
 			floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 		);
+		
 	}
+	
 }

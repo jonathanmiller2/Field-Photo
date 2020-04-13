@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,12 +12,9 @@ class LabelledInvisibleButton extends StatefulWidget {
 	final FontWeight fontWeight;
 	final double fontSize;
 	
-	
 	const LabelledInvisibleButton({this.label, this.onPress, this.defaultColor = Colors.blue, this.pressedColor = Colors.white, this.centered = true, this.fontSize = 18, this.fontWeight = FontWeight.bold});
 	
-	_LabelledInvisibleButtonState createState() {
-		return _LabelledInvisibleButtonState();
-	}
+	_LabelledInvisibleButtonState createState() => _LabelledInvisibleButtonState();
 }
 
 class _LabelledInvisibleButtonState extends State<LabelledInvisibleButton> {
@@ -23,7 +22,7 @@ class _LabelledInvisibleButtonState extends State<LabelledInvisibleButton> {
 	@override
 	Widget build(BuildContext context) {
 		
-		Text textbody = Text(
+		Text textBody = Text(
 			widget.label,
 			style: TextStyle(
 					color: pressed ? widget.pressedColor : widget.defaultColor,
@@ -35,7 +34,7 @@ class _LabelledInvisibleButtonState extends State<LabelledInvisibleButton> {
 		if(widget.centered)
 		{
 			return InkWell(
-				child: Center(child: textbody),
+				child: Center(child: textBody),
 				onTap: () {
 					setState(() {
 						pressed = false; //onTap occurs when the finger is lifted, thus pressed should be set to false
@@ -52,7 +51,7 @@ class _LabelledInvisibleButtonState extends State<LabelledInvisibleButton> {
 		else
 		{
 			return InkWell(
-					child: textbody,
+					child: textBody,
 					onTap: () {
 						setState(() {
 							pressed = false; //onTap occurs when the finger is lifted, thus pressed should be set to false

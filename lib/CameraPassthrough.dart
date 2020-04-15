@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
+import 'main.dart';
+
 
 
 class CameraPassthrough extends StatefulWidget {
@@ -12,8 +14,6 @@ class CameraPassthrough extends StatefulWidget {
 }
 
 class _CameraPassthroughState extends State<CameraPassthrough> {
-	CameraController _controller;
-	
 	
 	@override
 	void initState()
@@ -22,7 +22,7 @@ class _CameraPassthroughState extends State<CameraPassthrough> {
 		loadCameraController().then((result)
 		{
 			setState(() {
-				_controller = result;
+				MyApp.cameraController = result;
 			});
 		});
 	}
@@ -30,15 +30,18 @@ class _CameraPassthroughState extends State<CameraPassthrough> {
 	@override
 	Widget build(BuildContext context)
 	{
-		if(_controller?.value?.aspectRatio == null)
+		if(MyApp.cameraController?.value?.aspectRatio == null)
 		{
-			return Center(child: CircularProgressIndicator());
+			return Container(
+					height: 150,
+					child: Center(child: CircularProgressIndicator())
+			);
 		}
 		else
 		{
 			return AspectRatio(
-					aspectRatio: _controller.value.aspectRatio,
-					child: CameraPreview(_controller));
+					aspectRatio: MyApp.cameraController.value.aspectRatio,
+					child: CameraPreview(MyApp.cameraController));
 		}
 	}
 	
@@ -52,7 +55,7 @@ class _CameraPassthroughState extends State<CameraPassthrough> {
 	@override
 	void dispose() {
 		// Dispose of the controller when the widget is disposed.
-		_controller.dispose();
+		MyApp.cameraController.dispose();
 		super.dispose();
 	}
 	

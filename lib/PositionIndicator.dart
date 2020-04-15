@@ -117,19 +117,35 @@ class _PositionIndicatorState extends State<PositionIndicator>
 		}
 		else
 		{
-			return new FutureBuilder<Position>(
-					future: MyApp.geolocator.getCurrentPosition(),
+			return new FutureBuilder<List<Object>>(
+					future: Future.wait([
+						MyApp.geolocator.getCurrentPosition(),
+						MyApp.geolocator.isLocationServiceEnabled()
+					]),
 					builder: (context, asyncSnapshot) {
-						if (asyncSnapshot.hasError) {
-							//TODO: Handle this properly
-						}
-						else if (asyncSnapshot.data == null) {
-							//TODO: Handle this properly
+						
+						if (asyncSnapshot.hasError || asyncSnapshot.data == null)
+						{
+							PositionIndicator.mostRecentPosition = null;
+							DMSPosition = "Unknown";
+							locationAccuracy = "";
 						}
 						else {
-							PositionIndicator.mostRecentPosition = asyncSnapshot.data;
-							DMSPosition = PositionIndicator.formatPositionAsDMS(asyncSnapshot.data);
-							locationAccuracy = "\u00B1" + asyncSnapshot.data.accuracy.truncate().toString() + "m";
+							Position pos = asyncSnapshot.data[0];
+							bool locationServiceEnabled = asyncSnapshot.data[1];
+							
+							if(locationServiceEnabled)
+								{
+									PositionIndicator.mostRecentPosition = pos;
+									DMSPosition = PositionIndicator.formatPositionAsDMS(pos);
+									locationAccuracy = "\u00B1" + pos.accuracy.truncate().toString() + "m";
+								}
+							else
+								{
+									PositionIndicator.mostRecentPosition = null;
+									DMSPosition = "Unknown";
+									locationAccuracy = "";
+								}
 						}
 						
 						//TODO: Use asyncSnapshot.data.heading for camera screen's heading

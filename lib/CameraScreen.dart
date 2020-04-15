@@ -6,8 +6,11 @@ import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'PositionIndicator.dart';
+import 'main.dart';
 
 class CameraScreen extends StatefulWidget {
 	@override
@@ -123,9 +126,7 @@ class _CameraScreenState extends State<CameraScreen> {
 			),
 			floatingActionButton: FloatingActionButton(
 				backgroundColor: Colors.blue[600],
-				onPressed: () {
-					
-					//TODO: Add take picture functionality
+				onPressed: () async {
 					
 					if(PositionIndicator.getMostRecentPosition() == null)
 					{
@@ -146,16 +147,16 @@ class _CameraScreenState extends State<CameraScreen> {
 						);
 					}
 					else {
-						showDialog(
-								context: context,
-								builder: (BuildContext context) {
-									return AlertDialog(
-											content: Text(
-													"pos" + PositionIndicator.getMostRecentPosition().toString()
-											)
-									);
-								}
-						);
+						try {
+							final path = join(
+									(await getTemporaryDirectory()).path,
+									'${DateTime.now()}.jpg'
+							);
+							
+							await MyApp.cameraController.takePicture(path);
+						} catch (e) {
+							print(e);
+						}
 					}
 				},
 				child: Icon(

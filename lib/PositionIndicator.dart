@@ -149,7 +149,6 @@ class _PositionIndicatorState extends State<PositionIndicator>
 						}
 						
 						//TODO: Use asyncSnapshot.data.heading for camera screen's heading
-						//TODO: Use asyncSnaphot.data.timestamp for database timestamp in the future
 						
 						
 						return Column(

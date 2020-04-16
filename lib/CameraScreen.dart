@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:quiver/collection.dart';
 
+import 'ImagePreviewScreen.dart';
 import 'PositionIndicator.dart';
 import 'main.dart';
 
@@ -33,7 +35,7 @@ class _CameraScreenState extends State<CameraScreen> {
 					),
 					Expanded(
 						child: Container(
-								color: Color.fromARGB(255, 25, 25, 25),
+								color: Color.fromARGB(255, 20, 20, 20),
 								//color: Colors.black, //DARKMODE
 								//color: Colors.grey[300], //LIGHTMODE
 								child: Center(
@@ -76,7 +78,6 @@ class _CameraScreenState extends State<CameraScreen> {
 												child: LabelledInvisibleButton(
 													label: "Geolock",
 													onPress: () {
-														
 														if(!PositionIndicator.isGeolocked) {
 															showDialog(
 																	context: context,
@@ -103,7 +104,7 @@ class _CameraScreenState extends State<CameraScreen> {
 																		
 																		);
 																	}
-																	
+															
 															);
 														}
 														else
@@ -148,14 +149,43 @@ class _CameraScreenState extends State<CameraScreen> {
 					}
 					else {
 						try {
+							DateTime timestamp = DateTime.now();
+							double latitude = PositionIndicator.getMostRecentPosition().latitude;
+							double longitude = PositionIndicator.getMostRecentPosition().longitude;
+							double heading = PositionIndicator.getMostRecentPosition().heading;
+							
 							final path = join(
 									(await getTemporaryDirectory()).path,
-									'${DateTime.now()}.jpg'
+									'${timestamp.toString()}.jpg'
 							);
 							
 							await MyApp.cameraController.takePicture(path);
+							
+							//Data: Path, DateTime Taken, Latitude, Longitude, Heading, LULC Class, Field Notes
+							//List<Object> photoData = [path, timestamp, lat, long, heading, 0, ""];
+							
+							Navigator.push(
+								context,
+								new MaterialPageRoute(builder: (context) => new ImagePreviewScreen(imagePath: path, latitude: latitude, longitude: longitude, heading: heading,)),
+							);
 						} catch (e) {
 							print(e);
+							
+							showDialog(
+									context: context,
+									builder: (BuildContext context) {
+										return AlertDialog(
+												title: Center(
+														child: Text(
+																"Error taking photo"
+														)
+												),
+												content: Text(
+														"The image could not be taken. Error text:\n" + e.toString()
+												)
+										);
+									}
+							);
 						}
 					}
 				},

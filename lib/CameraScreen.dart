@@ -1,14 +1,10 @@
-import 'dart:async';
-
 import 'package:field_photo/CameraPassthrough.dart';
 import 'package:field_photo/LabelledInvisibleButton.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:quiver/collection.dart';
 
 import 'ImagePreviewScreen.dart';
 import 'PositionIndicator.dart';
@@ -22,9 +18,6 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
 	@override
 	Widget build(BuildContext context) {
-		
-		Color geolockTextColor = PositionIndicator.isGeolocked ? Colors.blue[600] : Colors.red[600];
-		
 		
 		return Scaffold(
 			body: Column(

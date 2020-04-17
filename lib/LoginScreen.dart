@@ -3,9 +3,6 @@ import 'package:field_photo/MainBottomBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'CameraPassthrough.dart';
-import 'CameraScreen.dart';
-import 'InfoScreen.dart';
 import 'MainCameraButton.dart';
 import 'SignupScreen.dart';
 

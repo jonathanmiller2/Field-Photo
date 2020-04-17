@@ -1,6 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'LabelledInvisibleButton.dart';
 import 'main.dart';
@@ -20,8 +22,22 @@ class ImageInfoEntryScreen extends StatefulWidget {
 
 class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 {
-	
+	SharedPreferences sp;
 	int landcoverClass = 0;
+	
+	
+	@override
+	void initState() {
+		super.initState();
+		_loadSharedPreferences();
+	}
+	
+	_loadSharedPreferences() async {
+		setState(() async {
+		  sp = await SharedPreferences.getInstance();
+		});
+	}
+	
 	
 	@override
 	Widget build(BuildContext context) {
@@ -201,9 +217,13 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 													label: "Save",
 													onPress: () {
 														//TODO: Ask the user if they want to save an unclassified image
-														//TODO: Save the image, add to library
-														Navigator.pop(context);
-														Navigator.pop(context);
+														
+														if(sp != null)
+															{
+																//TODO: Save image using SQFlite
+																Navigator.pop(context);
+																Navigator.pop(context);
+															}
 													},
 													defaultColor: Colors.blue[600],
 													pressedColor: Colors.blue[200],

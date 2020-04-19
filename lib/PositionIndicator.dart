@@ -55,6 +55,51 @@ class PositionIndicator extends StatefulWidget {
 		
 		return latDMS + ", " + lonDMS;
 	}
+	
+	static String getDirFromHeading(double heading)
+	{
+		if(heading <= 22.5)
+		{
+			return "N";
+		}
+		else if(heading <= 67.5)
+		{
+			return "NE";
+		}
+		else if(heading <= 112.5)
+		{
+			return "E";
+		}
+		else if(heading <= 157.5)
+		{
+			return "SE";
+		}
+		else if(heading <= 202.5)
+		{
+			return "S";
+		}
+		else if(heading <= 247.5)
+		{
+			return "SW";
+		}
+		else if(heading <= 292.5)
+		{
+			return "W";
+		}
+		else if(heading <= 337.5)
+		{
+			return "NW";
+		}
+		else if(heading <= 360)
+		{
+			return "N";
+		}
+		else
+		{
+			return "ERR";
+		}
+	}
+	
 }
 
 class _PositionIndicatorState extends State<PositionIndicator>
@@ -65,11 +110,14 @@ class _PositionIndicatorState extends State<PositionIndicator>
 	String DMSPosition = "Unknown";
 	String locationAccuracy = "";
 	String locationAge = "";
+	String heading = "";
+	bool showingHeading = false;
+	Widget buttonChild;
 	
 	@override
 	void initState() {
 		_updateTimer = new Timer.periodic(
-				Duration(seconds: 4), //TODO: This is the location renewal timer, may need fine tuned if performance issues arise
+				Duration(milliseconds: 500), //TODO: This is the location renewal timer, may need fine tuned if performance issues arise
 						(timer){
 					setState(() {});
 				}
@@ -79,9 +127,6 @@ class _PositionIndicatorState extends State<PositionIndicator>
 	
 	@override
 	Widget build(BuildContext context) {
-		//TODO: Add the heading display on tap
-		//TODO: Add Geolock
-		//TODO: Detect when stream breaks (i.e. location services are abruptly turned off). Currently it just retains most recent position
 		
 		TextStyle mainTextStyle = TextStyle(
 			fontSize: 18,
@@ -97,26 +142,59 @@ class _PositionIndicatorState extends State<PositionIndicator>
 		
 		if(PositionIndicator.isGeolocked)
 		{
-			return Column(
-				mainAxisAlignment: MainAxisAlignment.center,
-				children: <Widget>[
-					Text(
-							"Geolocked Position",
-							style: mainTextStyle
-					),
-					Text(
-							DMSPosition,
-							style: mainTextStyle
-					),
-					Text(
-							locationAccuracy,
-							style: lesserTextStyle
-					),
-				],
+			if(!showingHeading)
+			{
+				buttonChild = Column(
+					mainAxisAlignment: MainAxisAlignment.center,
+					children: <Widget>[
+						Text(
+								"Geolocked Position",
+								style: mainTextStyle
+						),
+						Text(
+								DMSPosition,
+								style: mainTextStyle
+						),
+						Text(
+								locationAccuracy,
+								style: lesserTextStyle
+						),
+					],
+				);
+			}
+			else
+			{
+				buttonChild = Column(
+					mainAxisAlignment: MainAxisAlignment.center,
+					children: <Widget>[
+						Text(
+								"Heading",
+								style: mainTextStyle
+						),
+						Text(
+								heading,
+								style: mainTextStyle
+						),
+					],
+				);
+			}
+			
+			return FlatButton(
+				child: buttonChild,
+				color: Color.fromARGB(0, 0, 0, 0),
+				onPressed: () {
+					setState(() {
+						showingHeading = !showingHeading;
+						
+					});
+				},
 			);
 		}
 		else
 		{
+			
+			//TODO: If we want to NOT geolock the heading, we need to always return this future builder, saving a new position with the new heading, but same location as before. Basically we need to delete every if statement above this line
+			
 			return new FutureBuilder<List<Object>>(
 					future: Future.wait([
 						MyApp.geolocator.getCurrentPosition(),
@@ -129,44 +207,71 @@ class _PositionIndicatorState extends State<PositionIndicator>
 							PositionIndicator.mostRecentPosition = null;
 							DMSPosition = "Unknown";
 							locationAccuracy = "";
+							heading = "Unknown";
 						}
 						else {
 							Position pos = asyncSnapshot.data[0];
 							bool locationServiceEnabled = asyncSnapshot.data[1];
 							
 							if(locationServiceEnabled)
-								{
-									PositionIndicator.mostRecentPosition = pos;
-									DMSPosition = PositionIndicator.formatPositionAsDMS(pos);
-									locationAccuracy = "\u00B1" + pos.accuracy.truncate().toString() + "m";
-								}
+							{
+								PositionIndicator.mostRecentPosition = pos;
+								DMSPosition = PositionIndicator.formatPositionAsDMS(pos);
+								locationAccuracy = "\u00B1" + pos.accuracy.truncate().toString() + "m";
+								heading = pos.heading.truncate().toString() + "\u00B0 " + PositionIndicator.getDirFromHeading(pos.heading);
+							}
 							else
-								{
-									PositionIndicator.mostRecentPosition = null;
-									DMSPosition = "Unknown";
-									locationAccuracy = "";
-								}
+							{
+								PositionIndicator.mostRecentPosition = null;
+								DMSPosition = "Unknown";
+								locationAccuracy = "";
+								heading = "Unknown";
+							}
 						}
 						
-						//TODO: Use asyncSnapshot.data.heading for camera screen's heading
+						if(!showingHeading) {
+							buttonChild = Column(
+								mainAxisAlignment: MainAxisAlignment.center,
+								children: <Widget>[
+									Text(
+											"Current Position",
+											style: mainTextStyle
+									),
+									Text(
+											DMSPosition,
+											style: mainTextStyle
+									),
+									Text(
+											locationAccuracy,
+											style: lesserTextStyle
+									),
+								],
+							);
+						}
+						else {
+							buttonChild = Column(
+								mainAxisAlignment: MainAxisAlignment.center,
+								children: <Widget>[
+									Text(
+											"Heading",
+											style: mainTextStyle
+									),
+									Text(
+											heading,
+											style: mainTextStyle
+									),
+								],
+							);
+						}
 						
-						
-						return Column(
-							mainAxisAlignment: MainAxisAlignment.center,
-							children: <Widget>[
-								Text(
-										"Current Position",
-										style: mainTextStyle
-								),
-								Text(
-										DMSPosition,
-										style: mainTextStyle
-								),
-								Text(
-										locationAccuracy,
-										style: lesserTextStyle
-								),
-							],
+						return FlatButton(
+							child: buttonChild,
+							color: Color.fromARGB(0, 0, 0, 0),
+							onPressed: () {
+								setState(() {
+									showingHeading = !showingHeading;
+								});
+							},
 						);
 					}
 			);

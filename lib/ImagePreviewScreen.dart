@@ -1,7 +1,7 @@
-import 'ImageInfoEntryScreen.dart';
 import 'dart:io';
 
 import 'LabelledInvisibleButton.dart';
+import 'ImageInfoEntryScreen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';

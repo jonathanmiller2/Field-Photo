@@ -1,10 +1,12 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'LabelledInvisibleButton.dart';
+import 'PositionIndicator.dart';
 import 'main.dart';
 
 class ImageInfoEntryScreen extends StatefulWidget {
@@ -22,21 +24,41 @@ class ImageInfoEntryScreen extends StatefulWidget {
 
 class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 {
-	SharedPreferences sp;
 	int landcoverClass = 0;
-	
+	Database database;
+	final fieldNoteController = TextEditingController();
 	
 	@override
 	void initState() {
+		_startDB();
 		super.initState();
-		_loadSharedPreferences();
 	}
 	
-	_loadSharedPreferences() async {
-		setState(() async {
-		  sp = await SharedPreferences.getInstance();
+	_startDB() async {
+		var databasesPath = await getDatabasesPath();
+		String path = join(databasesPath, 'FieldPhoto.db');
+		
+		//await deleteDatabase(path);
+		
+		Database db = await openDatabase(path, version:1,
+				onCreate: (Database db, int version) async {
+					await db.execute('CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE)');
+				}
+		);
+		setState(() {
+			database = db;
 		});
 	}
+	
+	_saveImage(path, description, longitude, latitude, timestamp, categoryid, dir, heading) async {
+		await database.transaction((txn) async {
+			int id = await txn.rawInsert(
+					'INSERT INTO photos(path, description, long, lat, takendate, categoryid, dir, dir_deg) VALUES(?, ?, ?, ?, ?, ?, ?, ?)', [path, description, longitude, latitude, timestamp, categoryid, dir, heading]
+			);
+			print('Inserted photo with id: '+ id.toString());
+		});
+	}
+	
 	
 	
 	@override
@@ -54,7 +76,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 			backgroundColor: Colors.grey[200],
 			appBar: AppBar(
 				title: Text(
-						'Image Metadata',
+						'Field Photo Metadata',
 						style: TextStyle(
 							fontSize: 22.0,
 							color: Colors.black,
@@ -165,9 +187,10 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 											),
 											Expanded(
 												child: TextField(
-													minLines: 5,
-													maxLines: 10,
-													maxLength: 300,
+														minLines: 5,
+														maxLines: 10,
+														maxLength: 300,
+														controller: fieldNoteController
 												),
 											),
 											Icon(
@@ -215,15 +238,54 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 												alignment: Alignment.centerRight,
 												child: LabelledInvisibleButton(
 													label: "Save",
-													onPress: () {
+													onPress: () async {
 														//TODO: Ask the user if they want to save an unclassified image
 														
-														if(sp != null)
-															{
-																//TODO: Save image using SQFlite
-																Navigator.pop(context);
-																Navigator.pop(context);
-															}
+														if(landcoverClass == 0)
+														{
+															showDialog(
+																	context: context,
+																	builder: (BuildContext context) {
+																		return AlertDialog(
+																			title: Center(
+																					child: Text(
+																							"Land Cover Unspecified"
+																					)
+																			),
+																			content: Text(
+																					"Are you sure you don't want to specify the land cover class?"
+																			),
+																			actions: <Widget>[
+																				FlatButton(
+																					child: Text("Cancel"),
+																					onPressed: () {
+																						Navigator.pop(context);
+																						return;
+																					},
+																				),
+																				FlatButton(
+																					child: Text("Continue"),
+																					onPressed: () {
+																						_saveImage(widget.imagePath, fieldNoteController.text, widget.longitude, widget.latitude, widget.timestamp, landcoverClass, PositionIndicator.getDirFromHeading(widget.heading), widget.heading);
+																						
+																						//TODO: Save image using SQFlite
+																						Navigator.pop(context);
+																						Navigator.pop(context);
+																						Navigator.pop(context);
+																					},
+																				)
+																			],
+																		);
+																	}
+															);
+														}
+														else
+														{
+															_saveImage(widget.imagePath, fieldNoteController.text, widget.longitude, widget.latitude, widget.timestamp, landcoverClass, PositionIndicator.getDirFromHeading(widget.heading), widget.heading);
+															
+															Navigator.pop(context);
+															Navigator.pop(context);
+														}
 													},
 													defaultColor: Colors.blue[600],
 													pressedColor: Colors.blue[200],

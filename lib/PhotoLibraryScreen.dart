@@ -17,7 +17,7 @@ class PhotoLibraryScreen extends StatefulWidget {
 
 class _PhotoLibraryScreenState extends State<PhotoLibraryScreen> {
 	Database database;
-	
+	bool selectMode = false;
 	
 	
 	Future<List<Map<String, dynamic>>> _loadImages() async {
@@ -62,17 +62,10 @@ class _PhotoLibraryScreenState extends State<PhotoLibraryScreen> {
 				List<Map<String, dynamic>> photoList = asyncSnapshot.data;
 				
 				List<Widget> photoSquares = photoList.map<Widget> ((Map<String, dynamic> photo) {
-					
-					return FlatButton(
-						padding: const EdgeInsets.all(0),
-						child: ImageSquare(
-								id: photo['id'],
-								database: database
-						),
-						onPressed: () {
-							//TODO: Navigate to a page showing the image in full resolution
-							print('image '+photo['id'].toString()+' pressed');
-						},
+					return ImageSquare(
+							id: photo['id'],
+							database: database,
+							selectMode: selectMode,
 					);
 				}).toList();
 				
@@ -93,13 +86,25 @@ class _PhotoLibraryScreenState extends State<PhotoLibraryScreen> {
 								Padding(
 									padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 									child: LabelledInvisibleButton(
-										label: 'Select',
+										label: selectMode ? 'Cancel' : 'Select',
 										onPress: () {
-											//TODO: Add photo select functionality
+											
+											if(selectMode)
+												{
+													for(Widget photoSquare in photoSquares)
+														{
+															//TODO: Make this work??
+															//photoSquare.deselect();
+														}
+												}
+											
+											setState(() {
+											  selectMode = !selectMode;
+											});
 										},
 										defaultColor: Colors.blue[600],
 										pressedColor: Colors.blue[200],
-										fontWeight: FontWeight.normal,
+										fontWeight: selectMode ? FontWeight.bold : FontWeight.normal,
 										fontSize: 20,
 									),
 								)

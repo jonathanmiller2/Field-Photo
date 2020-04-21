@@ -30,6 +30,7 @@ class _CameraPassthroughState extends State<CameraPassthrough> {
 	@override
 	Widget build(BuildContext context)
 	{
+		//TODO: This may need to be a future builder. As it stands, if the aspect ratio isn't defined when the app builds, it will likely never rebuild to show the preview
 		if(MyApp.cameraController?.value?.aspectRatio == null)
 		{
 			return Container(

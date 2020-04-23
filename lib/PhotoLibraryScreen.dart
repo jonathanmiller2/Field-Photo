@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'ImageDetailScreen.dart';
 import 'ImageSquare.dart';
 
 class PhotoLibraryScreen extends StatefulWidget {
@@ -18,6 +19,8 @@ class PhotoLibraryScreen extends StatefulWidget {
 class _PhotoLibraryScreenState extends State<PhotoLibraryScreen> {
 	Database database;
 	bool selectMode = false;
+	Map<int, bool> imageSelections = new Map<int, bool>();
+	
 	
 	
 	Future<List<Map<String, dynamic>>> _loadImages() async {
@@ -33,7 +36,7 @@ class _PhotoLibraryScreenState extends State<PhotoLibraryScreen> {
 		);
 		database = db;
 		
-		return await db.rawQuery('SELECT id FROM photos');
+		return await db.rawQuery('SELECT * FROM photos');
 	}
 	
 	@override
@@ -42,36 +45,117 @@ class _PhotoLibraryScreenState extends State<PhotoLibraryScreen> {
 		return new FutureBuilder<List<Object>>(
 			future: _loadImages(),
 			builder: (context, asyncSnapshot) {
-				
-				if(asyncSnapshot.hasError)
-				{
+				if (asyncSnapshot.hasError) {
 					//TODO: Handle this error
 					print(asyncSnapshot.error);
 				}
 				
-				if(database == null || !asyncSnapshot.hasData)
-				{
+				if (database == null || !asyncSnapshot.hasData) {
 					return Container(
 							height: 150,
 							child: Center(child: CircularProgressIndicator())
 					);
 				}
 				
-				print("Library data: " + asyncSnapshot.toString());
-				
+				//print("Library data: " + asyncSnapshot.toString());
 				List<Map<String, dynamic>> photoList = asyncSnapshot.data;
 				
+				for (Map <String, dynamic> photo in photoList)
+				{
+					if(!imageSelections.containsKey(photo['id']))
+					{
+							imageSelections[photo['id']] = false;
+					}
+				}
+				
 				List<Widget> photoSquares = photoList.map<Widget> ((Map<String, dynamic> photo) {
-					return ImageSquare(
-							id: photo['id'],
-							database: database,
-							selectMode: selectMode,
-					);
+					if(selectMode)
+					{
+						if(imageSelections[photo['id']])
+						{
+							return Container(
+								decoration: BoxDecoration(
+									border: Border.all(
+										color: Colors.blue[600],
+										width: 3,
+									),
+								),
+								child: FlatButton(
+										padding: const EdgeInsets.all(0),
+										child: AspectRatio(
+												aspectRatio: 1,
+												child: ImageSquare(
+														path: photo['path']
+												)
+										),
+										onPressed: () {
+											imageSelections[photo['id']] = false;
+											setState(() {});
+										}
+								),
+							);
+						}
+						else
+						{
+							return FlatButton(
+									padding: const EdgeInsets.all(0),
+									child: AspectRatio(
+											aspectRatio: 1,
+											child: ImageSquare(
+													path: photo['path']
+											)
+									),
+									onPressed: () {
+										imageSelections[photo['id']] = true;
+										setState(() {});
+									}
+							);
+						}
+					}
+					else {
+						if (imageSelections[photo['id']])
+						{
+							imageSelections[photo['id']] = false;
+							
+							return FlatButton(
+									padding: const EdgeInsets.all(0),
+									child: AspectRatio(
+											aspectRatio: 1,
+											child: ImageSquare(
+													path: photo['path']
+											)
+									),
+									onPressed: () {
+										setState(() {
+											new MaterialPageRoute(builder: (context) => new ImageDetailScreen(id: photo['id'], database: database));
+										});
+									}
+							);
+						}
+						else
+						{
+							return FlatButton(
+									padding: const EdgeInsets.all(0),
+									child: AspectRatio(
+											aspectRatio: 1,
+											child: ImageSquare(
+													path: photo['path']
+											)
+									),
+									onPressed: () {
+										setState(() {
+											//TODO: WHY DOESNT THIS WORRRRRK
+											new MaterialPageRoute(builder: (context) => new ImageDetailScreen(id: photo['id'], database: database));
+										});
+									}
+							);
+						}
+					}
 				}).toList();
 				
 				
 				return Scaffold(
-					backgroundColor: Colors.grey[200],
+						backgroundColor: Colors.grey[200],
 						appBar: AppBar(
 							title: Text(
 									'All Photos',
@@ -88,18 +172,8 @@ class _PhotoLibraryScreenState extends State<PhotoLibraryScreen> {
 									child: LabelledInvisibleButton(
 										label: selectMode ? 'Cancel' : 'Select',
 										onPress: () {
-											
-											if(selectMode)
-												{
-													for(Widget photoSquare in photoSquares)
-														{
-															//TODO: Make this work??
-															//photoSquare.deselect();
-														}
-												}
-											
 											setState(() {
-											  selectMode = !selectMode;
+												selectMode = !selectMode;
 											});
 										},
 										defaultColor: Colors.blue[600],

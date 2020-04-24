@@ -1,5 +1,5 @@
 
-import 'package:field_photo/PhotoLibraryScreen.dart';
+import 'package:field_photo/ImageLibraryScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +30,7 @@ class MainBottomBar extends StatelessWidget {
 													onPressed: () {
 														Navigator.push(
 															context,
-															new MaterialPageRoute(builder: (context) => new PhotoLibraryScreen()),
+															new MaterialPageRoute(builder: (context) => new ImageLibraryScreen()),
 														);
 													}
 											),

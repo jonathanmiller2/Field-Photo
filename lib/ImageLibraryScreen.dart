@@ -156,52 +156,52 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 				
 				bool selectionMade = false;
 				for(bool x in imageSelections.values)
+				{
+					if(x)
 					{
-						if(x)
-							{
-								selectionMade = true;
-								break;
-							}
+						selectionMade = true;
+						break;
 					}
+				}
 				
 				if(selectMode)
 				{
 					return Scaffold(
-							backgroundColor: Colors.grey[200],
-							appBar: AppBar(
-								title: Text(
-										'All Photos',
-										style: TextStyle(
-											fontSize: 22.0,
-											color: Colors.black,
-										)
-								),
-								backgroundColor: Colors.white,
-								centerTitle: true,
-								actions: <Widget>[
-									Padding(
-										padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
-										child: LabelledInvisibleButton(
-											label: selectMode ? 'Cancel' : 'Select',
-											onPress: () {
-												setState(() {
-													selectMode = !selectMode;
-												});
-											},
-											defaultColor: Colors.blue[600],
-											pressedColor: Colors.blue[200],
-											fontWeight: selectMode ? FontWeight.bold : FontWeight.normal,
-											fontSize: 20,
-										),
+						backgroundColor: Colors.grey[200],
+						appBar: AppBar(
+							title: Text(
+									'All Field Photos',
+									style: TextStyle(
+										fontSize: 22.0,
+										color: Colors.black,
 									)
-								],
 							),
-							body: GridView.count(
-								crossAxisCount: 3,
-								crossAxisSpacing: 5,
-								mainAxisSpacing: 5,
-								children: imageSquares,
-							),
+							backgroundColor: Colors.white,
+							centerTitle: true,
+							actions: <Widget>[
+								Padding(
+									padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+									child: LabelledInvisibleButton(
+										label: selectMode ? 'Cancel' : 'Select',
+										onPress: () {
+											setState(() {
+												selectMode = !selectMode;
+											});
+										},
+										defaultColor: Colors.blue[600],
+										pressedColor: Colors.blue[200],
+										fontWeight: selectMode ? FontWeight.bold : FontWeight.normal,
+										fontSize: 20,
+									),
+								)
+							],
+						),
+						body: GridView.count(
+							crossAxisCount: 3,
+							crossAxisSpacing: 5,
+							mainAxisSpacing: 5,
+							children: imageSquares,
+						),
 						bottomNavigationBar: BottomAppBar(
 							child: Container(
 									height: 50.0,
@@ -211,34 +211,34 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 											Expanded(
 												child: Align(
 													alignment: Alignment.center,
-												  child: Padding(
-												  	padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
-												  	child: LabelledInvisibleButton(
-												  		label: "Share",
-												  		onPress: () {
-												  			if(!selectionMade)
-												  				{
-												  					return;
-																	}
-												  			
-												  			//TODO: Use phone's sharing system
-												  		},
-												  		defaultColor: selectionMade ? Colors.blue[600] : Colors.grey,
+													child: Padding(
+														padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+														child: LabelledInvisibleButton(
+															label: "Share",
+															onPress: () {
+																if(!selectionMade)
+																{
+																	return;
+																}
+																
+																//TODO: Use phone's sharing system
+															},
+															defaultColor: selectionMade ? Colors.blue[600] : Colors.grey,
 															pressedColor: selectionMade ? Colors.blue[200] : Colors.grey,
-												  		centered: false,
-												  		fontWeight: FontWeight.normal,
-												  	),
-												  ),
+															centered: false,
+															fontWeight: FontWeight.normal,
+														),
+													),
 												),
 											),
 											Expanded(
 												child: Align(
 													alignment: Alignment.center,
-												  child: Padding(
-												  	padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
-												  	child: LabelledInvisibleButton(
-												  		label: "Upload",
-												  		onPress: () {
+													child: Padding(
+														padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+														child: LabelledInvisibleButton(
+															label: "Upload",
+															onPress: () {
 																if(!selectionMade)
 																{
 																	return;
@@ -246,23 +246,23 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																
 																//TODO: Checked if logged in
 																
-												  		},
+															},
 															defaultColor: selectionMade ? Colors.blue[600] : Colors.grey,
 															pressedColor: selectionMade ? Colors.blue[200] : Colors.grey,
-												  		centered: false,
-												  		fontWeight: FontWeight.normal,
-												  	),
-												  ),
+															centered: false,
+															fontWeight: FontWeight.normal,
+														),
+													),
 												),
 											),
 											Expanded(
 												child: Align(
 													alignment: Alignment.center,
-												  child: Padding(
-												  	padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
-												  	child: LabelledInvisibleButton(
-												  		label: "Delete",
-												  		onPress: () {
+													child: Padding(
+														padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+														child: LabelledInvisibleButton(
+															label: "Delete",
+															onPress: () {
 																if(!selectionMade)
 																{
 																	return;
@@ -283,8 +283,25 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																					),
 																					FlatButton(
 																						child: Text("Delete"),
-																						onPressed: () {
-
+																						onPressed: () async {
+																							List<int> selectedIDs = new List<int>();
+																							for(MapEntry<int, bool> selectionEntry in imageSelections.entries)
+																							{
+																								if(selectionEntry.value)
+																								{
+																									selectedIDs.add(selectionEntry.key);
+																								}
+																							}
+																							for(int id in selectedIDs)
+																							{
+																								imageSelections.remove(id);
+																								await database.rawDelete('DELETE FROM photos WHERE id = ?', [id]);
+																							}
+																							
+																							Navigator.pop(context);
+																							setState(() {
+																								selectMode = false;
+																							});
 																						},
 																					)
 																				],
@@ -293,13 +310,13 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																		}
 																
 																);
-												  		},
+															},
 															defaultColor: selectionMade ? Colors.red[600] : Colors.grey,
 															pressedColor: selectionMade ? Colors.red[200] : Colors.grey,
-												  		centered: false,
-												  		fontWeight: FontWeight.normal,
-												  	),
-												  ),
+															centered: false,
+															fontWeight: FontWeight.normal,
+														),
+													),
 												),
 											),
 										],

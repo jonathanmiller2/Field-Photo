@@ -23,17 +23,21 @@ class ImageDetailScreen extends StatefulWidget {
 }
 
 class _ImageDetailScreenState extends State<ImageDetailScreen> {
-	int landcoverClass = 0; //TODO: Start this # out correctly
-	Database database;
-	final fieldNoteController = TextEditingController();
+	int selectedLandcoverClass;
+	int savedLandcoverClass;
+	String savedDescription;
 	
+	TextEditingController fieldNoteController;
+	bool editMode = false;
 	
-	_updateImage() async {
-		await database.transaction((txn) async {
-		
-		});
+	@override
+	void initState() {
+		super.initState();
+		savedDescription = widget.image['description'];
+		savedLandcoverClass = widget.image['categoryid'];
+		selectedLandcoverClass = widget.image['categoryid'];
+		fieldNoteController = TextEditingController(text: widget.image['description']);
 	}
-	
 	
 	
 	@override
@@ -47,197 +51,436 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 			color: Colors.blue[600],
 		);
 		
-		return Scaffold(
-			backgroundColor: Colors.grey[200],
-			appBar: AppBar(
-				title: Text(
-						'Field Photo Metadata',
-						style: TextStyle(
-							fontSize: 22.0,
-							color: Colors.black,
+		if(editMode)
+		{
+			return Scaffold(
+				backgroundColor: Colors.grey[200],
+				appBar: AppBar(
+					title: Text(
+							'Field Photo Metadata',
+							style: TextStyle(
+								fontSize: 22.0,
+								color: Colors.black,
+							)
+					),
+					backgroundColor: Colors.white,
+					centerTitle: true,
+					actions: <Widget>[
+						Padding(
+							padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+							child: LabelledInvisibleButton(
+								label: 'Cancel',
+								onPress: () {
+									setState(() {
+										editMode = false;
+										selectedLandcoverClass = savedLandcoverClass;
+										fieldNoteController = TextEditingController(text: savedDescription);
+									});
+								},
+								defaultColor: Colors.blue[600],
+								pressedColor: Colors.blue[200],
+								fontWeight: editMode ? FontWeight.bold : FontWeight.normal,
+								fontSize: 20,
+							),
 						)
+					],
 				),
-				backgroundColor: Colors.white,
-				centerTitle: true,
-			),
-			body: ListView(
-					children: <Widget>[
-						Padding(
-						  padding: const EdgeInsets.all(8.0),
-						  child: Image.file(
-						  	File(widget.image['path'].toString()),
-						  ),
-						),
-						Container(
-							color: Colors.grey,
-							height: 1
-						),
-						Padding(
-								padding: const EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
-								child: Row(
-										children: <Widget>[
-											Container(
-												width: labelWidth,
-												child: Text(
-													"Latitude",
-													style: labelStyle,
+				body: ListView(
+						children: <Widget>[
+							Image.file(
+									File(widget.image['path'].toString()),
+									fit: BoxFit.fitWidth
+							),
+							Container(
+									color: Colors.grey,
+									height: 1
+							),
+							Padding(
+									padding: const EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+									child: Row(
+											children: <Widget>[
+												Container(
+													width: labelWidth,
+													child: Text(
+														"Latitude",
+														style: labelStyle,
+													),
 												),
-											),
-											Expanded(
-												child: Text(
-													widget.image['lat'].toString(),
+												Expanded(
+													child: Text(
+														widget.image['lat'].toString(),
+													),
 												),
-											),
-										]
-								)
-						),
-						Padding(
-								padding: const EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
-								child: Row(
-										children: <Widget>[
-											Container(
-												width: labelWidth,
-												child: Text(
-													"Longitude",
-													style: labelStyle,
+											]
+									)
+							),
+							Padding(
+									padding: const EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+									child: Row(
+											children: <Widget>[
+												Container(
+													width: labelWidth,
+													child: Text(
+														"Longitude",
+														style: labelStyle,
+													),
 												),
-											),
-											Expanded(
-												child: Text(
-														widget.image['long'].toString()
+												Expanded(
+													child: Text(
+															widget.image['long'].toString()
+													),
 												),
-											),
-										]
-								)
-						),
-						Container(
-								color: Colors.grey,
-								height: 1
-						),
-						Padding(
-								padding: const EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
-								child: Row(
-										children: <Widget>[
-											Container(
-												width: labelWidth,
-												child: Text(
-													"Land Cover",
-													style: labelStyle,
+											]
+									)
+							),
+							Container(
+									color: Colors.grey,
+									height: 1
+							),
+							Padding(
+									padding: const EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+									child: Row(
+											children: <Widget>[
+												Container(
+													width: labelWidth,
+													child: Text(
+														"Land Cover",
+														style: labelStyle,
+													),
 												),
-											),
-											Expanded(
-													child: DropdownButton<int>(
-														isExpanded: true,
-														value: landcoverClass,
-														onChanged: (int newClass) {
+												Expanded(
+														child: DropdownButton<int>(
+															isExpanded: true,
+															value: selectedLandcoverClass,
+															onChanged: (int newClass) {
+																setState(() {
+																	selectedLandcoverClass = newClass;
+																}
+																);
+															},
+															items: <int> [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17].map<DropdownMenuItem<int>> ((int value)
+															{
+																return DropdownMenuItem<int>(
+																		value: value,
+																		child: Text(
+																				MyApp.landcoverClassMap[value],
+																				style: TextStyle(
+																						fontSize: 15
+																				)
+																		)
+																);
+															}).toList(),
+														)
+												),
+												Icon(
+														Icons.edit
+												)
+											]
+									)
+							),
+							Container(
+									color: Colors.grey,
+									height: 1
+							),
+							Padding(
+									padding: const EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+									child: Row(
+											children: <Widget>[
+												Container(
+													width: labelWidth,
+													child: Text(
+														"Field Notes",
+														style: labelStyle,
+													),
+												),
+												Expanded(
+													child: TextField(
+															minLines: 5,
+															maxLines: 10,
+															maxLength: 300,
+															controller: fieldNoteController
+													),
+												),
+												Icon(
+														Icons.edit
+												)
+											]
+									)
+							),
+							Container(
+									color: Colors.grey,
+									height: 1
+							),
+						]
+				),
+				bottomNavigationBar: BottomAppBar(
+					shape: const CircularNotchedRectangle(),
+					child: Container(
+							height: 50.0,
+							child: Row(
+								crossAxisAlignment: CrossAxisAlignment.stretch,
+								children: <Widget>[
+									Expanded(
+										child: Padding(
+											padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+											child: Align(
+													alignment: Alignment.centerRight,
+													child: LabelledInvisibleButton(
+														label: "Save",
+														onPress: () async {
+															await widget.database.rawUpdate('UPDATE photos SET description = ?, categoryid = ? WHERE id = ?', [fieldNoteController.text, selectedLandcoverClass, widget.image['id']]);
 															setState(() {
-																landcoverClass = newClass;
-															}
-															);
+																savedDescription = fieldNoteController.text;
+																savedLandcoverClass = selectedLandcoverClass;
+																editMode = false;
+															});
 														},
-														items: <int> [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17].map<DropdownMenuItem<int>> ((int value)
-														{
-															return DropdownMenuItem<int>(
-																	value: value,
-																	child: Text(
-																			MyApp.landcoverClassMap[value],
-																			style: TextStyle(
-																					fontSize: 15
-																			)
-																	)
-															);
-														}).toList(),
+														defaultColor: Colors.blue[600],
+														pressedColor: Colors.blue[200],
+														centered: false,
+														fontWeight: FontWeight.bold,
 													)
 											),
-											Icon(
-													Icons.edit
-											)
-										]
-								)
-						),
-						Container(
-								color: Colors.grey,
-								height: 1
-						),
+										),
+									),
+								],
+							)
+					),
+				),
+			);
+		}
+		else
+		{
+			return Scaffold(
+				backgroundColor: Colors.grey[200],
+				appBar: AppBar(
+					title: Text(
+							'Field Photo Metadata',
+							style: TextStyle(
+								fontSize: 22.0,
+								color: Colors.black,
+							)
+					),
+					backgroundColor: Colors.white,
+					centerTitle: true,
+					actions: <Widget>[
 						Padding(
-								padding: const EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
-								child: Row(
-										children: <Widget>[
-											Container(
-												width: labelWidth,
-												child: Text(
-													"Field Notes",
-													style: labelStyle,
+							padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+							child: LabelledInvisibleButton(
+								label: 'Edit',
+								onPress: () {
+									setState(() {
+										editMode = true;
+									});
+								},
+								defaultColor: Colors.blue[600],
+								pressedColor: Colors.blue[200],
+								fontWeight: editMode ? FontWeight.bold : FontWeight.normal,
+								fontSize: 20,
+							),
+						)
+					],
+				),
+				body: ListView(
+						children: <Widget>[
+							Image.file(
+									File(widget.image['path'].toString()),
+									fit: BoxFit.fitWidth
+							),
+							Container(
+									color: Colors.grey,
+									height: 1
+							),
+							Padding(
+									padding: const EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+									child: Row(
+											children: <Widget>[
+												Container(
+													width: labelWidth,
+													child: Text(
+														"Latitude",
+														style: labelStyle,
+													),
 												),
-											),
-											Expanded(
-												child: TextField(
-														minLines: 5,
-														maxLines: 10,
-														maxLength: 300,
-														controller: fieldNoteController
+												Expanded(
+													child: Text(
+														widget.image['lat'].toString(),
+													),
 												),
-											),
-											Icon(
-													Icons.edit
-											)
-										]
-								)
-						),
-						Container(
-								color: Colors.grey,
-								height: 1
-						),
-					]
-			),
-			bottomNavigationBar: BottomAppBar(
-				shape: const CircularNotchedRectangle(),
-				child: Container(
-						height: 50.0,
-						child: Row(
-							crossAxisAlignment: CrossAxisAlignment.stretch,
-							children: <Widget>[
-								Expanded(
-									child: Padding(
-										padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+											]
+									)
+							),
+							Padding(
+									padding: const EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+									child: Row(
+											children: <Widget>[
+												Container(
+													width: labelWidth,
+													child: Text(
+														"Longitude",
+														style: labelStyle,
+													),
+												),
+												Expanded(
+													child: Text(
+															widget.image['long'].toString()
+													),
+												),
+											]
+									)
+							),
+							Container(
+									color: Colors.grey,
+									height: 1
+							),
+							Padding(
+									padding: const EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+									child: Row(
+											children: <Widget>[
+												Container(
+													width: labelWidth,
+													child: Text(
+														"Land Cover",
+														style: labelStyle,
+													),
+												),
+												Expanded(
+														child: Text(
+																MyApp.landcoverClassMap[selectedLandcoverClass],
+																style: TextStyle(
+																		fontSize: 15
+																)
+														)
+												),
+											]
+									)
+							),
+							Container(
+									color: Colors.grey,
+									height: 1
+							),
+							Padding(
+									padding: const EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+									child: Row(
+											children: <Widget>[
+												Container(
+													width: labelWidth,
+													child: Text(
+														"Field Notes",
+														style: labelStyle,
+													),
+												),
+												Expanded(
+													child: TextField(
+															readOnly: true,
+															minLines: 5,
+															maxLines: 10,
+															maxLength: 300,
+															controller: fieldNoteController
+													),
+												),
+											]
+									)
+							),
+							Container(
+									color: Colors.grey,
+									height: 1
+							),
+						]
+				),
+				bottomNavigationBar: BottomAppBar(
+					child: Container(
+							height: 50.0,
+							child: Row(
+								crossAxisAlignment: CrossAxisAlignment.stretch,
+								children: <Widget>[
+									Expanded(
 										child: Align(
-												alignment: Alignment.centerLeft,
+											alignment: Alignment.center,
+											child: Padding(
+												padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 												child: LabelledInvisibleButton(
-													label: "Cancel",
+													label: "Share",
 													onPress: () {
-														Navigator.pop(context);
-														Navigator.pop(context);
+														
+														//TODO: Use phone's sharing system
 													},
 													defaultColor: Colors.blue[600],
 													pressedColor: Colors.blue[200],
 													centered: false,
 													fontWeight: FontWeight.normal,
-												)
+												),
+											),
 										),
 									),
-								),
-								Expanded(
-									child: Padding(
-										padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+									Expanded(
 										child: Align(
-												alignment: Alignment.centerRight,
+											alignment: Alignment.center,
+											child: Padding(
+												padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 												child: LabelledInvisibleButton(
-													label: "Save",
-													onPress: () async {
-													
+													label: "Upload",
+													onPress: () {
+														//TODO: Checked if logged in
+														
 													},
 													defaultColor: Colors.blue[600],
 													pressedColor: Colors.blue[200],
 													centered: false,
-													fontWeight: FontWeight.bold,
-												)
+													fontWeight: FontWeight.normal,
+												),
+											),
 										),
 									),
-								),
-							],
-						)
+									Expanded(
+										child: Align(
+											alignment: Alignment.center,
+											child: Padding(
+												padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+												child: LabelledInvisibleButton(
+													label: "Delete",
+													onPress: () {
+														showDialog(
+																context: context,
+																builder: (BuildContext context) {
+																	return AlertDialog(
+																		title: Text("Delete image?"),
+																		content: Text("Deleting a image permanently removes it."),
+																		actions: <Widget>[
+																			FlatButton(
+																				child: Text("Cancel"),
+																				onPressed: () {
+																					Navigator.pop(context);
+																				},
+																			),
+																			FlatButton(
+																				child: Text("Delete"),
+																				onPressed: () async {
+																					await widget.database.rawDelete('DELETE FROM photos WHERE id = ?', [widget.image['id']]);
+																					Navigator.pop(context);
+																					Navigator.pop(context);
+																				},
+																			)
+																		],
+																	
+																	);
+																}
+														
+														);
+													},
+													defaultColor: Colors.red[600],
+													pressedColor: Colors.red[200],
+													centered: false,
+													fontWeight: FontWeight.normal,
+												),
+											),
+										),
+									),
+								],
+							)
+					),
 				),
-			),
-		);
+			);
+		}
 	}
 }

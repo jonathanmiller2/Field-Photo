@@ -149,7 +149,7 @@ class _CameraScreenState extends State<CameraScreen> {
 							
 							final path = join(
 									(await getTemporaryDirectory()).path,
-									'${timestamp.toString()}.jpg'
+									'${timestamp.year.toString()}-${timestamp.month.toString()}-${timestamp.day.toString()}-${timestamp.hour.toString()}-${timestamp.minute.toString()}-${timestamp.second.toString()}.jpg'
 							);
 							
 							await MyApp.cameraController.takePicture(path);

@@ -4,8 +4,10 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 
 import 'LabelledInvisibleButton.dart';
 import 'PositionIndicator.dart';
@@ -401,9 +403,9 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 												padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 												child: LabelledInvisibleButton(
 													label: "Share",
-													onPress: () {
-														
-														//TODO: Use phone's sharing system
+													onPress: () async {
+														ByteData byteData = await rootBundle.load(widget.image['path']);
+														Share.files('Field Photo', {'fieldphoto.png' : byteData.buffer.asUint8List()}, '*/*');
 													},
 													defaultColor: Colors.blue[600],
 													pressedColor: Colors.blue[200],

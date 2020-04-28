@@ -10,7 +10,6 @@ import 'package:path/path.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 
 import 'LabelledInvisibleButton.dart';
-import 'PositionIndicator.dart';
 import 'main.dart';
 
 class ImageDetailScreen extends StatefulWidget {
@@ -405,7 +404,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 													label: "Share",
 													onPress: () async {
 														ByteData byteData = await rootBundle.load(widget.image['path']);
-														Share.files('Field Photo', {'fieldphoto.png' : byteData.buffer.asUint8List()}, '*/*');
+														Share.files('Field Photo', {basename(widget.image['path']) : byteData.buffer.asUint8List()}, '*/*');
 													},
 													defaultColor: Colors.blue[600],
 													pressedColor: Colors.blue[200],

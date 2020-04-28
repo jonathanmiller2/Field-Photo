@@ -2,7 +2,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'LabelledInvisibleButton.dart';
@@ -239,8 +238,6 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 												child: LabelledInvisibleButton(
 													label: "Save",
 													onPress: () async {
-														//TODO: Ask the user if they want to save an unclassified image
-														
 														if(landcoverClass == 0)
 														{
 															showDialog(
@@ -268,7 +265,6 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 																					onPressed: () {
 																						_saveImage(widget.imagePath, fieldNoteController.text, widget.longitude, widget.latitude, widget.timestamp, landcoverClass, PositionIndicator.getDirFromHeading(widget.heading), widget.heading);
 																						
-																						//TODO: Save image using SQFlite
 																						Navigator.pop(context);
 																						Navigator.pop(context);
 																						Navigator.pop(context);

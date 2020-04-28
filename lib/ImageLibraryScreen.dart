@@ -1,8 +1,10 @@
 
 
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -46,7 +48,32 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 			future: _loadImages(),
 			builder: (context, asyncSnapshot) {
 				if (asyncSnapshot.hasError) {
-					//TODO: Handle this error
+					
+					showDialog(
+							context: context,
+							builder: (BuildContext context) {
+								return AlertDialog(
+									title: Center(
+											child: Text(
+													"Library Error"
+											)
+									),
+									content: Text(
+											"There was an error showing your photo library. Please contact support at "
+									),
+									actions: <Widget>[
+										FlatButton(
+											child: Text("Return"),
+											onPressed: () {
+												Navigator.pop(context);
+												Navigator.pop(context);
+												return;
+											},
+										),
+									],
+								);
+							}
+					);
 					print(asyncSnapshot.error);
 				}
 				
@@ -60,7 +87,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 				//print("Library data: " + asyncSnapshot.toString());
 				List<Map<String, dynamic>> imageList = asyncSnapshot.data;
 				
-				for (Map <String, dynamic> image in imageList)
+				for (Map<String, dynamic> image in imageList)
 				{
 					if(!imageSelections.containsKey(image['id']))
 					{
@@ -215,13 +242,35 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 														padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 														child: LabelledInvisibleButton(
 															label: "Share",
-															onPress: () {
+															onPress: () async {
 																if(!selectionMade)
 																{
 																	return;
 																}
 																
-																//TODO: Use phone's sharing system
+																Map<String, List<int>> byteDataMap = new Map<String, List<int>>();
+																List<int> selectedIds = new List<int>();
+																
+																for(MapEntry<int, bool> selectionEntry in imageSelections.entries)
+																{
+																	if(selectionEntry.value)
+																	{
+																		selectedIds.add(selectionEntry.key);
+																	}
+																}
+																
+																for (Map<String, dynamic> image in imageList)
+																{
+																	if(selectedIds.contains(image['id']))
+																	{
+																		String imagePath = image['path'];
+																		String filename = basename(imagePath);
+																		ByteData byteData = await rootBundle.load(imagePath);
+																		byteDataMap[filename] = byteData.buffer.asUint8List();
+																	}
+																}
+																
+																Share.files('Field Photo', byteDataMap, '*/*');
 															},
 															defaultColor: selectionMade ? Colors.blue[600] : Colors.grey,
 															pressedColor: selectionMade ? Colors.blue[200] : Colors.grey,

@@ -250,7 +250,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 																					)
 																			),
 																			content: Text(
-																					"Are you sure you don't want to specify the land cover class?"
+																					"Are you sure you don't want to specify the land cover class?",
 																			),
 																			actions: <Widget>[
 																				FlatButton(

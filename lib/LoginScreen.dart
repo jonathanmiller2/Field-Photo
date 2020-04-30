@@ -1,5 +1,6 @@
 import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:field_photo/MainBottomBar.dart';
+import 'package:field_photo/SignedInScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -81,7 +82,58 @@ class LoginScreen extends StatelessWidget {
 								child: Container(
 									height: 45,
 									child: FlatButton(
-											onPressed: () {},
+											onPressed: () async {
+												showDialog(
+														context: context,
+														builder: (BuildContext context) {
+															return SizedBox(
+																				height: 20,
+																				width: 20,
+																				child: Center(
+																						child: CircularProgressIndicator()
+																				)
+															);
+														}
+												);
+												
+												//TODO: await login
+												
+												if(1 == 1) //TODO: If login successful...
+														{
+													Navigator.pushReplacement(
+														context,
+														new MaterialPageRoute(builder: (context) => new SignedInScreen()),
+													);
+												}
+												else
+												{
+													showDialog(
+															context: context,
+															builder: (BuildContext context) {
+																return AlertDialog(
+																	title: Center(
+																			child: Text(
+																					"Unable to sign in"
+																			)
+																	),
+																	content: Text(
+																		"Please check your username and password",
+																	),
+																	actions: <Widget>[
+																		FlatButton(
+																			child: Text("Dismiss"),
+																			onPressed: () {
+																				Navigator.pop(context);
+																				return;
+																			},
+																		),
+																	],
+																);
+															}
+													);
+												}
+												
+											},
 											color: Colors.green[700],
 											child: Text(
 												'Sign In',

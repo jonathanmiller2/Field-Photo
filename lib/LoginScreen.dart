@@ -1,8 +1,13 @@
+
+
 import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:field_photo/MainBottomBar.dart';
 import 'package:field_photo/SignedInScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+
+import 'constants.dart' as Constants;
 
 import 'MainCameraButton.dart';
 import 'SignupScreen.dart';
@@ -96,7 +101,13 @@ class LoginScreen extends StatelessWidget {
 														}
 												);
 												
-												//TODO: await login
+												String username = "CSRFCookieTest2";
+												String password = "CSRFCookieTest2";
+												
+												var response = await post(Constants.LOGIN_URL, body:{'username': username, 'password': password});
+												print('Response status: ${response.statusCode}');
+												print('Response body: ${response.body}');
+												
 												
 												if(1 == 1) //TODO: If login successful...
 														{

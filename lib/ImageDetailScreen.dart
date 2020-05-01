@@ -10,6 +10,7 @@ import 'package:path/path.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 
 import 'LabelledInvisibleButton.dart';
+import 'constants.dart' as Constants;
 import 'main.dart';
 
 class ImageDetailScreen extends StatefulWidget {
@@ -164,7 +165,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 																return DropdownMenuItem<int>(
 																		value: value,
 																		child: Text(
-																				MyApp.landcoverClassMap[value],
+																				Constants.landcoverClassMap[value],
 																				style: TextStyle(
 																						fontSize: 15
 																				)
@@ -347,7 +348,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 												),
 												Expanded(
 														child: Text(
-																MyApp.landcoverClassMap[selectedLandcoverClass],
+																Constants.landcoverClassMap[selectedLandcoverClass],
 																style: TextStyle(
 																		fontSize: 15
 																)

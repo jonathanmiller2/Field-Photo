@@ -6,7 +6,8 @@ import 'package:sqflite/sqflite.dart';
 
 import 'LabelledInvisibleButton.dart';
 import 'PositionIndicator.dart';
-import 'main.dart';
+
+import 'constants.dart' as Constants;
 
 class ImageInfoEntryScreen extends StatefulWidget {
 	final String imagePath;
@@ -154,7 +155,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 															return DropdownMenuItem<int>(
 																	value: value,
 																	child: Text(
-																			MyApp.landcoverClassMap[value],
+																			Constants.landcoverClassMap[value],
 																			style: TextStyle(
 																					fontSize: 15
 																			)

@@ -2,9 +2,9 @@
 library constants;
 
 const String EOMF_URL = "http://eomf.ou.edu/";
-const String LOGIN_URL = "http://eomf.ou.edu/";
-const String REGISTER_URL = "http://eomf.ou.edu/";
-const String UPLOAD_URL = "http://eomf.ou.edu/";
+const String LOGIN_URL = "http://eomf.ou.edu/accounts/login/";
+const String REGISTER_URL = "http://eomf.ou.edu/accounts/register/";
+const String UPLOAD_URL = "http://eomf.ou.edu/photos/mobile/upload2/";
 
 
 //TODO: REQUEST THIS FROM THE EOMF API!!!!!

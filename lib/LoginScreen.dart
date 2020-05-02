@@ -1,11 +1,13 @@
 
 
+import 'dart:io';
+
 import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:field_photo/MainBottomBar.dart';
 import 'package:field_photo/SignedInScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
 import 'constants.dart' as Constants;
 
@@ -13,6 +15,13 @@ import 'MainCameraButton.dart';
 import 'SignupScreen.dart';
 
 class LoginScreen extends StatelessWidget {
+	
+	void printWrapped(String text) {
+		final pattern = new RegExp('.{1,800}'); // 800 is the size of each chunk
+		pattern.allMatches(text).forEach((match) => print(match.group(0)));
+	}
+	
+	
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
@@ -92,11 +101,11 @@ class LoginScreen extends StatelessWidget {
 														context: context,
 														builder: (BuildContext context) {
 															return SizedBox(
-																				height: 20,
-																				width: 20,
-																				child: Center(
-																						child: CircularProgressIndicator()
-																				)
+																	height: 20,
+																	width: 20,
+																	child: Center(
+																			child: CircularProgressIndicator()
+																	)
 															);
 														}
 												);
@@ -104,9 +113,36 @@ class LoginScreen extends StatelessWidget {
 												String username = "CSRFCookieTest2";
 												String password = "CSRFCookieTest2";
 												
-												var response = await post(Constants.LOGIN_URL, body:{'username': username, 'password': password});
-												print('Response status: ${response.statusCode}');
-												print('Response body: ${response.body}');
+												http.Response response = await http.get(Constants.REGISTER_URL);
+												//http.Response response = await http.get(Constants.REGISTER_URL, headers: {'username': username, 'password': password});
+												
+												String rawCookie = response.headers['set-cookie'];
+												
+												String labelledToken;
+												String justToken;
+												
+												int stopIndex = rawCookie.indexOf(';');
+												labelledToken = (stopIndex == -1) ? rawCookie : rawCookie.substring(0, stopIndex);
+												
+												int startIndex = rawCookie.indexOf('=') + 1;
+												stopIndex = rawCookie.indexOf(';');
+												justToken = (startIndex == -1 || stopIndex == -1) ? rawCookie : rawCookie.substring(startIndex, stopIndex);
+												
+												Map<String, String> header = {
+													'cookie': response.headers.toString(),
+												};
+												
+												Map<String, String> body = {
+													'username': username,
+													'password': password,
+													'csrfmiddlewaretoken': justToken,
+												};
+												
+												
+												response = await http.post(Constants.LOGIN_URL, headers:header, body:body);
+												printWrapped('Response status: ${response.statusCode}');
+												printWrapped('Response body: ${response.body}');
+												printWrapped('Response header: ${response.headers}');
 												
 												
 												if(1 == 1) //TODO: If login successful...

@@ -19,8 +19,6 @@ class _SignedInScreenState extends State<SignedInScreen>
 	
 	SharedPreferences prefs;
 	
-	//TESTING GIT
-	
 	
 	void getSharedPreferences() async {
 		SharedPreferences tempPrefs = await SharedPreferences.getInstance();

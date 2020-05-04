@@ -3,14 +3,56 @@ import 'package:field_photo/MainBottomBar.dart';
 import 'package:field_photo/SignedInScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'LoginScreen.dart';
 import 'MainCameraButton.dart';
 import 'SignupScreen.dart';
 
-class SignedInScreen extends StatelessWidget {
+class SignedInScreen extends StatefulWidget {
+	@override
+	_SignedInScreenState createState() => _SignedInScreenState();
+}
+
+class _SignedInScreenState extends State<SignedInScreen>
+{
+	
+	SharedPreferences prefs;
+	
+	
+	void getSharedPreferences() async {
+		SharedPreferences tempPrefs = await SharedPreferences.getInstance();
+		setState(() {
+			prefs =  tempPrefs;
+		});
+	}
+	
+	@override void initState() {
+		super.initState();
+		getSharedPreferences();
+	}
+	
+	
+	
 	@override
 	Widget build(BuildContext context) {
+		
+		if(prefs == null)
+		{
+			return Container(
+					color: Color.fromARGB(255, 20, 20, 20),
+					child: SizedBox(
+							height: 20,
+							width: 20,
+							child: Center(
+									child: CircularProgressIndicator()
+							)
+					)
+			);
+		}
+		
+		String username = prefs.getString('savedUsername') ?? ' ACCOUNT NAME ERROR';
+		
 		return Scaffold(
 			resizeToAvoidBottomInset: false,
 			appBar: AppBar(
@@ -39,7 +81,7 @@ class SignedInScreen extends StatelessWidget {
 									height: 60,
 									child: Center(
 										child: Text(
-											'Signed in as [ACCOUNT NAME]',
+											'Signed in as ' + username,
 											style: TextStyle(
 												fontSize: 15,
 												color: Colors.grey[700],
@@ -55,10 +97,11 @@ class SignedInScreen extends StatelessWidget {
 								child: Container(
 									height: 45,
 									child: FlatButton(
-										
-											//TODO: Sign out here
-										
 											onPressed: () {
+												
+												prefs.setString('savedUsername', null);
+												prefs.setString('savedPassword', null);
+												
 												Navigator.pushReplacement(
 													context,
 													new MaterialPageRoute(builder: (context) => new LoginScreen()),

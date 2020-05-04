@@ -8,18 +8,28 @@ import 'package:field_photo/SignedInScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart' as Constants;
 
 import 'MainCameraButton.dart';
 import 'SignupScreen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
 	
+	@override
+	_LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen>
+{
 	void printWrapped(String text) {
 		final pattern = new RegExp('.{1,800}'); // 800 is the size of each chunk
 		pattern.allMatches(text).forEach((match) => print(match.group(0)));
 	}
+	
+	final passwordController = TextEditingController();
+	final usernameController = TextEditingController();
 	
 	
 	@override
@@ -69,6 +79,7 @@ class LoginScreen extends StatelessWidget {
 														fillColor: Colors.white,
 														hintText: 'Username',
 													),
+													controller: usernameController,
 												),
 											),
 											Container(
@@ -83,6 +94,7 @@ class LoginScreen extends StatelessWidget {
 														border: InputBorder.none,
 														hintText: 'Password',
 													),
+													controller: passwordController,
 												),
 											),
 										],
@@ -110,49 +122,12 @@ class LoginScreen extends StatelessWidget {
 														}
 												);
 												
-												String username = "CSRFCookieTest2";
-												String password = "CSRFCookieTest2";
+												bool loginSuccessful = await login(usernameController.text, passwordController.text);
+
 												
-												http.Response response = await http.get(Constants.REGISTER_URL);
-												//http.Response response = await http.get(Constants.REGISTER_URL, headers: {'username': username, 'password': password});
-												
-												String rawCookie = response.headers['set-cookie'];
-												
-												String labelledToken;
-												String justToken;
-												
-												int stopIndex = rawCookie.indexOf(';');
-												labelledToken = (stopIndex == -1) ? rawCookie : rawCookie.substring(0, stopIndex);
-												
-												int startIndex = rawCookie.indexOf('=') + 1;
-												stopIndex = rawCookie.indexOf(';');
-												justToken = (startIndex == -1 || stopIndex == -1) ? rawCookie : rawCookie.substring(startIndex, stopIndex);
-												
-												Map<String, String> header = {
-													'cookie': response.headers.toString(),
-												};
-												
-												Map<String, String> body = {
-													'username': username,
-													'password': password,
-													'csrfmiddlewaretoken': justToken,
-												};
-												
-												
-												response = await http.post(Constants.LOGIN_URL, headers:header, body:body);
-												printWrapped('Response status: ${response.statusCode}');
-												printWrapped('Response body: ${response.body}');
-												printWrapped('Response header: ${response.headers}');
-												
-												
-												if(1 == 1) //TODO: If login successful...
-														{
-													Navigator.pushReplacement(
-														context,
-														new MaterialPageRoute(builder: (context) => new SignedInScreen()),
-													);
-												}
-												else
+												//For whatever reason, the EOMF API returns 302 (Moved) when the username/pw is correct, and returns 200 with a webpage when the username/pw is incorrect
+												//TODO: Investigate this further.
+												if(!loginSuccessful)
 												{
 													showDialog(
 															context: context,
@@ -170,6 +145,7 @@ class LoginScreen extends StatelessWidget {
 																		FlatButton(
 																			child: Text("Dismiss"),
 																			onPressed: () {
+																				Navigator.pop(context);
 																				Navigator.pop(context);
 																				return;
 																			},
@@ -247,4 +223,50 @@ class LoginScreen extends StatelessWidget {
 			floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 		);
 	}
+	
+	Future<bool> login(String username, String password) async {
+		
+		//Make a request to the register url for CSRF token
+		http.Response response = await http.get(Constants.REGISTER_URL);
+		String rawCookie = response.headers['set-cookie'];
+		String justToken;
+		
+		int startIndex = rawCookie.indexOf('=') + 1;
+		int stopIndex = rawCookie.indexOf(';');
+		justToken = (startIndex == -1 || stopIndex == -1) ? rawCookie : rawCookie.substring(startIndex, stopIndex);
+		
+		Map<String, String> header = {
+			'cookie': response.headers.toString(),
+		};
+		
+		Map<String, String> body = {
+			'username': username,
+			'password': password,
+			'csrfmiddlewaretoken': justToken,
+		};
+		
+		response = await http.post(Constants.LOGIN_URL, headers:header, body:body);
+		print('Response status: ${response.statusCode}');
+		print('Response header: ${response.headers}');
+		
+		
+		//For whatever reason, the EOMF API returns 302 (Moved) when the username/pw is correct, and returns 200 with a webpage when the username/pw is incorrect
+		//TODO: Investigate this further.
+		if(response.statusCode == 302) {
+			
+			SharedPreferences prefs = await SharedPreferences.getInstance();
+			await prefs.setString('savedUsername', usernameController.text);
+			await prefs.setString('savedPassword', passwordController.text);
+			
+			
+			Navigator.pushReplacement(
+				context,
+				new MaterialPageRoute(builder: (context) => new SignedInScreen()),
+			);
+			
+			return true;
+		}
+		return false;
+	}
+	
 }

@@ -7,6 +7,8 @@ class ImageSquare extends StatelessWidget {
 	final String path;
 	ImageSquare({this.path});
 	
+	//TODO: Add "uploaded" bool field, show on image squares
+	
 	@override
 	Widget build(BuildContext context) {
 		return AspectRatio(

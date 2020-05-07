@@ -404,7 +404,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 												child: LabelledInvisibleButton(
 													label: "Share",
 													onPress: () async {
-														ByteData byteData = await rootBundle.load(widget.image['path']);
+														ByteData byteData = await rootBundle.load(widget.image['path'].toString());
 														Share.files('Field Photo', {basename(widget.image['path']) : byteData.buffer.asUint8List()}, '*/*');
 													},
 													defaultColor: Colors.blue[600],

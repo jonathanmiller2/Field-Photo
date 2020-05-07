@@ -7,9 +7,9 @@ import 'package:field_photo/MainBottomBar.dart';
 import 'package:field_photo/SignedInScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:http/http.dart' as http;
 import 'constants.dart' as Constants;
 
 import 'MainCameraButton.dart';
@@ -28,8 +28,8 @@ class _LoginScreenState extends State<LoginScreen>
 		pattern.allMatches(text).forEach((match) => print(match.group(0)));
 	}
 	
-	final passwordController = TextEditingController();
 	final usernameController = TextEditingController();
+	final passwordController = TextEditingController();
 	
 	
 	@override

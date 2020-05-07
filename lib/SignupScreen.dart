@@ -3,14 +3,29 @@ import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:http/http.dart' as http;
+import 'LoginScreen.dart';
+import 'constants.dart' as Constants;
+
 import 'MainBottomBar.dart';
 import 'MainCameraButton.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
+	@override
+	_SignupScreenState createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<StatefulWidget>
+{
+	final usernameController = TextEditingController();
+	final emailController = TextEditingController();
+	final passwordController = TextEditingController();
+	
 	@override
 	Widget build(BuildContext context)
 	{
 		return Scaffold(
+			resizeToAvoidBottomInset: false,
 			appBar: AppBar(
 				title: Text(
 						'Field Photo',
@@ -54,6 +69,7 @@ class SignupScreen extends StatelessWidget {
 														fillColor: Colors.white,
 														hintText: 'Username',
 													),
+													controller: usernameController,
 												),
 											),
 											Container(
@@ -63,11 +79,11 @@ class SignupScreen extends StatelessWidget {
 											Padding(
 												padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 0),
 												child: TextField(
-													obscureText: true,
 													decoration: InputDecoration(
 														border: InputBorder.none,
 														hintText: 'Email Address',
 													),
+													controller: emailController,
 												),
 											),
 											Container(
@@ -82,6 +98,7 @@ class SignupScreen extends StatelessWidget {
 														border: InputBorder.none,
 														hintText: 'Password',
 													),
+													controller: passwordController,
 												),
 											),
 										],
@@ -94,7 +111,98 @@ class SignupScreen extends StatelessWidget {
 								child: Container(
 									height: 45,
 									child: FlatButton(
-											onPressed: () {},
+											onPressed: () async {
+												final emailPattern = RegExp("[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+												
+												if(usernameController.text == "")
+												{
+													showDialog(
+															context: context,
+															builder: (BuildContext context) {
+																return AlertDialog(
+																	title: Center(
+																			child: Text(
+																					"Missing username"
+																			)
+																	),
+																	content: Text(
+																		"Please enter a username",
+																	),
+																	actions: <Widget>[
+																		FlatButton(
+																			child: Text("Dismiss"),
+																			onPressed: () {
+																				Navigator.pop(context);
+																			},
+																		),
+																	],
+																);
+															}
+													);
+													return;
+												}
+												
+												if(!emailPattern.hasMatch(emailController.text) || emailController.text == "")
+												{
+													showDialog(
+															context: context,
+															builder: (BuildContext context) {
+																return AlertDialog(
+																	title: Center(
+																			child: Text(
+																					"Invalid Email"
+																			)
+																	),
+																	content: Text(
+																		"Email invalid, please check your email",
+																	),
+																	actions: <Widget>[
+																		FlatButton(
+																			child: Text("Dismiss"),
+																			onPressed: () {
+																				Navigator.pop(context);
+																			},
+																		),
+																	],
+																);
+															}
+													);
+													return;
+												}
+												
+												if(passwordController.text == "")
+												{
+													showDialog(
+															context: context,
+															builder: (BuildContext context) {
+																return AlertDialog(
+																	title: Center(
+																			child: Text(
+																					"Missing password"
+																			)
+																	),
+																	content: Text(
+																		"Please enter your password",
+																	),
+																	actions: <Widget>[
+																		FlatButton(
+																			child: Text("Dismiss"),
+																			onPressed: () {
+																				Navigator.pop(context);
+																			},
+																		),
+																	],
+																);
+															}
+													);
+													return;
+												}
+												
+												String registerResult = await register(usernameController.text, emailController.text, passwordController.text);
+												
+												//TODO: Handle each possible result
+												
+											},
 											color: Colors.blue[700],
 											child: Text(
 												'Create Account',
@@ -173,4 +281,38 @@ class SignupScreen extends StatelessWidget {
 		);
 	}
 	
+	
+	Future<String> register(String username, String email, String password) async {
+		
+		//Make a request to the register url for CSRF token
+		http.Response response = await http.get(Constants.REGISTER_URL);
+		String rawCookie = response.headers['set-cookie'];
+		String justToken;
+		
+		int startIndex = rawCookie.indexOf('=') + 1;
+		int stopIndex = rawCookie.indexOf(';');
+		justToken = (startIndex == -1 || stopIndex == -1) ? rawCookie : rawCookie.substring(startIndex, stopIndex);
+		
+		Map<String, String> header = {
+			'cookie': response.headers.toString(),
+		};
+		
+		Map<String, String> body = {
+			'username': username,
+			'email': email,
+			'password': password,
+			'csrfmiddlewaretoken': justToken,
+		};
+		
+		response = await http.post(Constants.LOGIN_URL, headers:header, body:body);
+		print('Response status: ${response.statusCode}');
+		print('Response body: ${response.body}');
+		print('Response header: ${response.headers}');
+		
+		
+		if(response.statusCode == 302) {
+			return "something";
+		}
+		return "something";
+	}
 }

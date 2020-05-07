@@ -17,6 +17,7 @@ class SignedInScreen extends StatefulWidget {
 class _SignedInScreenState extends State<SignedInScreen>
 {
 	
+	//TODO: Fix this
 	SharedPreferences prefs;
 	
 	

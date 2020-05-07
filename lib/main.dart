@@ -10,7 +10,7 @@ import 'constants.dart' as Constants;
 import 'LoginScreen.dart';
 
 void main() async {
-  bool isLoggedIn = await login();
+  bool isLoggedIn = await initialLogin();
   
   if(isLoggedIn)
     {
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
 }
 
 
-Future<bool> login() async {
+Future<bool> initialLogin() async {
   
   String username;
   String password;

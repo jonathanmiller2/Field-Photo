@@ -15,15 +15,20 @@ class SignupScreen extends StatefulWidget {
 	_SignupScreenState createState() => _SignupScreenState();
 }
 
-class _SignupScreenState extends State<StatefulWidget>
-{
+class _SignupScreenState extends State<StatefulWidget> {
+	void printWrapped(String text) {
+		final pattern = new RegExp('.{1,800}'); // 800 is the size of each chunk
+		pattern.allMatches(text).forEach((match) => print(match.group(0)));
+	}
+	
+	
 	final usernameController = TextEditingController();
 	final emailController = TextEditingController();
-	final passwordController = TextEditingController();
+	final password1Controller = TextEditingController();
+	final password2Controller = TextEditingController();
 	
 	@override
-	Widget build(BuildContext context)
-	{
+	Widget build(BuildContext context) {
 		return Scaffold(
 			resizeToAvoidBottomInset: false,
 			appBar: AppBar(
@@ -98,7 +103,22 @@ class _SignupScreenState extends State<StatefulWidget>
 														border: InputBorder.none,
 														hintText: 'Password',
 													),
-													controller: passwordController,
+													controller: password1Controller,
+												),
+											),
+											Container(
+												color: Colors.grey,
+												height: 1,
+											),
+											Padding(
+												padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 0),
+												child: TextField(
+													obscureText: true,
+													decoration: InputDecoration(
+														border: InputBorder.none,
+														hintText: 'Re-type Password',
+													),
+													controller: password2Controller,
 												),
 											),
 										],
@@ -114,8 +134,7 @@ class _SignupScreenState extends State<StatefulWidget>
 											onPressed: () async {
 												final emailPattern = RegExp("[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
 												
-												if(usernameController.text == "")
-												{
+												if (usernameController.text == "") {
 													showDialog(
 															context: context,
 															builder: (BuildContext context) {
@@ -142,8 +161,7 @@ class _SignupScreenState extends State<StatefulWidget>
 													return;
 												}
 												
-												if(!emailPattern.hasMatch(emailController.text) || emailController.text == "")
-												{
+												if (!emailPattern.hasMatch(emailController.text) || emailController.text == "") {
 													showDialog(
 															context: context,
 															builder: (BuildContext context) {
@@ -170,8 +188,7 @@ class _SignupScreenState extends State<StatefulWidget>
 													return;
 												}
 												
-												if(passwordController.text == "")
-												{
+												if (password1Controller.text == "" || password2Controller.text == "") {
 													showDialog(
 															context: context,
 															builder: (BuildContext context) {
@@ -198,9 +215,51 @@ class _SignupScreenState extends State<StatefulWidget>
 													return;
 												}
 												
-												String registerResult = await register(usernameController.text, emailController.text, passwordController.text);
+												if (password1Controller.text != password2Controller.text) {
+													showDialog(
+															context: context,
+															builder: (BuildContext context) {
+																return AlertDialog(
+																	title: Center(
+																			child: Text(
+																					"Passwords don't match"
+																			)
+																	),
+																	content: Text(
+																		"The entered passwords don't match, please check your passwords",
+																	),
+																	actions: <Widget>[
+																		FlatButton(
+																			child: Text("Dismiss"),
+																			onPressed: () {
+																				Navigator.pop(context);
+																			},
+																		),
+																	],
+																);
+															}
+													);
+													return;
+												}
 												
-												//TODO: Handle each possible result
+												String registerResult = await register(usernameController.text, emailController.text, password1Controller.text, password2Controller.text);
+												
+												if(registerResult == "SUCCESS")
+												{
+													//TODO: Success dialog
+												}
+												else if(registerResult == "USERNAME_TAKEN")
+												{
+													//TODO: dialog
+												}
+												else if(registerResult == "EMAIL_TAKEN")
+												{
+													//TODO: dialog
+												}
+												else if(registerResult == "FAILURE")
+												{
+													//TODO: dialog
+												}
 												
 											},
 											color: Colors.blue[700],
@@ -231,7 +290,6 @@ class _SignupScreenState extends State<StatefulWidget>
 							),
 							
 							
-							
 							Padding(
 								padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 30),
 								child: Container(
@@ -251,9 +309,9 @@ class _SignupScreenState extends State<StatefulWidget>
 												),
 											),
 											Padding(
-												padding: const EdgeInsets.symmetric(horizontal:0, vertical: 10),
+												padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
 												child: new LabelledInvisibleButton(
-													label:'Sign up online',
+													label: 'Sign up online',
 													onPress: () async {
 														String url = 'http://eomf.ou.edu/accounts/register/';
 														if (await canLaunch(url)) {
@@ -282,8 +340,7 @@ class _SignupScreenState extends State<StatefulWidget>
 	}
 	
 	
-	Future<String> register(String username, String email, String password) async {
-		
+	Future<String> register(String username, String email, String password1, String password2) async {
 		//Make a request to the register url for CSRF token
 		http.Response response = await http.get(Constants.REGISTER_URL);
 		String rawCookie = response.headers['set-cookie'];
@@ -300,19 +357,29 @@ class _SignupScreenState extends State<StatefulWidget>
 		Map<String, String> body = {
 			'username': username,
 			'email': email,
-			'password': password,
+			'password1': password1,
+			'password2': password2,
 			'csrfmiddlewaretoken': justToken,
+			'next': ""
 		};
 		
-		response = await http.post(Constants.LOGIN_URL, headers:header, body:body);
+		response = await http.post(Constants.REGISTER_URL, headers: header, body: body);
+		
 		print('Response status: ${response.statusCode}');
-		print('Response body: ${response.body}');
+		printWrapped('Response body: ${response.body}');
 		print('Response header: ${response.headers}');
 		
-		
-		if(response.statusCode == 302) {
-			return "something";
+		if (response.statusCode == 302) {
+			return "SUCCESS";
 		}
-		return "something";
+		else if (response.body.contains(Constants.EOMF_SITE_USERNAME_TAKEN_MESSAGE)) {
+			return "USERNAME_TAKEN";
+		}
+		else if (response.body.contains(Constants.EOMF_SITE_EMAIL_TAKEN_MESSAGE)) {
+			return "EMAIL_TAKEN";
+		}
+		else {
+			return "FAILURE";
+		}
 	}
 }

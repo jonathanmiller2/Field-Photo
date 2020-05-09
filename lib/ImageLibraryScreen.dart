@@ -7,9 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:http/http.dart' as http;
+
+import 'constants.dart' as Constants;
 
 import 'ImageDetailScreen.dart';
 import 'ImageSquare.dart';
+import 'LoginSession.dart';
 
 class ImageLibraryScreen extends StatefulWidget {
 	
@@ -24,7 +28,6 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 	Map<int, bool> imageSelections = new Map<int, bool>();
 	
 	
-	
 	Future<List<Map<String, dynamic>>> _loadImages() async {
 		var databasesPath = await getDatabasesPath();
 		String dbPath = join(databasesPath, 'FieldPhoto.db');
@@ -34,7 +37,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 		Database db = await openDatabase(dbPath, version:1,
 				onCreate: (Database db, int version) async {
 					//TODO: Add "uploaded" bool field, show on image squares
-					await db.execute('CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE)');
+					await db.execute('CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE, uploaded BOOLEAN)');
 				}
 		);
 		database = db;
@@ -45,11 +48,14 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 	@override
 	Widget build(BuildContext context) {
 		
+		
 		return new FutureBuilder<List<Object>>(
 			future: _loadImages(),
 			builder: (context, asyncSnapshot) {
+				
+				print(LoginSession.shared.loggedIn);
+				
 				if (asyncSnapshot.hasError) {
-					
 					showDialog(
 							context: context,
 							builder: (BuildContext context) {
@@ -60,7 +66,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 											)
 									),
 									content: Text(
-											"There was an error showing your photo library. Please contact support at "
+											"There was an error showing your photo library. Please contact support" //TODO: Support email
 									),
 									actions: <Widget>[
 										FlatButton(
@@ -294,7 +300,42 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																	return;
 																}
 																
-																//TODO: Checked if logged in
+																if(!LoginSession.shared.loggedIn)
+																{
+																	showDialog(
+																			context: context,
+																			builder: (BuildContext context) {
+																				return AlertDialog(
+																					title: Center(
+																							child: Text(
+																									"Please Log In"
+																							)
+																					),
+																					content: Text(
+																						"In order to upload photos you must first be logged in",
+																					),
+																					actions: <Widget>[
+																						FlatButton(
+																							child: Text("Cancel"),
+																							onPressed: () {
+																								Navigator.pop(context);
+																								return;
+																							},
+																						),
+																						FlatButton(
+																							child: Text("Login"),
+																							onPressed: () {
+																								Navigator.pop(context);
+																								Navigator.pop(context);
+																								return;
+																							},
+																						),
+																					],
+																				);
+																			}
+																	);
+																}
+																
 																
 															},
 															defaultColor: selectionMade ? Colors.blue[600] : Colors.grey,
@@ -417,7 +458,28 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 				}
 			},
 		);
+	}
+	
+	Future<bool> uploadPhoto(Map<String, dynamic> photo) async {
+		
+		//CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE)
+		
+		Map<String, dynamic> body = {
+			'landcover_cat': photo["categoryid"],
+			'notes': photo["description"],
+			'userid': "TODO FIX MEE", //TODO: Find user ID
+			'lat': photo['lat'],
+			'lng': photo['lng'],
+			'file': "TODO FIX MEEEEEEEEEEEEEEEE", //TODO: Post image binary
+		};
+		
+		http.Response response = await http.post(Constants.UPLOAD_URL, body: body);
+		
+		print('Response status: ${response.statusCode}');
+		print('Response body: ${response.body}');
+		print('Response header: ${response.headers}');
 		
 		
+		await database.rawUpdate('UPDATE photos SET uploaded = ? WHERE id = ?', [true, photo['id']]);
 	}
 }

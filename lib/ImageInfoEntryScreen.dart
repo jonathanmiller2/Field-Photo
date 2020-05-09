@@ -43,7 +43,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 		Database db = await openDatabase(path, version:1,
 				onCreate: (Database db, int version) async {
 					//TODO: Add "uploaded" bool field, show on image squares
-					await db.execute('CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE)');
+					await db.execute('CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE, uploaded BOOLEAN)');
 				}
 		);
 		setState(() {
@@ -54,7 +54,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 	_saveImage(path, description, longitude, latitude, timestamp, categoryid, dir, heading) async {
 		await database.transaction((txn) async {
 			int id = await txn.rawInsert(
-					'INSERT INTO photos(path, description, long, lat, takendate, categoryid, dir, dir_deg) VALUES(?, ?, ?, ?, ?, ?, ?, ?)', [path, description, longitude, latitude, timestamp, categoryid, dir, heading]
+					'INSERT INTO photos(path, description, long, lat, takendate, categoryid, dir, dir_deg, uploaded) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', [path, description, longitude, latitude, timestamp, categoryid, dir, heading, false]
 			);
 			print('Inserted photo with id: '+ id.toString());
 		});

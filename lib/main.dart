@@ -5,23 +5,24 @@ import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import 'LoginSession.dart';
 import 'constants.dart' as Constants;
 
 import 'LoginScreen.dart';
 
 void main() async {
-  bool isLoggedIn = await initialLogin();
+  await initialLogin();
   
-  if(isLoggedIn)
-    {
-      print('initial login succeed p2');
-    }
+  if(LoginSession.shared.loggedIn)
+  {
+    print('initial login succeed');
+  }
   else
   {
-    print('initial login failed p2');
+    print('initial login failed');
   }
   
-  runApp(MyApp(isLoggedIn: isLoggedIn));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -29,23 +30,15 @@ class MyApp extends StatelessWidget {
   static Geolocator geolocator = Geolocator();
   static CameraController cameraController;
   
-  final bool isLoggedIn;
-  
-  MyApp({this.isLoggedIn = false});
-  
   @override
   Widget build(BuildContext context) {
     
-    if(isLoggedIn) {
-      
-      print('initial login succeed p3');
-      
+    if(LoginSession.shared.loggedIn) {
       return MaterialApp(
-        home: SignedInScreen()
+          home: SignedInScreen()
       );
     }
     else {
-      print('initial login failed p3');
       return MaterialApp(
           home: LoginScreen()
       );
@@ -58,7 +51,7 @@ Future<bool> initialLogin() async {
   
   String username;
   String password;
-
+  
   WidgetsFlutterBinding.ensureInitialized();
   
   try {
@@ -106,11 +99,13 @@ Future<bool> initialLogin() async {
   //For whatever reason, the EOMF API returns 302 (Moved) when the username/pw is correct, and returns 200 with a webpage when the username/pw is incorrect
   //TODO: Investigate this further.
   if(response.statusCode == 302) {
-    print('initial login succeed p1');
+    LoginSession.shared.loggedIn = true;
+    LoginSession.shared.username = username;
+    LoginSession.shared.password = password;
     return true;
   }
 
-  print('initial login failed p1');
+  LoginSession.shared.loggedIn = false;
   return false;
 }
 

@@ -246,19 +246,109 @@ class _SignupScreenState extends State<StatefulWidget> {
 												
 												if(registerResult == "SUCCESS")
 												{
-													//TODO: Success dialog
+													showDialog(
+															context: context,
+															builder: (BuildContext context) {
+																return AlertDialog(
+																	title: Center(
+																			child: Text(
+																					"Account Created!"
+																			)
+																	),
+																	actions: <Widget>[
+																		FlatButton(
+																			child: Text("Dismiss"),
+																			onPressed: () {
+																				Navigator.pop(context);
+																				Navigator.pop(context);
+																			},
+																		),
+																	],
+																);
+															}
+													);
+													return;
 												}
 												else if(registerResult == "USERNAME_TAKEN")
 												{
-													//TODO: dialog
+													showDialog(
+															context: context,
+															builder: (BuildContext context) {
+																return AlertDialog(
+																	title: Center(
+																			child: Text(
+																					"Username Taken"
+																			)
+																	),
+																	content: Text(
+																		"That username is already taken, please try another",
+																	),
+																	actions: <Widget>[
+																		FlatButton(
+																			child: Text("Dismiss"),
+																			onPressed: () {
+																				Navigator.pop(context);
+																			},
+																		),
+																	],
+																);
+															}
+													);
+													return;
 												}
 												else if(registerResult == "EMAIL_TAKEN")
 												{
-													//TODO: dialog
+													showDialog(
+															context: context,
+															builder: (BuildContext context) {
+																return AlertDialog(
+																	title: Center(
+																			child: Text(
+																					"Email Taken"
+																			)
+																	),
+																	content: Text(
+																		"That email is already taken, please try another",
+																	),
+																	actions: <Widget>[
+																		FlatButton(
+																			child: Text("Dismiss"),
+																			onPressed: () {
+																				Navigator.pop(context);
+																			},
+																		),
+																	],
+																);
+															}
+													);
+													return;
 												}
 												else if(registerResult == "FAILURE")
 												{
-													//TODO: dialog
+													showDialog(
+															context: context,
+															builder: (BuildContext context) {
+																return AlertDialog(
+																	title: Center(
+																			child: Text(
+																					"Signup Failed"
+																			)
+																	),
+																	content: Text(
+																		"Creating the account failed for an unkown reason. Please try again or sign up online.",
+																	),
+																	actions: <Widget>[
+																		FlatButton(
+																			child: Text("Dismiss"),
+																			onPressed: () {
+																				Navigator.pop(context);
+																			},
+																		),
+																	],
+																);
+															}
+													);
+													return;
 												}
 												
 											},

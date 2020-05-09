@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'LoginScreen.dart';
+import 'LoginSession.dart';
 import 'MainCameraButton.dart';
 import 'SignupScreen.dart';
 
@@ -16,10 +17,7 @@ class SignedInScreen extends StatefulWidget {
 
 class _SignedInScreenState extends State<SignedInScreen>
 {
-	
-	//TODO: Fix this
 	SharedPreferences prefs;
-	
 	
 	void getSharedPreferences() async {
 		SharedPreferences tempPrefs = await SharedPreferences.getInstance();
@@ -32,8 +30,6 @@ class _SignedInScreenState extends State<SignedInScreen>
 		super.initState();
 		getSharedPreferences();
 	}
-	
-	
 	
 	@override
 	Widget build(BuildContext context) {
@@ -99,6 +95,9 @@ class _SignedInScreenState extends State<SignedInScreen>
 									height: 45,
 									child: FlatButton(
 											onPressed: () {
+												LoginSession.shared.loggedIn = false;
+												LoginSession.shared.username = "";
+												LoginSession.shared.password = "";
 												
 												prefs.setString('savedUsername', null);
 												prefs.setString('savedPassword', null);

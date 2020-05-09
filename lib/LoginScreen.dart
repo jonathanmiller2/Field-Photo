@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:http/http.dart' as http;
+import 'LoginSession.dart';
 import 'constants.dart' as Constants;
 
 import 'MainCameraButton.dart';
@@ -34,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen>
 	
 	@override
 	Widget build(BuildContext context) {
+		
 		return Scaffold(
 			resizeToAvoidBottomInset: false,
 			appBar: AppBar(
@@ -123,12 +125,13 @@ class _LoginScreenState extends State<LoginScreen>
 												);
 												
 												bool loginSuccessful = await login(usernameController.text, passwordController.text);
-
+												
 												
 												//For whatever reason, the EOMF API returns 302 (Moved) when the username/pw is correct, and returns 200 with a webpage when the username/pw is incorrect
 												//TODO: Investigate this further.
 												if(!loginSuccessful)
 												{
+													LoginSession.shared.loggedIn = false;
 													showDialog(
 															context: context,
 															builder: (BuildContext context) {
@@ -155,7 +158,6 @@ class _LoginScreenState extends State<LoginScreen>
 															}
 													);
 												}
-												
 											},
 											color: Colors.green[700],
 											child: Text(
@@ -258,6 +260,9 @@ class _LoginScreenState extends State<LoginScreen>
 			await prefs.setString('savedUsername', usernameController.text);
 			await prefs.setString('savedPassword', passwordController.text);
 			
+			LoginSession.shared.loggedIn = true;
+			LoginSession.shared.username = usernameController.text;
+			LoginSession.shared.password = passwordController.text;
 			
 			Navigator.pushReplacement(
 				context,
@@ -266,6 +271,7 @@ class _LoginScreenState extends State<LoginScreen>
 			
 			return true;
 		}
+		
 		return false;
 	}
 	

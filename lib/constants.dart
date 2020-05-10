@@ -5,10 +5,9 @@ library constants;
 const String EOMF_SITE_USERNAME_TAKEN_MESSAGE = "A user with that username already exists";
 const String EOMF_SITE_EMAIL_TAKEN_MESSAGE = "This email address is already in use";
 const String EOMF_URL = "http://eomf.ou.edu/";
-const String LOGIN_URL = "http://eomf.ou.edu/accounts/login/";
+const String LOGIN_URL = "http://eomf.ou.edu/accounts/login";
 const String REGISTER_URL = "http://eomf.ou.edu/accounts/register/";
 const String UPLOAD_URL = "http://eomf.ou.edu/photos/mobile/upload2/";
-
 
 //TODO: REQUEST THIS FROM THE EOMF API!!!!!
 const Map<int, String> landcoverClassMap =

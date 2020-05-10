@@ -53,8 +53,6 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 			future: _loadImages(),
 			builder: (context, asyncSnapshot) {
 				
-				print(LoginSession.shared.loggedIn);
-				
 				if (asyncSnapshot.hasError) {
 					showDialog(
 							context: context,
@@ -464,6 +462,14 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 		
 		//CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE)
 		
+		
+		var request = http.MultipartRequest('POST', Uri.parse(photo['path']));
+		request.fields["landcover_cat"] = photo["categoryid"];
+		request.fields["notes"] = photo["description"];
+		request.fields["userid"] = photo[""];
+		request.fields["lat"] = photo["lat"];
+		request.fields["lng"] = photo["lng"];
+		
 		Map<String, dynamic> body = {
 			'landcover_cat': photo["categoryid"],
 			'notes': photo["description"],
@@ -480,6 +486,6 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 		print('Response header: ${response.headers}');
 		
 		
-		await database.rawUpdate('UPDATE photos SET uploaded = ? WHERE id = ?', [true, photo['id']]);
+		//await database.rawUpdate('UPDATE photos SET uploaded = ? WHERE id = ?', [true, photo['id']]);
 	}
 }

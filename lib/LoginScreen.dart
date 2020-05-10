@@ -250,6 +250,7 @@ class _LoginScreenState extends State<LoginScreen>
 		response = await http.post(Constants.LOGIN_URL, headers:header, body:body);
 		print('Response status: ${response.statusCode}');
 		print('Response header: ${response.headers}');
+		printWrapped('Response Body: ${response.body}');
 		
 		
 		//For whatever reason, the EOMF API returns 302 (Moved) when the username/pw is correct, and returns 200 with a webpage when the username/pw is incorrect

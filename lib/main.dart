@@ -12,6 +12,8 @@ import 'LoginScreen.dart';
 
 void main() async {
   await initialLogin();
+
+  LoginSession.shared.loggedIn ??= false;
   
   if(LoginSession.shared.loggedIn)
   {
@@ -63,12 +65,14 @@ Future<bool> initialLogin() async {
   {
     print("Shared preferences failed on initial login");
     print(e.toString());
+    LoginSession.shared.loggedIn = false;
     return false;
   }
   
   if(username == null || password == null)
   {
     print("Username or password were null on initial login");
+    LoginSession.shared.loggedIn = false;
     return false;
   }
   

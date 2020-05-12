@@ -334,7 +334,8 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																	);
 																}
 																
-																
+																//TODO: Upload image here
+																//upload(imageList[0]);
 															},
 															defaultColor: selectionMade ? Colors.blue[600] : Colors.grey,
 															pressedColor: selectionMade ? Colors.blue[200] : Colors.grey,
@@ -458,31 +459,46 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 		);
 	}
 	
-	Future<bool> uploadPhoto(Map<String, dynamic> photo) async {
+	void printWrapped(String text) {
+		final pattern = new RegExp('.{1,800}'); // 800 is the size of each chunk
+		pattern.allMatches(text).forEach((match) => print(match.group(0)));
+	}
+	
+	
+	Future<bool> upload(Map<String, dynamic> image) async {
 		
 		//CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE)
 		
+		http.Response idResponse = await http.get(Constants.ID_FROM_USERNAME_URL + LoginSession.shared.username);
 		
-		var request = http.MultipartRequest('POST', Uri.parse(photo['path']));
-		request.fields["landcover_cat"] = photo["categoryid"];
-		request.fields["notes"] = photo["description"];
-		request.fields["userid"] = photo[""];
-		request.fields["lat"] = photo["lat"];
-		request.fields["lng"] = photo["lng"];
+		if(idResponse.statusCode != 200)
+		{
+			//TODO: handle this error (user has no id??)
+		}
+		
+		var request = http.MultipartRequest('POST', Uri.parse(image['path']));
+		request.fields["landcover_cat"] = image["categoryid"].toString();
+		request.fields["notes"] = image["description"];
+		request.fields["userid"] = idResponse.body;
+		request.fields["lat"] = image["lat"].toString();
+		request.fields["lng"] = image["lng"].toString();
 		
 		Map<String, dynamic> body = {
-			'landcover_cat': photo["categoryid"],
-			'notes': photo["description"],
+			'landcover_cat': image["categoryid"],
+			'notes': image["description"],
 			'userid': "TODO FIX MEE", //TODO: Find user ID
-			'lat': photo['lat'],
-			'lng': photo['lng'],
+			'lat': image['lat'],
+			'lng': image['lng'],
 			'file': "TODO FIX MEEEEEEEEEEEEEEEE", //TODO: Post image binary
 		};
 		
-		http.Response response = await http.post(Constants.UPLOAD_URL, body: body);
+		
+		
+		
+		//http.Response response = await http.post(Constants.UPLOAD_URL, body: body);
 		
 		print('Response status: ${response.statusCode}');
-		print('Response body: ${response.body}');
+		printWrapped('Response body: ${response.body}');
 		print('Response header: ${response.headers}');
 		
 		

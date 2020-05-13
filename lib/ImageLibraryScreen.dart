@@ -1,10 +1,14 @@
 
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:http/http.dart' as http;
@@ -25,7 +29,7 @@ class ImageLibraryScreen extends StatefulWidget {
 class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 	Database database;
 	bool selectMode = false;
-	Map<int, bool> imageSelections = new Map<int, bool>();
+	Map<int, bool> imageSelections = new Map<int, bool>(); //<id, selected or not>
 	
 	
 	Future<List<Map<String, dynamic>>> _loadImages() async {
@@ -292,7 +296,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 														padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 														child: LabelledInvisibleButton(
 															label: "Upload",
-															onPress: () {
+															onPress: () async {
 																if(!selectionMade)
 																{
 																	return;
@@ -334,8 +338,46 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																	);
 																}
 																
-																//TODO: Upload image here
-																//upload(imageList[0]);
+																showDialog(
+																		context: context,
+																		builder: (BuildContext context) {
+																			return Container(
+																					color: Color.fromARGB(255, 20, 20, 20),
+																					child: SizedBox(
+																							height: 20,
+																							width: 20,
+																							child: Center(
+																									child: CircularProgressIndicator()
+																							)
+																					)
+																			);
+																		});
+																
+																List<int> selectedIDs = new List<int>();
+																for(MapEntry<int, bool> selectionEntry in imageSelections.entries)
+																{
+																	if(selectionEntry.value)
+																	{
+																		selectedIDs.add(selectionEntry.key);
+																	}
+																}
+																
+																
+																for(Map<String, dynamic> image in imageList)
+																{
+																	if(selectedIDs.contains(image['id']))
+																	{
+																		bool success = await upload(image);
+																		
+																		if(success)
+																		{
+																			await database.rawUpdate('UPDATE photos SET uploaded = ? WHERE id = ?', [true, image['id']]);
+																		}
+																	}
+																}
+																
+																Navigator.pop(context);
+																
 															},
 															defaultColor: selectionMade ? Colors.blue[600] : Colors.grey,
 															pressedColor: selectionMade ? Colors.blue[200] : Colors.grey,
@@ -469,6 +511,8 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 		
 		//CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE)
 		
+		print(LoginSession.shared.username);
+		
 		http.Response idResponse = await http.get(Constants.ID_FROM_USERNAME_URL + LoginSession.shared.username);
 		
 		if(idResponse.statusCode != 200)
@@ -476,32 +520,34 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 			//TODO: handle this error (user has no id??)
 		}
 		
-		var request = http.MultipartRequest('POST', Uri.parse(image['path']));
+		var request = http.MultipartRequest('POST', Uri.parse(Constants.UPLOAD_URL));
 		request.fields["landcover_cat"] = image["categoryid"].toString();
 		request.fields["notes"] = image["description"];
 		request.fields["userid"] = idResponse.body;
 		request.fields["lat"] = image["lat"].toString();
 		request.fields["lng"] = image["lng"].toString();
+		request.files.add(
+			await http.MultipartFile.fromPath(
+					'file',
+					image['path'],
+					contentType: MediaType('image', 'jpeg')
+			)
+		);
 		
-		Map<String, dynamic> body = {
-			'landcover_cat': image["categoryid"],
-			'notes': image["description"],
-			'userid': "TODO FIX MEE", //TODO: Find user ID
-			'lat': image['lat'],
-			'lng': image['lng'],
-			'file': "TODO FIX MEEEEEEEEEEEEEEEE", //TODO: Post image binary
-		};
+		print(image['path']);
 		
+		http.StreamedResponse response = await request.send();
 		
-		
-		
-		//http.Response response = await http.post(Constants.UPLOAD_URL, body: body);
 		
 		print('Response status: ${response.statusCode}');
-		printWrapped('Response body: ${response.body}');
 		print('Response header: ${response.headers}');
 		
+		response.stream.transform(utf8.decoder).listen((value) {
+			print(value);
+		});
 		
+		//TODO: return false if failed
+		return true;
 		//await database.rawUpdate('UPDATE photos SET uploaded = ? WHERE id = ?', [true, photo['id']]);
 	}
 }

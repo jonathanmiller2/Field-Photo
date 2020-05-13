@@ -96,11 +96,14 @@ Future<bool> initialLogin() async {
   };
   
   response = await http.post(Constants.LOGIN_URL, headers:header, body:body);
+  
+  /*
   print('Response status: ${response.statusCode}');
   print('Response header: ${response.headers}');
+  */
   
   
-  //For whatever reason, the EOMF API returns 302 (Moved) when the username/pw is correct, and returns 200 with a webpage when the username/pw is incorrect
+  //For whatever reason, the EOMF API returns 302 when the username/pw is correct, and returns 200 with a webpage when the username/pw is incorrect
   //TODO: Investigate this further.
   if(response.statusCode == 302) {
     LoginSession.shared.loggedIn = true;

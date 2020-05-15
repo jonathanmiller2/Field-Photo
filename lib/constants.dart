@@ -7,7 +7,7 @@ const String EOMF_SITE_EMAIL_TAKEN_MESSAGE = "This email address is already in u
 const String EOMF_URL = "http://eomf.ou.edu/";
 const String LOGIN_URL = "http://eomf.ou.edu/accounts/login";
 const String REGISTER_URL = "http://eomf.ou.edu/accounts/register/";
-const String UPLOAD_URL = "http://eomf.ou.edu/photos/mobile/upload2/";
+const String UPLOAD_URL = "http://eomf.ou.edu/photos/mobile/upload3/";
 const String ID_FROM_USERNAME_URL = "http://eomf.ou.edu/accounts/id_from_username/?username=";
 
 //TODO: REQUEST THIS FROM THE EOMF API!!!!!

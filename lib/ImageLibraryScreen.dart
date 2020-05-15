@@ -1,23 +1,21 @@
 
 
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:http/http.dart' as http;
-
-import 'constants.dart' as Constants;
 
 import 'ImageDetailScreen.dart';
 import 'ImageSquare.dart';
 import 'LoginSession.dart';
+import 'constants.dart' as Constants;
 
 class ImageLibraryScreen extends StatefulWidget {
 	
@@ -40,7 +38,6 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 		
 		Database db = await openDatabase(dbPath, version:1,
 				onCreate: (Database db, int version) async {
-					//TODO: Add "uploaded" bool field, show on image squares
 					await db.execute('CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE, uploaded BOOLEAN)');
 				}
 		);
@@ -104,12 +101,19 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 					}
 				}
 				
+				//=====================================================================================
+				//=======================		Library image square definition ===========================
+				//=====================================================================================
+				
 				List<Widget> imageSquares = imageList.map<Widget> ((Map<String, dynamic> image) {
+					
+					var contents;
+					
 					if(selectMode)
 					{
 						if(imageSelections[image['id']])
 						{
-							return Container(
+							contents = Container(
 								decoration: BoxDecoration(
 									border: Border.all(
 										color: Colors.blue[600],
@@ -133,7 +137,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 						}
 						else
 						{
-							return FlatButton(
+							contents = FlatButton(
 									padding: const EdgeInsets.all(0),
 									child: AspectRatio(
 											aspectRatio: 1,
@@ -148,47 +152,68 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 							);
 						}
 					}
-					else {
-						if (imageSelections[image['id']])
-						{
-							imageSelections[image['id']] = false;
-							
-							return FlatButton(
-									padding: const EdgeInsets.all(0),
-									child: AspectRatio(
-											aspectRatio: 1,
-											child: ImageSquare(
-													path: image['path']
-											)
-									),
-									onPressed: () {
-										Navigator.push(
-											context,
-											new MaterialPageRoute(builder: (context) => new ImageDetailScreen(image: image, database: database)),
-										);
-									}
-							);
-						}
-						else
-						{
-							return FlatButton(
-									padding: const EdgeInsets.all(0),
-									child: AspectRatio(
-											aspectRatio: 1,
-											child: ImageSquare(
-													path: image['path']
-											)
-									),
-									onPressed: () {
-										Navigator.push(
-											context,
-											new MaterialPageRoute(builder: (context) => new ImageDetailScreen(image: image, database: database)),
-										);
-									}
-							);
-						}
+					else
+					{
+						contents = FlatButton(
+								padding: const EdgeInsets.all(0),
+								child: AspectRatio(
+										aspectRatio: 1,
+										child: ImageSquare(
+												path: image['path']
+										)
+								),
+								onPressed: () {
+									Navigator.push(
+										context,
+										new MaterialPageRoute(builder: (context) => new ImageDetailScreen(image: image, database: database)),
+									);
+								}
+						);
+					}
+					
+					//print(image['uploaded']);
+					
+					if(image['uploaded'] == 1)
+					{
+						return Stack(
+							children: <Widget>[
+								contents,
+								Positioned(
+										right: 5,
+										top: 5,
+										child: Container(
+												width: 28,
+												height: 28,
+												decoration: new BoxDecoration(
+													shape: BoxShape.circle,
+													color: Colors.white,
+												)
+										)
+								),
+								Positioned(
+										right: 8,
+										top: 7,
+										child: Icon(
+											Icons.cloud_upload,
+											color: Colors.lightGreenAccent[700],
+											size: 22,
+										)
+								),
+							],
+						);
+					}
+					else
+					{
+						return contents;
 					}
 				}).toList();
+				
+				//=====================================================================================
+				//=======================		End of library image square definition ====================
+				//=====================================================================================
+				
+				
+				
 				
 				bool selectionMade = false;
 				for(bool x in imageSelections.values)
@@ -221,7 +246,18 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 										label: selectMode ? 'Cancel' : 'Select',
 										onPress: () {
 											setState(() {
-												selectMode = !selectMode;
+												if(selectMode)
+												{
+													for(int x in imageSelections.keys)
+													{
+														imageSelections[x] = false;
+													}
+													selectMode = false;
+												}
+												else
+												{
+													selectMode = true;
+												}
 											});
 										},
 										defaultColor: Colors.blue[600],
@@ -336,6 +372,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																				);
 																			}
 																	);
+																	return;
 																}
 																
 																showDialog(
@@ -362,6 +399,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																	}
 																}
 																
+																bool allSuccessful = true;
 																
 																for(Map<String, dynamic> image in imageList)
 																{
@@ -373,11 +411,71 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																		{
 																			await database.rawUpdate('UPDATE photos SET uploaded = ? WHERE id = ?', [true, image['id']]);
 																		}
+																		else
+																		{
+																			allSuccessful = false;
+																		}
 																	}
 																}
 																
 																Navigator.pop(context);
 																
+																if(allSuccessful)
+																{
+																	showDialog(
+																			context: context,
+																			child: AlertDialog(
+																				title: Center(
+																						child: Text(
+																								"Upload Success"
+																						)
+																				),
+																				content: Text(
+																					"All images were uploaded successfully.",
+																				),
+																				actions: <Widget>[
+																					FlatButton(
+																						child: Text("Dismiss"),
+																						onPressed: () {
+																							Navigator.pop(context);
+																						},
+																					),
+																				],
+																			)
+																	);
+																}
+																else
+																{
+																	showDialog(
+																			context: context,
+																			child: AlertDialog(
+																				title: Center(
+																						child: Text(
+																								"Upload Failed"
+																						)
+																				),
+																				content: Text(
+																					"One of the images you were trying to upload failed to upload",
+																				),
+																				actions: <Widget>[
+																					FlatButton(
+																						child: Text("Dismiss"),
+																						onPressed: () {
+																							Navigator.pop(context);
+																						},
+																					),
+																				],
+																			)
+																	);
+																}
+																
+																setState(() {
+																	for(int x in imageSelections.keys)
+																	{
+																		imageSelections[x] = false;
+																	}
+																	selectMode = false;
+																});
 															},
 															defaultColor: selectionMade ? Colors.blue[600] : Colors.grey,
 															pressedColor: selectionMade ? Colors.blue[200] : Colors.grey,
@@ -509,45 +607,41 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 	
 	Future<bool> upload(Map<String, dynamic> image) async {
 		
-		//CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE)
-		
-		print(LoginSession.shared.username);
-		
-		http.Response idResponse = await http.get(Constants.ID_FROM_USERNAME_URL + LoginSession.shared.username);
-		
-		if(idResponse.statusCode != 200)
+		if(image['uploaded'] == 1)
 		{
-			//TODO: handle this error (user has no id??)
+			print('Already uploaded');
+			return true;
 		}
 		
 		var request = http.MultipartRequest('POST', Uri.parse(Constants.UPLOAD_URL));
 		request.fields["landcover_cat"] = image["categoryid"].toString();
 		request.fields["notes"] = image["description"];
-		request.fields["userid"] = idResponse.body;
+		request.fields["username"] = LoginSession.shared.username;
 		request.fields["lat"] = image["lat"].toString();
 		request.fields["lng"] = image["lng"].toString();
 		request.files.add(
-			await http.MultipartFile.fromPath(
-					'file',
-					image['path'],
-					contentType: MediaType('image', 'jpeg')
-			)
+				await http.MultipartFile.fromPath(
+						'file',
+						image['path'],
+						contentType: MediaType('image', 'jpeg')
+				)
 		);
 		
-		print(image['path']);
 		
 		http.StreamedResponse response = await request.send();
 		
 		
-		print('Response status: ${response.statusCode}');
-		print('Response header: ${response.headers}');
-		
-		response.stream.transform(utf8.decoder).listen((value) {
-			print(value);
+		response.stream.transform(utf8.decoder).listen((x) {
+			print(x);
 		});
 		
-		//TODO: return false if failed
-		return true;
-		//await database.rawUpdate('UPDATE photos SET uploaded = ? WHERE id = ?', [true, photo['id']]);
+		if(response.statusCode == 200)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

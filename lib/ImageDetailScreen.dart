@@ -1,5 +1,6 @@
 
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -8,8 +9,11 @@ import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 import 'LabelledInvisibleButton.dart';
+import 'LoginSession.dart';
 import 'constants.dart' as Constants;
 import 'main.dart';
 
@@ -29,6 +33,8 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 	int savedLandcoverClass;
 	String savedDescription;
 	
+	bool uploadState;
+	
 	TextEditingController fieldNoteController;
 	bool editMode = false;
 	
@@ -39,6 +45,8 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 		savedLandcoverClass = widget.image['categoryid'];
 		selectedLandcoverClass = widget.image['categoryid'];
 		fieldNoteController = TextEditingController(text: widget.image['description']);
+		
+		uploadState = widget.image['uploaded'] == 1;
 	}
 	
 	
@@ -342,6 +350,27 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 												Container(
 													width: labelWidth,
 													child: Text(
+														"Uploaded",
+														style: labelStyle,
+													),
+												),
+												
+												uploadState ? Icon(Icons.cloud_upload, color: Colors.lightGreenAccent[700]) : Icon(Icons.highlight_off, color:Colors.red)
+												
+											]
+									)
+							),
+							Container(
+									color: Colors.grey,
+									height: 1
+							),
+							Padding(
+									padding: const EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+									child: Row(
+											children: <Widget>[
+												Container(
+													width: labelWidth,
+													child: Text(
 														"Land Cover",
 														style: labelStyle,
 													),
@@ -422,8 +451,143 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 												padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 												child: LabelledInvisibleButton(
 													label: "Upload",
-													onPress: () {
-														//TODO: Checked if logged in
+													onPress: () async {
+														
+														if(widget.image['uploaded'] == 1)
+														{
+															showDialog(
+																	context: context,
+																	builder: (BuildContext context) {
+																		return AlertDialog(
+																			title: Center(
+																					child: Text(
+																							"Photo already uploaded"
+																					)
+																			),
+																			content: Text(
+																				"This photo has already been uploaded",
+																			),
+																			actions: <Widget>[
+																				FlatButton(
+																					child: Text("Dismiss"),
+																					onPressed: () {
+																						Navigator.pop(context);
+																						return;
+																					},
+																				),
+																			],
+																		);
+																	}
+															);
+														}
+														
+														if(!LoginSession.shared.loggedIn)
+														{
+															showDialog(
+																	context: context,
+																	builder: (BuildContext context) {
+																		return AlertDialog(
+																			title: Center(
+																					child: Text(
+																							"Please Log In"
+																					)
+																			),
+																			content: Text(
+																				"In order to upload photos you must first be logged in",
+																			),
+																			actions: <Widget>[
+																				FlatButton(
+																					child: Text("Cancel"),
+																					onPressed: () {
+																						Navigator.pop(context);
+																						return;
+																					},
+																				),
+																				FlatButton(
+																					child: Text("Login"),
+																					onPressed: () {
+																						Navigator.pop(context);
+																						Navigator.pop(context);
+																						Navigator.pop(context);
+																						return;
+																					},
+																				),
+																			],
+																		);
+																	}
+															);
+															return;
+														}
+														
+														showDialog(
+																context: context,
+																builder: (BuildContext context) {
+																	return Container(
+																			color: Color.fromARGB(255, 20, 20, 20),
+																			child: SizedBox(
+																					height: 20,
+																					width: 20,
+																					child: Center(
+																							child: CircularProgressIndicator()
+																					)
+																			)
+																	);
+																});
+														
+														
+														bool success = await upload(widget.image);
+														
+														Navigator.pop(context);
+														
+														if (success) {
+															await widget.database.rawUpdate('UPDATE photos SET uploaded = ? WHERE id = ?', [true, widget.image['id']]);
+															uploadState = true;
+															
+															showDialog(
+																	context: context,
+																	child: AlertDialog(
+																		title: Center(
+																				child: Text(
+																						"Upload Succeeded"
+																				)
+																		),
+																		actions: <Widget>[
+																			FlatButton(
+																				child: Text("Dismiss"),
+																				onPressed: () {
+																					Navigator.pop(context);
+																				},
+																			),
+																		],
+																	)
+															);
+															
+															setState(() {});
+														}
+														else {
+															showDialog(
+																	context: context,
+																	child: AlertDialog(
+																		title: Center(
+																				child: Text(
+																						"Upload Failed"
+																				)
+																		),
+																		content: Text(
+																			"The upload failed, please try again",
+																		),
+																		actions: <Widget>[
+																			FlatButton(
+																				child: Text("Dismiss"),
+																				onPressed: () {
+																					Navigator.pop(context);
+																				},
+																			),
+																		],
+																	)
+															);
+														}
+														
 														
 													},
 													defaultColor: Colors.blue[600],
@@ -483,6 +647,48 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 					),
 				),
 			);
+		}
+	}
+	
+	Future<bool> upload(Map<String, dynamic> image) async {
+		
+		if(image['uploaded'] == 1)
+		{
+			print('Already uploaded');
+			return true;
+		}
+		
+		var request = http.MultipartRequest('POST', Uri.parse(Constants.UPLOAD_URL));
+		request.fields["landcover_cat"] = image["categoryid"].toString();
+		request.fields["notes"] = image["description"];
+		request.fields["username"] = LoginSession.shared.username;
+		request.fields["lat"] = image["lat"].toString();
+		request.fields["lng"] = image["lng"].toString();
+		request.files.add(
+				await http.MultipartFile.fromPath(
+						'file',
+						image['path'],
+						contentType: MediaType('image', 'jpeg')
+				)
+		);
+		
+		
+		http.StreamedResponse response = await request.send();
+		
+		String stringResponse = "";
+		
+		response.stream.transform(utf8.decoder).listen((x) {
+			stringResponse = x;
+			print(x);
+		});
+		
+		if(response.statusCode == 200)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 }

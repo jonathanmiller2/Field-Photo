@@ -566,7 +566,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 								title: Text(
 										'All Field Photos',
 										style: TextStyle(
-											fontSize: 25.0,
+											fontSize: 22.0,
 											color: Colors.black,
 										)
 								),

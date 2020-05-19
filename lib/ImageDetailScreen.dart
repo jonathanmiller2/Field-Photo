@@ -68,7 +68,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 					title: Text(
 							'Field Photo Metadata',
 							style: TextStyle(
-								fontSize: 25,
+								fontSize: 22,
 								color: Colors.black,
 							)
 					),
@@ -266,7 +266,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 					title: Text(
 							'Field Photo Metadata',
 							style: TextStyle(
-								fontSize: 25.0,
+								fontSize: 22.0,
 								color: Colors.black,
 							)
 					),

@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen>
 				title: Text(
 						'Field Photo',
 						style: TextStyle(
-							fontSize: 25.0,
+							fontSize: 22.0,
 							color: Colors.black,
 						)
 				),

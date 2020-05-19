@@ -12,7 +12,7 @@ class InfoScreen extends StatelessWidget {
 					title: Text(
 							'About',
 							style: TextStyle(
-								fontSize: 25.0,
+								fontSize: 22.0,
 								color: Colors.black,
 							)
 					),

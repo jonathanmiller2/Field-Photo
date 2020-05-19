@@ -381,9 +381,8 @@ class _SignupScreenState extends State<StatefulWidget> {
 							
 							
 							Padding(
-								padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 30),
+								padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
 								child: Container(
-									height: 150,
 									child: Column(
 										children: <Widget>[
 											Padding(

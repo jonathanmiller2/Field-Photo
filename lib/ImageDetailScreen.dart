@@ -15,7 +15,6 @@ import 'package:http_parser/http_parser.dart';
 import 'LabelledInvisibleButton.dart';
 import 'LoginSession.dart';
 import 'constants.dart' as Constants;
-import 'main.dart';
 
 class ImageDetailScreen extends StatefulWidget {
 	
@@ -69,7 +68,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 					title: Text(
 							'Field Photo Metadata',
 							style: TextStyle(
-								fontSize: 22.0,
+								fontSize: 25,
 								color: Colors.black,
 							)
 					),
@@ -267,12 +266,16 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 					title: Text(
 							'Field Photo Metadata',
 							style: TextStyle(
-								fontSize: 22.0,
+								fontSize: 25.0,
 								color: Colors.black,
 							)
 					),
 					backgroundColor: Colors.white,
 					centerTitle: true,
+					iconTheme: IconThemeData(
+							color: Colors.black
+					),
+					
 					actions: <Widget>[
 						Padding(
 							padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
@@ -675,10 +678,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 		
 		http.StreamedResponse response = await request.send();
 		
-		String stringResponse = "";
-		
 		response.stream.transform(utf8.decoder).listen((x) {
-			stringResponse = x;
 			print(x);
 		});
 		

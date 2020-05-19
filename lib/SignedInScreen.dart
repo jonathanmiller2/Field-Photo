@@ -1,6 +1,4 @@
-import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:field_photo/MainBottomBar.dart';
-import 'package:field_photo/SignedInScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +9,6 @@ import 'constants.dart' as Constants;
 import 'LoginScreen.dart';
 import 'LoginSession.dart';
 import 'MainCameraButton.dart';
-import 'SignupScreen.dart';
 
 class SignedInScreen extends StatefulWidget {
 	@override
@@ -59,12 +56,15 @@ class _SignedInScreenState extends State<SignedInScreen>
 				title: Text(
 						'Field Photo',
 						style: TextStyle(
-							fontSize: 22.0,
+							fontSize: 25.0,
 							color: Colors.black,
 						)
 				),
 				backgroundColor: Colors.white,
 				centerTitle: true,
+				iconTheme: IconThemeData(
+						color: Colors.black
+				),
 			),
 			body: Container(
 				color: Colors.grey[200],

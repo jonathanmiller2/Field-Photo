@@ -12,12 +12,15 @@ class InfoScreen extends StatelessWidget {
 					title: Text(
 							'About',
 							style: TextStyle(
-								fontSize: 22.0,
+								fontSize: 25.0,
 								color: Colors.black,
 							)
 					),
 					backgroundColor: Colors.white,
 					centerTitle: true,
+					iconTheme: IconThemeData(
+							color: Colors.black
+					),
 				),
 				body: Container(
 					color: Colors.grey[200],

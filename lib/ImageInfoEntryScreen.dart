@@ -78,7 +78,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 				title: Text(
 						'Field Photo Metadata',
 						style: TextStyle(
-							fontSize: 22.0,
+							fontSize: 25,
 							color: Colors.black,
 						)
 				),

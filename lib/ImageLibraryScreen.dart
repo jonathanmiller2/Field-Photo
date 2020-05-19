@@ -61,7 +61,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 								return AlertDialog(
 									title: Center(
 											child: Text(
-													"Library Error"
+													"Library error"
 											)
 									),
 									content: Text(
@@ -196,7 +196,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 										child: Icon(
 											Icons.cloud_upload,
 											color: Colors.lightGreenAccent[700],
-											size: 22,
+											size: 25,
 										)
 								),
 							],
@@ -239,6 +239,9 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 							),
 							backgroundColor: Colors.white,
 							centerTitle: true,
+							iconTheme: IconThemeData(
+									color: Colors.black
+							),
 							actions: <Widget>[
 								Padding(
 									padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
@@ -561,11 +564,14 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 							backgroundColor: Colors.grey[200],
 							appBar: AppBar(
 								title: Text(
-										'All Photos',
+										'All Field Photos',
 										style: TextStyle(
-											fontSize: 22.0,
+											fontSize: 25.0,
 											color: Colors.black,
 										)
+								),
+								iconTheme: IconThemeData(
+										color: Colors.black
 								),
 								backgroundColor: Colors.white,
 								centerTitle: true,

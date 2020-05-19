@@ -40,6 +40,7 @@ dependencies:
   http: ^0.12.1
   requests: ^3.1.0
   http_parser: ^3.1.4
+  permission_handler: ^5.0.0
 
 
 dev_dependencies:

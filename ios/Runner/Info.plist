@@ -41,5 +41,12 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+	<key>NSCameraUsageDescription</key>
+	<string>Camera access is required to take field photos</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is required to geotag the field photos</string>
+
+
 </dict>
 </plist>

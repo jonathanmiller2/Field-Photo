@@ -1,7 +1,3 @@
-
-
-import 'dart:io';
-
 import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:field_photo/MainBottomBar.dart';
 import 'package:field_photo/SignedInScreen.dart';
@@ -42,12 +38,15 @@ class _LoginScreenState extends State<LoginScreen>
 				title: Text(
 						'Field Photo',
 						style: TextStyle(
-							fontSize: 22.0,
+							fontSize: 25.0,
 							color: Colors.black,
 						)
 				),
 				backgroundColor: Colors.white,
 				centerTitle: true,
+				iconTheme: IconThemeData(
+						color: Colors.black
+				),
 			),
 			body: Container(
 				color: Colors.grey[200],

@@ -50,6 +50,7 @@ class MainBottomBar extends StatelessWidget {
 													color: Colors.blue[600],
 												),
 												onPressed: () {
+													
 													Navigator.push(
 														context,
 														new MaterialPageRoute(builder: (context) => new InfoScreen()),

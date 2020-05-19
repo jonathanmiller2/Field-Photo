@@ -4,6 +4,9 @@ import 'package:field_photo/SignedInScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
+import 'constants.dart' as Constants;
 
 import 'LoginScreen.dart';
 import 'LoginSession.dart';
@@ -94,7 +97,32 @@ class _SignedInScreenState extends State<SignedInScreen>
 								child: Container(
 									height: 45,
 									child: FlatButton(
-											onPressed: () {
+											onPressed: () async {
+												
+												//Make a request to the register url for CSRF token
+												http.Response response = await http.get(Constants.REGISTER_URL);
+												String rawCookie = response.headers['set-cookie'];
+												String justToken;
+												
+												int startIndex = rawCookie.indexOf('=') + 1;
+												int stopIndex = rawCookie.indexOf(';');
+												justToken = (startIndex == -1 || stopIndex == -1) ? rawCookie : rawCookie.substring(startIndex, stopIndex);
+												
+												Map<String, String> header = {
+													'cookie': response.headers.toString(),
+												};
+												
+												Map<String, String> body = {
+													'username': LoginSession.shared.username,
+													'password': LoginSession.shared.password,
+													'csrfmiddlewaretoken': justToken,
+												};
+												
+												response = await http.post(Constants.LOGOUT_URL, headers:header, body:body);
+												print('Response status: ${response.statusCode}');
+												print('Response header: ${response.headers}');
+												print('Response Body: ${response.body}');
+												
 												LoginSession.shared.loggedIn = false;
 												LoginSession.shared.username = "";
 												LoginSession.shared.password = "";

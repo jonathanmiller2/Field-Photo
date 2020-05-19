@@ -45,322 +45,322 @@ class _SignupScreenState extends State<StatefulWidget> {
 			body: Container(
 				color: Colors.grey[200],
 				child: Padding(
-					padding: const EdgeInsets.all(30),
+					padding: const EdgeInsets.symmetric(horizontal: 30),
 					child: Column(
 						mainAxisAlignment: MainAxisAlignment.start,
 						crossAxisAlignment: CrossAxisAlignment.stretch,
 						mainAxisSize: MainAxisSize.max,
 						children: <Widget>[
-							Form(
-								child: Container(
-									decoration: BoxDecoration(
-										border: Border.all(
-											color: Colors.grey[400],
-											width: 1,
-										),
-										borderRadius: BorderRadius.all(
-												Radius.circular(5)
-										),
-										color: Colors.white,
-									),
-									child: Column(
-										children: <Widget>[
-											Padding(
-												padding: const EdgeInsets.symmetric(
-														horizontal: 9, vertical: 0),
-												child: TextField(
-													decoration: InputDecoration(
-														border: InputBorder.none,
-														fillColor: Colors.white,
-														hintText: 'Username',
-													),
-													controller: usernameController,
-												),
-											),
-											Container(
-												color: Colors.grey,
-												height: 1,
-											),
-											Padding(
-												padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 0),
-												child: TextField(
-													decoration: InputDecoration(
-														border: InputBorder.none,
-														hintText: 'Email Address',
-													),
-													controller: emailController,
-												),
-											),
-											Container(
-												color: Colors.grey,
-												height: 1,
-											),
-											Padding(
-												padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 0),
-												child: TextField(
-													obscureText: true,
-													decoration: InputDecoration(
-														border: InputBorder.none,
-														hintText: 'Password',
-													),
-													controller: password1Controller,
-												),
-											),
-											Container(
-												color: Colors.grey,
-												height: 1,
-											),
-											Padding(
-												padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 0),
-												child: TextField(
-													obscureText: true,
-													decoration: InputDecoration(
-														border: InputBorder.none,
-														hintText: 'Re-type Password',
-													),
-													controller: password2Controller,
-												),
-											),
-										],
-									),
-								),
+							Padding(
+							  padding: const EdgeInsets.symmetric(vertical: 30),
+							  child: Form(
+							  	child: Container(
+							  		decoration: BoxDecoration(
+							  			border: Border.all(
+							  				color: Colors.grey[400],
+							  				width: 1,
+							  			),
+							  			borderRadius: BorderRadius.all(
+							  					Radius.circular(5)
+							  			),
+							  			color: Colors.white,
+							  		),
+							  		child: Column(
+							  			children: <Widget>[
+							  				Padding(
+							  					padding: const EdgeInsets.symmetric(
+							  							horizontal: 9, vertical: 0),
+							  					child: TextField(
+							  						decoration: InputDecoration(
+							  							border: InputBorder.none,
+							  							fillColor: Colors.white,
+							  							hintText: 'Username',
+							  						),
+							  						controller: usernameController,
+							  					),
+							  				),
+							  				Container(
+							  					color: Colors.grey,
+							  					height: 1,
+							  				),
+							  				Padding(
+							  					padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 0),
+							  					child: TextField(
+							  						decoration: InputDecoration(
+							  							border: InputBorder.none,
+							  							hintText: 'Email Address',
+							  						),
+							  						controller: emailController,
+							  					),
+							  				),
+							  				Container(
+							  					color: Colors.grey,
+							  					height: 1,
+							  				),
+							  				Padding(
+							  					padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 0),
+							  					child: TextField(
+							  						obscureText: true,
+							  						decoration: InputDecoration(
+							  							border: InputBorder.none,
+							  							hintText: 'Password',
+							  						),
+							  						controller: password1Controller,
+							  					),
+							  				),
+							  				Container(
+							  					color: Colors.grey,
+							  					height: 1,
+							  				),
+							  				Padding(
+							  					padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 0),
+							  					child: TextField(
+							  						obscureText: true,
+							  						decoration: InputDecoration(
+							  							border: InputBorder.none,
+							  							hintText: 'Re-type Password',
+							  						),
+							  						controller: password2Controller,
+							  					),
+							  				),
+							  			],
+							  		),
+							  	),
+							  ),
 							),
 							
-							Padding(
-								padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 15),
-								child: Container(
-									height: 45,
-									child: FlatButton(
-											onPressed: () async {
-												final emailPattern = RegExp("[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
-												
-												if (usernameController.text == "") {
-													showDialog(
-															context: context,
-															builder: (BuildContext context) {
-																return AlertDialog(
-																	title: Center(
-																			child: Text(
-																					"Missing username"
-																			)
+							Container(
+								height: 45,
+								child: FlatButton(
+										onPressed: () async {
+											final emailPattern = RegExp("[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+											
+											if (usernameController.text == "") {
+												showDialog(
+														context: context,
+														builder: (BuildContext context) {
+															return AlertDialog(
+																title: Center(
+																		child: Text(
+																				"Missing username"
+																		)
+																),
+																content: Text(
+																	"Please enter a username",
+																),
+																actions: <Widget>[
+																	FlatButton(
+																		child: Text("Dismiss"),
+																		onPressed: () {
+																			Navigator.pop(context);
+																		},
 																	),
-																	content: Text(
-																		"Please enter a username",
+																],
+															);
+														}
+												);
+												return;
+											}
+											
+											if (!emailPattern.hasMatch(emailController.text) || emailController.text == "") {
+												showDialog(
+														context: context,
+														builder: (BuildContext context) {
+															return AlertDialog(
+																title: Center(
+																		child: Text(
+																				"Invalid Email"
+																		)
+																),
+																content: Text(
+																	"Email invalid, please check your email",
+																),
+																actions: <Widget>[
+																	FlatButton(
+																		child: Text("Dismiss"),
+																		onPressed: () {
+																			Navigator.pop(context);
+																		},
 																	),
-																	actions: <Widget>[
-																		FlatButton(
-																			child: Text("Dismiss"),
-																			onPressed: () {
-																				Navigator.pop(context);
-																			},
-																		),
-																	],
-																);
-															}
-													);
-													return;
-												}
-												
-												if (!emailPattern.hasMatch(emailController.text) || emailController.text == "") {
-													showDialog(
-															context: context,
-															builder: (BuildContext context) {
-																return AlertDialog(
-																	title: Center(
-																			child: Text(
-																					"Invalid Email"
-																			)
+																],
+															);
+														}
+												);
+												return;
+											}
+											
+											if (password1Controller.text == "" || password2Controller.text == "") {
+												showDialog(
+														context: context,
+														builder: (BuildContext context) {
+															return AlertDialog(
+																title: Center(
+																		child: Text(
+																				"Missing password"
+																		)
+																),
+																content: Text(
+																	"Please enter your password",
+																),
+																actions: <Widget>[
+																	FlatButton(
+																		child: Text("Dismiss"),
+																		onPressed: () {
+																			Navigator.pop(context);
+																		},
 																	),
-																	content: Text(
-																		"Email invalid, please check your email",
+																],
+															);
+														}
+												);
+												return;
+											}
+											
+											if (password1Controller.text != password2Controller.text) {
+												showDialog(
+														context: context,
+														builder: (BuildContext context) {
+															return AlertDialog(
+																title: Center(
+																		child: Text(
+																				"Passwords don't match"
+																		)
+																),
+																content: Text(
+																	"The entered passwords don't match, please check your passwords",
+																),
+																actions: <Widget>[
+																	FlatButton(
+																		child: Text("Dismiss"),
+																		onPressed: () {
+																			Navigator.pop(context);
+																		},
 																	),
-																	actions: <Widget>[
-																		FlatButton(
-																			child: Text("Dismiss"),
-																			onPressed: () {
-																				Navigator.pop(context);
-																			},
-																		),
-																	],
-																);
-															}
-													);
-													return;
-												}
-												
-												if (password1Controller.text == "" || password2Controller.text == "") {
-													showDialog(
-															context: context,
-															builder: (BuildContext context) {
-																return AlertDialog(
-																	title: Center(
-																			child: Text(
-																					"Missing password"
-																			)
+																],
+															);
+														}
+												);
+												return;
+											}
+											
+											String registerResult = await register(usernameController.text, emailController.text, password1Controller.text, password2Controller.text);
+											
+											if(registerResult == "SUCCESS")
+											{
+												showDialog(
+														context: context,
+														builder: (BuildContext context) {
+															return AlertDialog(
+																title: Center(
+																		child: Text(
+																				"Account Created!"
+																		)
+																),
+																actions: <Widget>[
+																	FlatButton(
+																		child: Text("Dismiss"),
+																		onPressed: () {
+																			Navigator.pop(context);
+																			Navigator.pop(context);
+																		},
 																	),
-																	content: Text(
-																		"Please enter your password",
+																],
+															);
+														}
+												);
+												return;
+											}
+											else if(registerResult == "USERNAME_TAKEN")
+											{
+												showDialog(
+														context: context,
+														builder: (BuildContext context) {
+															return AlertDialog(
+																title: Center(
+																		child: Text(
+																				"Username Taken"
+																		)
+																),
+																content: Text(
+																	"That username is already taken, please try another",
+																),
+																actions: <Widget>[
+																	FlatButton(
+																		child: Text("Dismiss"),
+																		onPressed: () {
+																			Navigator.pop(context);
+																		},
 																	),
-																	actions: <Widget>[
-																		FlatButton(
-																			child: Text("Dismiss"),
-																			onPressed: () {
-																				Navigator.pop(context);
-																			},
-																		),
-																	],
-																);
-															}
-													);
-													return;
-												}
-												
-												if (password1Controller.text != password2Controller.text) {
-													showDialog(
-															context: context,
-															builder: (BuildContext context) {
-																return AlertDialog(
-																	title: Center(
-																			child: Text(
-																					"Passwords don't match"
-																			)
+																],
+															);
+														}
+												);
+												return;
+											}
+											else if(registerResult == "EMAIL_TAKEN")
+											{
+												showDialog(
+														context: context,
+														builder: (BuildContext context) {
+															return AlertDialog(
+																title: Center(
+																		child: Text(
+																				"Email Taken"
+																		)
+																),
+																content: Text(
+																	"That email is already taken, please try another",
+																),
+																actions: <Widget>[
+																	FlatButton(
+																		child: Text("Dismiss"),
+																		onPressed: () {
+																			Navigator.pop(context);
+																		},
 																	),
-																	content: Text(
-																		"The entered passwords don't match, please check your passwords",
+																],
+															);
+														}
+												);
+												return;
+											}
+											else if(registerResult == "FAILURE")
+											{
+												showDialog(
+														context: context,
+														builder: (BuildContext context) {
+															return AlertDialog(
+																title: Center(
+																		child: Text(
+																				"Signup Failed"
+																		)
+																),
+																content: Text(
+																	"Creating the account failed for an unknown reason. Please try again or sign up online.",
+																),
+																actions: <Widget>[
+																	FlatButton(
+																		child: Text("Dismiss"),
+																		onPressed: () {
+																			Navigator.pop(context);
+																		},
 																	),
-																	actions: <Widget>[
-																		FlatButton(
-																			child: Text("Dismiss"),
-																			onPressed: () {
-																				Navigator.pop(context);
-																			},
-																		),
-																	],
-																);
-															}
-													);
-													return;
-												}
-												
-												String registerResult = await register(usernameController.text, emailController.text, password1Controller.text, password2Controller.text);
-												
-												if(registerResult == "SUCCESS")
-												{
-													showDialog(
-															context: context,
-															builder: (BuildContext context) {
-																return AlertDialog(
-																	title: Center(
-																			child: Text(
-																					"Account Created!"
-																			)
-																	),
-																	actions: <Widget>[
-																		FlatButton(
-																			child: Text("Dismiss"),
-																			onPressed: () {
-																				Navigator.pop(context);
-																				Navigator.pop(context);
-																			},
-																		),
-																	],
-																);
-															}
-													);
-													return;
-												}
-												else if(registerResult == "USERNAME_TAKEN")
-												{
-													showDialog(
-															context: context,
-															builder: (BuildContext context) {
-																return AlertDialog(
-																	title: Center(
-																			child: Text(
-																					"Username Taken"
-																			)
-																	),
-																	content: Text(
-																		"That username is already taken, please try another",
-																	),
-																	actions: <Widget>[
-																		FlatButton(
-																			child: Text("Dismiss"),
-																			onPressed: () {
-																				Navigator.pop(context);
-																			},
-																		),
-																	],
-																);
-															}
-													);
-													return;
-												}
-												else if(registerResult == "EMAIL_TAKEN")
-												{
-													showDialog(
-															context: context,
-															builder: (BuildContext context) {
-																return AlertDialog(
-																	title: Center(
-																			child: Text(
-																					"Email Taken"
-																			)
-																	),
-																	content: Text(
-																		"That email is already taken, please try another",
-																	),
-																	actions: <Widget>[
-																		FlatButton(
-																			child: Text("Dismiss"),
-																			onPressed: () {
-																				Navigator.pop(context);
-																			},
-																		),
-																	],
-																);
-															}
-													);
-													return;
-												}
-												else if(registerResult == "FAILURE")
-												{
-													showDialog(
-															context: context,
-															builder: (BuildContext context) {
-																return AlertDialog(
-																	title: Center(
-																			child: Text(
-																					"Signup Failed"
-																			)
-																	),
-																	content: Text(
-																		"Creating the account failed for an unkown reason. Please try again or sign up online.",
-																	),
-																	actions: <Widget>[
-																		FlatButton(
-																			child: Text("Dismiss"),
-																			onPressed: () {
-																				Navigator.pop(context);
-																			},
-																		),
-																	],
-																);
-															}
-													);
-													return;
-												}
-												
-											},
-											color: Colors.blue[700],
-											child: Text(
-												'Create Account',
-												style: TextStyle(
-														color: Colors.white,
-														fontSize: 18
-												),
-											)
-									),
+																],
+															);
+														}
+												);
+												return;
+											}
+											
+										},
+										color: Colors.blue[700],
+										child: Text(
+											'Create Account',
+											style: TextStyle(
+													color: Colors.white,
+													fontSize: 18
+											),
+										)
 								),
 							),
 							

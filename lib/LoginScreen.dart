@@ -126,9 +126,6 @@ class _LoginScreenState extends State<LoginScreen>
 												
 												bool loginSuccessful = await login(usernameController.text, passwordController.text);
 												
-												
-												//For whatever reason, the EOMF API returns 302 (Moved) when the username/pw is correct, and returns 200 with a webpage when the username/pw is incorrect
-												//TODO: Investigate this further.
 												if(!loginSuccessful)
 												{
 													LoginSession.shared.loggedIn = false;
@@ -253,8 +250,6 @@ class _LoginScreenState extends State<LoginScreen>
 		printWrapped('Response Body: ${response.body}');
 		
 		
-		//For whatever reason, the EOMF API returns 302 (Moved) when the username/pw is correct, and returns 200 with a webpage when the username/pw is incorrect
-		//TODO: Investigate this further.
 		if(response.statusCode == 302) {
 			
 			SharedPreferences prefs = await SharedPreferences.getInstance();

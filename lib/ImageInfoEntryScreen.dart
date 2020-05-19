@@ -42,7 +42,6 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 		
 		Database db = await openDatabase(path, version:1,
 				onCreate: (Database db, int version) async {
-					//TODO: Add "uploaded" bool field, show on image squares
 					await db.execute('CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE, uploaded BOOLEAN)');
 				}
 		);

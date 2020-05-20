@@ -29,13 +29,11 @@ class _CameraScreenState extends State<CameraScreen> {
 					Expanded(
 						child: Container(
 								color: Color.fromARGB(255, 20, 20, 20),
-								//color: Colors.black, //DARKMODE
-								//color: Colors.grey[300], //LIGHTMODE
 								child: Center(
 										child: PositionIndicator()
 								)
 						),
-					)
+					),
 				],
 			),
 			bottomNavigationBar: BottomAppBar(

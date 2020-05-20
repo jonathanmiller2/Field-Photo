@@ -251,7 +251,7 @@ class _LoginScreenState extends State<LoginScreen>
 		print('Response status: ${response.statusCode}');
 		print('Response header: ${response.headers}');
 		printWrapped('Response Body: ${response.body}');
-		
+		print('aaa ${response.body}');
 		
 		if(response.statusCode == 302) {
 			

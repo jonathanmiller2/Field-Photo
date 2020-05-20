@@ -196,7 +196,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 										child: Icon(
 											Icons.cloud_upload,
 											color: Colors.lightGreenAccent[700],
-											size: 25,
+											size: 22,
 										)
 								),
 							],

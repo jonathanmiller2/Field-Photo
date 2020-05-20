@@ -349,7 +349,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																				return AlertDialog(
 																					title: Center(
 																							child: Text(
-																									"Please Log In"
+																									"Login required"
 																							)
 																					),
 																					content: Text(
@@ -430,7 +430,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																			child: AlertDialog(
 																				title: Center(
 																						child: Text(
-																								"Upload Success"
+																								"Upload success"
 																						)
 																				),
 																				content: Text(
@@ -454,7 +454,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																			child: AlertDialog(
 																				title: Center(
 																						child: Text(
-																								"Upload Failed"
+																								"Upload failed"
 																						)
 																				),
 																				content: Text(

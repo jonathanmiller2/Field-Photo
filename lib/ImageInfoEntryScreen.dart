@@ -251,7 +251,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 																			return AlertDialog(
 																				title: Center(
 																						child: Text(
-																								"Land Cover Unspecified"
+																								"Land cover unspecified"
 																						)
 																				),
 																				content: Text(

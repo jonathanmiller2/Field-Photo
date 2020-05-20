@@ -501,7 +501,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 			  															return AlertDialog(
 			  																title: Center(
 			  																		child: Text(
-			  																				"Please Log In"
+			  																				"Login required"
 			  																		)
 			  																),
 			  																content: Text(
@@ -560,7 +560,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 			  														child: AlertDialog(
 			  															title: Center(
 			  																	child: Text(
-			  																			"Upload Succeeded"
+			  																			"Upload succeeded"
 			  																	)
 			  															),
 			  															actions: <Widget>[
@@ -582,7 +582,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 			  														child: AlertDialog(
 			  															title: Center(
 			  																	child: Text(
-			  																			"Upload Failed"
+			  																			"Upload failed"
 			  																	)
 			  															),
 			  															content: Text(

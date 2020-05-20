@@ -130,7 +130,7 @@ class _CameraScreenState extends State<CameraScreen> {
 									return AlertDialog(
 										title: Center(
 												child: Text(
-														"Error Retrieving Position"
+														"Error retrieving position"
 												)
 										),
 										content: Text(

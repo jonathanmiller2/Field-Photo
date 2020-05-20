@@ -128,14 +128,22 @@ class _CameraScreenState extends State<CameraScreen> {
 								context: context,
 								builder: (BuildContext context) {
 									return AlertDialog(
-											title: Center(
-													child: Text(
-															"Error Retrieving Position"
-													)
+										title: Center(
+												child: Text(
+														"Error Retrieving Position"
+												)
+										),
+										content: Text(
+												"There was an error retrieving your position. This app requires your position to geotag photos for our database."
+										),
+										actions: <Widget>[
+											FlatButton(
+												child: Text("Dismiss"),
+												onPressed: () {
+													Navigator.pop(context);
+												},
 											),
-											content: Text(
-													"There was an error retrieving your position. This app requires your position to geotag photos for our database."
-											)
+										],
 									);
 								}
 						);

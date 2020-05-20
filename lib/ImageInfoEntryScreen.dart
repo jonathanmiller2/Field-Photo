@@ -104,7 +104,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 												),
 												Expanded(
 													child: Text(
-														widget.latitude.toString(),
+														widget.latitude.toStringAsPrecision(7),
 													),
 												),
 											]
@@ -123,7 +123,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 												),
 												Expanded(
 													child: Text(
-															widget.longitude.toString()
+															widget.longitude.toStringAsPrecision(7)
 													),
 												),
 											]

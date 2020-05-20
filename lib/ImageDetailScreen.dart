@@ -54,7 +54,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 		
 		const double horizontalPadding = 12;
 		const double verticalPadding = 15;
-		const double labelWidth = 80;
+		const double labelWidth = 90;
 		
 		TextStyle labelStyle = TextStyle(
 			color: Colors.blue[600],
@@ -326,7 +326,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 			  									),
 			  									Expanded(
 			  										child: Text(
-			  											widget.image['lat'].toString(),
+																widget.image['lat'].toStringAsPrecision(7)
 			  										),
 			  									),
 			  								]
@@ -345,7 +345,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 			  									),
 			  									Expanded(
 			  										child: Text(
-			  												widget.image['long'].toString()
+			  												widget.image['long'].toStringAsPrecision(7)
 			  										),
 			  									),
 			  								]

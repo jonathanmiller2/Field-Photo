@@ -197,9 +197,8 @@ class _LoginScreenState extends State<LoginScreen>
 							),
 							
 							Padding(
-								padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+								padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
 								child: Container(
-									height: 200,
 									child: Center(
 										child: Text(
 											'You may capture and geotag photos without an account, but you must have an account to upload them to the University of Oklahoma\'s Earth Observation and Modelling Facility database.',

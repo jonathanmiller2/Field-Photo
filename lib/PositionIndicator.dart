@@ -117,7 +117,7 @@ class _PositionIndicatorState extends State<PositionIndicator>
 	@override
 	void initState() {
 		_updateTimer = new Timer.periodic(
-				Duration(milliseconds: 500), //TODO: This is the location renewal timer, may need fine tuned if performance issues arise
+				Duration(milliseconds: 50), //TODO: This is the location renewal timer, may need fine tuned if performance issues arise
 						(timer){
 					setState(() {});
 				}

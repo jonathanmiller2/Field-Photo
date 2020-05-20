@@ -74,7 +74,7 @@ class _CameraScreenState extends State<CameraScreen> {
 																	context: context,
 																	builder: (BuildContext context) {
 																		return AlertDialog(
-																			title: Text("Enable Geolock?"),
+																			title: Text("Enable geolock?"),
 																			content: Text("Enabling geolock saves the current latitude and longitude and saves them for future photos"),
 																			actions: <Widget>[
 																				FlatButton(

@@ -113,8 +113,8 @@ class _SignedInScreenState extends State<SignedInScreen>
 												};
 												
 												Map<String, String> body = {
-													'username': LoginSession.shared.username,
-													'password': LoginSession.shared.password,
+//													'username': LoginSession.shared.username,
+//													'password': LoginSession.shared.password,
 													'csrfmiddlewaretoken': justToken,
 												};
 												

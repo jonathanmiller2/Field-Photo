@@ -228,6 +228,7 @@ class _LoginScreenState extends State<LoginScreen>
 	
 	Future<bool> login(String username, String password) async {
 		
+		
 		//Make a request to the register url for CSRF token
 		http.Response response = await http.get(Constants.REGISTER_URL);
 		String rawCookie = response.headers['set-cookie'];
@@ -251,9 +252,8 @@ class _LoginScreenState extends State<LoginScreen>
 		print('Response status: ${response.statusCode}');
 		print('Response header: ${response.headers}');
 		printWrapped('Response Body: ${response.body}');
-		print('aaa ${response.body}');
 		
-		if(response.statusCode == 302) {
+		if(response.statusCode == 200) {
 			
 			SharedPreferences prefs = await SharedPreferences.getInstance();
 			await prefs.setString('savedUsername', usernameController.text);

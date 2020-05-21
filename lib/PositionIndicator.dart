@@ -116,12 +116,12 @@ class _PositionIndicatorState extends State<PositionIndicator>
 	
 	@override
 	void initState() {
-		_updateTimer = new Timer.periodic(
-				Duration(milliseconds: 50), //TODO: This is the location renewal timer, may need fine tuned if performance issues arise
+		/*_updateTimer = new Timer.periodic(
+				Duration(milliseconds: 750), //TODO: This is the location renewal timer, may need fine tuned if performance issues arise
 						(timer){
 					setState(() {});
 				}
-		);
+		);*/
 		super.initState();
 	}
 	
@@ -140,147 +140,84 @@ class _PositionIndicatorState extends State<PositionIndicator>
 			//color: PositionIndicator.isGeolocked ? Colors.red[600] : Colors.blue[800], //LIGHTMODE
 		);
 		
-		if(PositionIndicator.isGeolocked)
-		{
-			if(!showingHeading)
-			{
-				buttonChild = Column(
-					mainAxisAlignment: MainAxisAlignment.center,
-					children: <Widget>[
-						Text(
-								"Geolocked Position",
-								style: mainTextStyle
-						),
-						Text(
-								DMSPosition,
-								style: mainTextStyle
-						),
-						Text(
-								locationAccuracy,
-								style: lesserTextStyle
-						),
-					],
-				);
-			}
-			else
-			{
-				buttonChild = Column(
-					mainAxisAlignment: MainAxisAlignment.center,
-					children: <Widget>[
-						Text(
-								"Heading",
-								style: mainTextStyle
-						),
-						Text(
-								heading,
-								style: mainTextStyle
-						),
-					],
-				);
-			}
-			
-			return FlatButton(
-				child: buttonChild,
-				color: Color.fromARGB(0, 0, 0, 0),
-				onPressed: () {
-					setState(() {
-						showingHeading = !showingHeading;
+		var locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 11);
+		var geolocator = Geolocator();
+		
+		return new StreamBuilder<Position>(
+				stream: geolocator.getPositionStream(locationOptions),
+				builder: (context, asyncSnapshot) {
+					
+					if (asyncSnapshot.hasError || asyncSnapshot.data == null)
+					{
+						print("1");
+						print(asyncSnapshot.error.toString());
 						
-					});
-				},
-			);
-		}
-		else
-		{
-			
-			//TODO: If we want to NOT geolock the heading, we need to always return this future builder, saving a new position with the new heading, but same location as before. Basically we need to delete every if statement above this line
-			
-			return new FutureBuilder<List<Object>>(
-					future: Future.wait([
-						MyApp.geolocator.getCurrentPosition(),
-						MyApp.geolocator.isLocationServiceEnabled()
-					]),
-					builder: (context, asyncSnapshot) {
+						PositionIndicator.mostRecentPosition = PositionIndicator.isGeolocked ? PositionIndicator.mostRecentPosition : null;
+						DMSPosition = "Unknown";
+						locationAccuracy = "";
+						heading = "Unknown";
+					}
+					else
+					{
+						Position pos = asyncSnapshot.data;
 						
-						if (asyncSnapshot.hasError || asyncSnapshot.data == null)
-						{
-							PositionIndicator.mostRecentPosition = null;
-							DMSPosition = "Unknown";
-							locationAccuracy = "";
-							heading = "Unknown";
-						}
-						else {
-							Position pos = asyncSnapshot.data[0];
-							bool locationServiceEnabled = asyncSnapshot.data[1];
-							
-							if(locationServiceEnabled)
-							{
-								PositionIndicator.mostRecentPosition = pos;
-								DMSPosition = PositionIndicator.formatPositionAsDMS(pos);
-								locationAccuracy = "\u00B1" + pos.accuracy.truncate().toString() + "m";
-								heading = pos.heading.truncate().toString() + "\u00B0 " + PositionIndicator.getDirFromHeading(pos.heading);
-							}
-							else
-							{
-								PositionIndicator.mostRecentPosition = null;
-								DMSPosition = "Unknown";
-								locationAccuracy = "";
-								heading = "Unknown";
-							}
-						}
-						
-						if(!showingHeading) {
-							buttonChild = Column(
-								mainAxisAlignment: MainAxisAlignment.center,
-								children: <Widget>[
-									Text(
-											"Current Position",
-											style: mainTextStyle
-									),
-									Text(
-											DMSPosition,
-											style: mainTextStyle
-									),
-									Text(
-											locationAccuracy,
-											style: lesserTextStyle
-									),
-								],
-							);
-						}
-						else {
-							buttonChild = Column(
-								mainAxisAlignment: MainAxisAlignment.center,
-								children: <Widget>[
-									Text(
-											"Heading",
-											style: mainTextStyle
-									),
-									Text(
-											heading,
-											style: mainTextStyle
-									),
-								],
-							);
-						}
-						
-						return FlatButton(
-							child: buttonChild,
-							color: Color.fromARGB(0, 0, 0, 0),
-							onPressed: () {
-								setState(() {
-									showingHeading = !showingHeading;
-								});
-							},
+						PositionIndicator.mostRecentPosition = PositionIndicator.isGeolocked ? PositionIndicator.mostRecentPosition : pos;
+						DMSPosition = PositionIndicator.formatPositionAsDMS(pos);
+						locationAccuracy = "\u00B1" + pos.accuracy.truncate().toString() + "m";
+						heading = pos.heading.truncate().toString() + "\u00B0 " + PositionIndicator.getDirFromHeading(pos.heading);
+					}
+					
+					if(!showingHeading) {
+						buttonChild = Column(
+							mainAxisAlignment: MainAxisAlignment.center,
+							children: <Widget>[
+								Text(
+										"Current Position",
+										style: mainTextStyle
+								),
+								Text(
+										DMSPosition,
+										style: mainTextStyle
+								),
+								Text(
+										locationAccuracy,
+										style: lesserTextStyle
+								),
+							],
 						);
 					}
-			);
-		}
+					else {
+						buttonChild = Column(
+							mainAxisAlignment: MainAxisAlignment.center,
+							children: <Widget>[
+								Text(
+										"Heading",
+										style: mainTextStyle
+								),
+								Text(
+										heading,
+										style: mainTextStyle
+								),
+							],
+						);
+					}
+					
+					return FlatButton(
+						child: buttonChild,
+						color: Color.fromARGB(0, 0, 0, 0),
+						onPressed: () {
+							setState(() {
+								showingHeading = !showingHeading;
+							});
+						},
+					);
+				}
+		);
+		
 	}
 	
 	@override
 	void dispose() {
-		_updateTimer.cancel();
 		super.dispose();
 	}
 }

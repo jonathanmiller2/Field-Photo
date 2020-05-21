@@ -8,7 +8,7 @@ const String EOMF_URL = "http://eomf.ou.edu/";
 const String LOGIN_URL = "http://eomf.ou.edu/accounts/mobile_login/";
 const String LOGOUT_URL = "http://eomf.ou.edu/accounts/logout";
 const String REGISTER_URL = "http://eomf.ou.edu/accounts/register/";
-const String UPLOAD_URL = "http://eomf.ou.edu/photos/mobile/upload2/";
+const String UPLOAD_URL = "http://eomf.ou.edu/photos/mobile/upload3/";
 const String ID_FROM_USERNAME_URL = "http://eomf.ou.edu/accounts/id_from_username/?username=";
 
 //TODO: It would be far better to request this from the EOMF API
@@ -18,7 +18,7 @@ const Map<int, String> landcoverClassMap =
 	1:'Evergreen Needleleaf Forest',
 	2:'Evergreen Broadleaf Forest',
 	3:'Deciduous Needleleaf Forest',
-	4:'Deciduous broadleaf Forest',
+	4:'Deciduous Broadleaf Forest',
 	5:'Mixed Forest',
 	6:'Closed Shrublands',
 	7:'Open Shrublands',

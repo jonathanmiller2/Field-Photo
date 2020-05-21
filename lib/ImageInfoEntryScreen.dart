@@ -55,7 +55,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 			int id = await txn.rawInsert(
 					'INSERT INTO photos(path, description, long, lat, takendate, categoryid, dir, dir_deg, uploaded) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', [path, description, longitude, latitude, timestamp, categoryid, dir, heading, false]
 			);
-			print('Inserted photo with id: '+ id.toString());
+			//print('Inserted photo with id: '+ id.toString());
 		});
 	}
 	

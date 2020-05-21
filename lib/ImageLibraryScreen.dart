@@ -623,6 +623,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 		request.fields["landcover_cat"] = image["categoryid"].toString();
 		request.fields["notes"] = image["description"];
 		request.fields["username"] = LoginSession.shared.username;
+		request.fields["password"] = LoginSession.shared.password;
 		request.fields["lat"] = image["lat"].toString();
 		request.fields["lng"] = image["lng"].toString();
 		request.files.add(
@@ -637,9 +638,9 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 		http.StreamedResponse response = await request.send();
 		
 		
-		response.stream.transform(utf8.decoder).listen((x) {
+		/*response.stream.transform(utf8.decoder).listen((x) {
 			print(x);
-		});
+		});*/
 		
 		if(response.statusCode == 200)
 		{

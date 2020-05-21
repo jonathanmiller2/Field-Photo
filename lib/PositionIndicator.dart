@@ -11,6 +11,7 @@ import 'main.dart';
 
 class PositionIndicator extends StatefulWidget {
 	static Position mostRecentPosition;
+	static int mostRecentHeading;
 	static bool isGeolocked = false;
 	
 	@override
@@ -18,6 +19,9 @@ class PositionIndicator extends StatefulWidget {
 	
 	static Position getMostRecentPosition() {
 		return mostRecentPosition;
+	}
+	static int getMostRecentHeading() {
+		return mostRecentHeading;
 	}
 	
 	static void toggleGeolock() {
@@ -164,9 +168,11 @@ class _PositionIndicatorState extends State<PositionIndicator>
 								Position pos = positionSnapshot.data;
 								
 								PositionIndicator.mostRecentPosition = PositionIndicator.isGeolocked ? PositionIndicator.mostRecentPosition : pos;
+								PositionIndicator.mostRecentHeading = compassSnapshot.data.truncate();
 								DMSPosition = PositionIndicator.formatPositionAsDMS(pos);
 								locationAccuracy = "\u00B1" + pos.accuracy.truncate().toString() + "m";
 								heading = compassSnapshot.data.truncate().toString() + "\u00B0 " + PositionIndicator.getDirFromHeading(compassSnapshot.data);
+								
 							}
 							
 							if(!showingHeading) {

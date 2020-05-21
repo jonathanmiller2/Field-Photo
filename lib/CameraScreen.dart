@@ -151,7 +151,7 @@ class _CameraScreenState extends State<CameraScreen> {
 							DateTime timestamp = DateTime.now();
 							double latitude = PositionIndicator.getMostRecentPosition().latitude;
 							double longitude = PositionIndicator.getMostRecentPosition().longitude;
-							double heading = PositionIndicator.getMostRecentPosition().heading;
+							double heading = PositionIndicator.getMostRecentHeading().toDouble();
 							
 							final path = join(
 									(await getTemporaryDirectory()).path,

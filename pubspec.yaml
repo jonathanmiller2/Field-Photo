@@ -41,6 +41,7 @@ dependencies:
   requests: ^3.1.0
   http_parser: ^3.1.4
   permission_handler: ^5.0.0
+  flutter_compass: ^0.4.1
 
 
 dev_dependencies:

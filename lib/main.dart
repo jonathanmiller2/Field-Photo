@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:field_photo/SignedInScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +12,12 @@ import 'constants.dart' as Constants;
 import 'LoginScreen.dart';
 
 void main() async {
+  
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  
   await initialLogin();
 
   LoginSession.shared.loggedIn ??= false;

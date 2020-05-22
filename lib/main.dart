@@ -13,10 +13,7 @@ import 'LoginScreen.dart';
 
 void main() async {
   
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+  
   
   await initialLogin();
 
@@ -41,6 +38,11 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+  
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     
     if(LoginSession.shared.loggedIn) {
       return MaterialApp(

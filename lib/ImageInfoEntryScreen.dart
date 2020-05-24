@@ -14,9 +14,10 @@ class ImageInfoEntryScreen extends StatefulWidget {
 	final DateTime timestamp;
 	final double latitude;
 	final double longitude;
+	final double altitude;
 	final double heading;
 	
-	ImageInfoEntryScreen({this.imagePath, this.timestamp, this.latitude, this.longitude, this.heading});
+	ImageInfoEntryScreen({this.imagePath, this.timestamp, this.latitude, this.longitude, this.altitude, this.heading});
 	
 	@override
 	_ImageInfoEntryScreenState createState() => _ImageInfoEntryScreenState();
@@ -42,7 +43,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 		
 		Database db = await openDatabase(path, version:1,
 				onCreate: (Database db, int version) async {
-					await db.execute('CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE, uploaded BOOLEAN)');
+					await db.execute('CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, alt DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE, uploaded BOOLEAN)');
 				}
 		);
 		setState(() {
@@ -50,10 +51,10 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 		});
 	}
 	
-	_saveImage(path, description, longitude, latitude, timestamp, categoryid, dir, heading) async {
+	_saveImage(path, description, longitude, latitude, altitude, timestamp, categoryid, dir, heading) async {
 		await database.transaction((txn) async {
 			int id = await txn.rawInsert(
-					'INSERT INTO photos(path, description, long, lat, takendate, categoryid, dir, dir_deg, uploaded) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', [path, description, longitude, latitude, timestamp, categoryid, dir, heading, false]
+					'INSERT INTO photos(path, description, long, lat, alt, takendate, categoryid, dir, dir_deg, uploaded) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [path, description, longitude, latitude, altitude, timestamp.toString(), categoryid, dir, heading, 0]
 			);
 			//print('Inserted photo with id: '+ id.toString());
 		});
@@ -268,7 +269,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 																					FlatButton(
 																						child: Text("Continue"),
 																						onPressed: () {
-																							_saveImage(widget.imagePath, fieldNoteController.text, widget.longitude, widget.latitude, widget.timestamp, landcoverClass, PositionIndicator.getDirFromHeading(widget.heading), widget.heading);
+																							_saveImage(widget.imagePath, fieldNoteController.text, widget.longitude, widget.latitude, widget.altitude, widget.timestamp, landcoverClass, PositionIndicator.getDirFromHeading(widget.heading), widget.heading);
 																							
 																							Navigator.pop(context);
 																							Navigator.pop(context);
@@ -282,7 +283,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 															}
 															else
 															{
-																_saveImage(widget.imagePath, fieldNoteController.text, widget.longitude, widget.latitude, widget.timestamp, landcoverClass, PositionIndicator.getDirFromHeading(widget.heading), widget.heading);
+																_saveImage(widget.imagePath, fieldNoteController.text, widget.longitude, widget.latitude, widget.altitude, widget.timestamp, landcoverClass, PositionIndicator.getDirFromHeading(widget.heading), widget.heading);
 																
 																Navigator.pop(context);
 																Navigator.pop(context);

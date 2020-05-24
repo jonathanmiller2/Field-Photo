@@ -552,7 +552,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 			  											Navigator.pop(context);
 			  											
 			  											if (success) {
-			  												await widget.database.rawUpdate('UPDATE photos SET uploaded = ? WHERE id = ?', [true, widget.image['id']]);
+			  												await widget.database.rawUpdate('UPDATE photos SET uploaded = ? WHERE id = ?', [1, widget.image['id']]);
 			  												uploadState = true;
 			  												
 			  												showDialog(

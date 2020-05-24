@@ -13,9 +13,10 @@ class ImagePreviewScreen extends StatelessWidget {
 	final DateTime timestamp;
 	final double latitude;
 	final double longitude;
+	final double altitude;
 	final double heading;
 	
-	ImagePreviewScreen({this.imagePath, this.timestamp, this.latitude, this.longitude, this.heading});
+	ImagePreviewScreen({this.imagePath, this.timestamp, this.latitude, this.longitude, this.altitude, this.heading});
 	
 	@override
 	Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class ImagePreviewScreen extends StatelessWidget {
 													onPress: () {
 														Navigator.push(
 															context,
-															new MaterialPageRoute(builder: (context) => new ImageInfoEntryScreen(imagePath: imagePath, timestamp: timestamp, longitude: longitude, latitude: latitude, heading: heading,)),
+															new MaterialPageRoute(builder: (context) => new ImageInfoEntryScreen(imagePath: imagePath, timestamp: timestamp, latitude: latitude, longitude: longitude, altitude: altitude, heading: heading,)),
 														);
 													},
 													defaultColor: Colors.blue[600],

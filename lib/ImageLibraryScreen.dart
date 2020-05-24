@@ -38,7 +38,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 		
 		Database db = await openDatabase(dbPath, version:1,
 				onCreate: (Database db, int version) async {
-					await db.execute('CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE, uploaded BOOLEAN)');
+					await db.execute('CREATE TABLE photos (id INTEGER PRIMARY KEY, path STRING, userid INTEGER, description TEXT, long DOUBLE, lat DOUBLE, alt DOUBLE, takendate TIMESTAMP, categoryid INTEGER, dir CHARACTER[4], dir_deg DOUBLE, uploaded BOOLEAN)');
 				}
 		);
 		database = db;
@@ -65,7 +65,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 											)
 									),
 									content: Text(
-											"There was an error showing your photo library. Please contact support" //TODO: Support email
+											"There was an error showing your photo library. Please contact support "
 									),
 									actions: <Widget>[
 										FlatButton(
@@ -412,7 +412,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																		
 																		if(success)
 																		{
-																			await database.rawUpdate('UPDATE photos SET uploaded = ? WHERE id = ?', [true, image['id']]);
+																			await database.rawUpdate('UPDATE photos SET uploaded = ? WHERE id = ?', [1, image['id']]);
 																		}
 																		else
 																		{
@@ -625,7 +625,11 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 		request.fields["username"] = LoginSession.shared.username;
 		request.fields["password"] = LoginSession.shared.password;
 		request.fields["lat"] = image["lat"].toString();
-		request.fields["lng"] = image["lng"].toString();
+		request.fields["lon"] = image["long"].toString();
+		request.fields["alt"] = image["alt"].toString();
+		request.fields["date_taken"] = image["takendate"];
+		request.fields["dir_deg"] = image["dir_deg"].toString();
+		
 		request.files.add(
 				await http.MultipartFile.fromPath(
 						'file',
@@ -638,9 +642,9 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 		http.StreamedResponse response = await request.send();
 		
 		
-		/*response.stream.transform(utf8.decoder).listen((x) {
+		response.stream.transform(utf8.decoder).listen((x) {
 			print(x);
-		});*/
+		});
 		
 		if(response.statusCode == 200)
 		{

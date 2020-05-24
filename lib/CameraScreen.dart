@@ -153,6 +153,7 @@ class _CameraScreenState extends State<CameraScreen> {
 							DateTime timestamp = DateTime.now();
 							double latitude = PositionIndicator.getMostRecentPosition().latitude;
 							double longitude = PositionIndicator.getMostRecentPosition().longitude;
+							double altitude = PositionIndicator.getMostRecentPosition().altitude;
 							double heading = PositionIndicator.getMostRecentHeading().toDouble();
 							
 							final path = join(
@@ -167,7 +168,7 @@ class _CameraScreenState extends State<CameraScreen> {
 							
 							Navigator.push(
 								context,
-								new MaterialPageRoute(builder: (context) => new ImagePreviewScreen(imagePath: path, latitude: latitude, longitude: longitude, heading: heading,)),
+								new MaterialPageRoute(builder: (context) => new ImagePreviewScreen(imagePath: path, timestamp: timestamp, latitude: latitude, longitude: longitude, heading: heading, altitude: altitude)),
 							);
 						} catch (e) {
 							print(e);

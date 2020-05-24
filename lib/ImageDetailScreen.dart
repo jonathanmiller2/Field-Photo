@@ -663,6 +663,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 		}
 	}
 	
+	
 	Future<bool> upload(Map<String, dynamic> image) async {
 		
 		if(image['uploaded'] == 1)
@@ -677,7 +678,11 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 		request.fields["username"] = LoginSession.shared.username;
 		request.fields["password"] = LoginSession.shared.password;
 		request.fields["lat"] = image["lat"].toString();
-		request.fields["lng"] = image["lng"].toString();
+		request.fields["lon"] = image["long"].toString();
+		request.fields["alt"] = image["alt"].toString();
+		request.fields["date_taken"] = image["takendate"];
+		request.fields["dir_deg"] = image["dir_deg"].toString();
+		
 		request.files.add(
 				await http.MultipartFile.fromPath(
 						'file',
@@ -689,9 +694,10 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 		
 		http.StreamedResponse response = await request.send();
 		
-		/*response.stream.transform(utf8.decoder).listen((x) {
+		
+		response.stream.transform(utf8.decoder).listen((x) {
 			print(x);
-		});*/
+		});
 		
 		if(response.statusCode == 200)
 		{

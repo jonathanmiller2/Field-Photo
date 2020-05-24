@@ -19,14 +19,14 @@ void main() async {
 
   LoginSession.shared.loggedIn ??= false;
   
-  if(LoginSession.shared.loggedIn)
-  {
-    print('initial login succeed');
-  }
-  else
-  {
-    print('initial login failed');
-  }
+//  if(LoginSession.shared.loggedIn)
+//  {
+//    print('initial login success');
+//  }
+//  else
+//  {
+//    print('initial login failed');
+//  }
   
   runApp(MyApp());
 }

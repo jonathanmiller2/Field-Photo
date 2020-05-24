@@ -694,10 +694,9 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 		
 		http.StreamedResponse response = await request.send();
 		
-		
-		response.stream.transform(utf8.decoder).listen((x) {
-			print(x);
-		});
+//		response.stream.transform(utf8.decoder).listen((x) {
+//			print(x);
+//		});
 		
 		if(response.statusCode == 200)
 		{

@@ -249,9 +249,9 @@ class _LoginScreenState extends State<LoginScreen>
 		};
 		
 		response = await http.post(Constants.LOGIN_URL, headers:header, body:body);
-		print('Response status: ${response.statusCode}');
-		print('Response header: ${response.headers}');
-		printWrapped('Response Body: ${response.body}');
+//		print('Response status: ${response.statusCode}');
+//		print('Response header: ${response.headers}');
+//		printWrapped('Response Body: ${response.body}');
 		
 		if(response.statusCode == 200) {
 			

@@ -491,6 +491,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 			  															);
 			  														}
 			  												);
+			  												return;
 			  											}
 			  											
 			  											if(!LoginSession.shared.loggedIn)

@@ -42,11 +42,23 @@ dependencies:
   http_parser: ^3.1.4
   permission_handler: ^5.0.0
   flutter_compass: ^0.4.1
+  
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_launcher_icons: ^0.7.5
+
+
+flutter_icons:
+  ios: true
+  android: true
+  image_path_android: "assets/AndroidAppIcon.png"
+  image_path_ios: "assets/IosAppIcon.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/AndroidAppIcon.png"
 
 
 # For information on the generic Dart part of this file, see the

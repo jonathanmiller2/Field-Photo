@@ -23,6 +23,26 @@ If corner-case bugs crop up, and you absolutely cannot figure out how the app wo
 
 To make changes to this app, you need to [install Flutter's tools](https://flutter.dev/docs/get-started/install) onto your computer and open the project via Android Studio (Windows) or XCode (Apple).
 
+Every file represents a different screen/widget of the app. If a particular screen is broken, that screen's file is a good place to start. 
+- main.dart
+- constants.dart
+- ImageSquare.dart - The preview squares displayed in the library
+- LabelledInvisibleButton.dart - Buttons that only show the text, rather than a colored box like Flutter buttons
+- CameraPassthrough.dart - The camera's view, shown on the Camera Screen
+- MainBottomBar.dart - The bottom bar with the library, camera, and info buttons
+- MainCameraButton.dart
+- PositionIndicator.dart - A generalized handler for getting the current position/direction. Also is responsible for the coordinate text under the camera passthrough on the camera screen.
+- ImagePreviewScreen.dart - 
+- ImageInfoEntryScreen.dart - 
+- SignedInScreen.dart - The screen that displays your current username with a logout button
+- SignupScreen.dart - The screen where you register a new account
+- LoginScreen.dart
+- InfoScreen.dart - The screen that explains what the EOMF does
+- CameraScreen.dart
+- LibraryScreen.dart - The screen with the image library
+- ImageDetailScreen.dart - The screen that shows after tapping an image square in the library that showsthe image and the entered details 
+
+
 This app interfaces with the [EOMF website](http://eomf.ou.edu/). It uses the following endpoints on the website to operate. 
 - Upload: http://eomf.ou.edu/photos/mobile/upload3/
 - Register: http://eomf.ou.edu/accounts/register/

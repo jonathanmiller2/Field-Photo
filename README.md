@@ -36,18 +36,18 @@ Be warned, these endpoints are janky. Currently, these are hosted on OU's Mangro
 In the future, packages may update and ruin the stability of the app.
 The first draft of the app used these packages:
 
-url_launcher: ^5.0.2
-provider: ^4.0.0
-camera: ^0.5.2+1
-path_provider: ^1.1.0
-path: ^1.6.2
-esys_flutter_share: ^1.0.2
-geolocator: ^5.1.3
-shared_preferences: ^0.5.6
-sqflite: ^1.3.0
-http: ^0.12.1
-http_parser: ^3.1.4
-permission_handler: ^5.0.0
-flutter_compass: ^0.4.1
- 
-flutter_launcher_icons: ^0.7.5
+- url_launcher: ^5.0.2
+- provider: ^4.0.0
+- camera: ^0.5.2+1
+- path_provider: ^1.1.0
+- path: ^1.6.2
+- esys_flutter_share: ^1.0.2
+- geolocator: ^5.1.3
+- shared_preferences: ^0.5.6
+- sqflite: ^1.3.0
+- http: ^0.12.1
+- http_parser: ^3.1.4
+- permission_handler: ^5.0.0
+- flutter_compass: ^0.4.1
+
+- flutter_launcher_icons: ^0.7.5

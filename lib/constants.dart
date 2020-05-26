@@ -2,12 +2,11 @@ library constants;
 
 const String EOMF_SITE_USERNAME_TAKEN_MESSAGE = "A user with that username already exists";
 const String EOMF_SITE_EMAIL_TAKEN_MESSAGE = "This email address is already in use";
-const String EOMF_URL = "http://eomf.ou.edu/";
+
 const String LOGIN_URL = "http://eomf.ou.edu/accounts/mobile_login/";
 const String LOGOUT_URL = "http://eomf.ou.edu/accounts/logout";
 const String REGISTER_URL = "http://eomf.ou.edu/accounts/register/";
 const String UPLOAD_URL = "http://eomf.ou.edu/photos/mobile/upload3/";
-const String ID_FROM_USERNAME_URL = "http://eomf.ou.edu/accounts/id_from_username/?username=";
 
 //TODO: It would be far better to request this from the EOMF API
 //TODO: Update this any time the field cover category numbers change! This should always match the EOMF categories defined by the categories section of the admin site, and the category table in the database

@@ -1,6 +1,4 @@
-
 library constants;
-
 
 const String EOMF_SITE_USERNAME_TAKEN_MESSAGE = "A user with that username already exists";
 const String EOMF_SITE_EMAIL_TAKEN_MESSAGE = "This email address is already in use";

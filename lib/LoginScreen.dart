@@ -20,11 +20,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
 {
-	void printWrapped(String text) {
-		final pattern = new RegExp('.{1,800}'); // 800 is the size of each chunk
-		pattern.allMatches(text).forEach((match) => print(match.group(0)));
-	}
-	
 	final usernameController = TextEditingController();
 	final passwordController = TextEditingController();
 	
@@ -251,7 +246,7 @@ class _LoginScreenState extends State<LoginScreen>
 		response = await http.post(Constants.LOGIN_URL, headers:header, body:body);
 //		print('Response status: ${response.statusCode}');
 //		print('Response header: ${response.headers}');
-//		printWrapped('Response Body: ${response.body}');
+//		print('Response Body: ${response.body}');
 		
 		if(response.statusCode == 200) {
 			

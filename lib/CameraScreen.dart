@@ -3,7 +3,6 @@ import 'package:field_photo/LabelledInvisibleButton.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -71,7 +70,8 @@ class _CameraScreenState extends State<CameraScreen> {
 												child: LabelledInvisibleButton(
 													label: "Geolock",
 													onPress: () {
-														if(!PositionIndicator.isGeolocked) {
+														if(!PositionIndicator.isGeolocked)
+														{
 															showDialog(
 																	context: context,
 																	builder: (BuildContext context) {
@@ -94,10 +94,8 @@ class _CameraScreenState extends State<CameraScreen> {
 																					},
 																				)
 																			],
-																		
 																		);
 																	}
-															
 															);
 														}
 														else
@@ -121,7 +119,6 @@ class _CameraScreenState extends State<CameraScreen> {
 			floatingActionButton: FloatingActionButton(
 				backgroundColor: Colors.blue[600],
 				onPressed: () async {
-					
 					if(PositionIndicator.getMostRecentPosition() == null)
 					{
 						showDialog(
@@ -148,7 +145,8 @@ class _CameraScreenState extends State<CameraScreen> {
 								}
 						);
 					}
-					else {
+					else
+					{
 						try {
 							DateTime timestamp = DateTime.now();
 							double latitude = PositionIndicator.getMostRecentPosition().latitude;

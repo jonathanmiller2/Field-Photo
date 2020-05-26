@@ -1,11 +1,10 @@
 import 'dart:io';
 
-import 'LabelledInvisibleButton.dart';
-import 'ImageInfoEntryScreen.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'LabelledInvisibleButton.dart';
+import 'ImageInfoEntryScreen.dart';
 
 
 class ImagePreviewScreen extends StatelessWidget {

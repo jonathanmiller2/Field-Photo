@@ -29,11 +29,13 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 	Database database;
 	final fieldNoteController = TextEditingController();
 	
+	
 	@override
 	void initState() {
 		_startDB();
 		super.initState();
 	}
+	
 	
 	_startDB() async {
 		var databasesPath = await getDatabasesPath();
@@ -51,15 +53,14 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 		});
 	}
 	
+	
 	_saveImage(path, description, longitude, latitude, altitude, timestamp, categoryid, dir, heading) async {
 		await database.transaction((txn) async {
-			int id = await txn.rawInsert(
+			await txn.rawInsert(
 					'INSERT INTO photos(path, description, long, lat, alt, takendate, categoryid, dir, dir_deg, uploaded) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [path, description, longitude, latitude, altitude, timestamp.toString(), categoryid, dir, heading, 0]
 			);
-			//print('Inserted photo with id: '+ id.toString());
 		});
 	}
-	
 	
 	
 	@override

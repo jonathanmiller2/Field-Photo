@@ -109,8 +109,6 @@ class PositionIndicator extends StatefulWidget {
 
 class _PositionIndicatorState extends State<PositionIndicator>
 {
-	Timer _updateTimer;
-	
 	// ignore: non_constant_identifier_names
 	String DMSPosition = "Unknown";
 	String locationAccuracy = "";
@@ -119,30 +117,18 @@ class _PositionIndicatorState extends State<PositionIndicator>
 	bool showingHeading = false;
 	Widget buttonChild;
 	
-	@override
-	void initState() {
-		/*_updateTimer = new Timer.periodic(
-				Duration(milliseconds: 750), //TODO: This is the location renewal timer, may need fine tuned if performance issues arise
-						(timer){
-					setState(() {});
-				}
-		);*/
-		super.initState();
-	}
 	
 	@override
 	Widget build(BuildContext context) {
 		
 		TextStyle mainTextStyle = TextStyle(
 			fontSize: 18,
-			color: PositionIndicator.isGeolocked ? Colors.red[600] : Colors.white, // DARKMODE
-			//color: PositionIndicator.isGeolocked ? Colors.red[600] : Colors.blue[800], //LIGHTMODE
+			color: PositionIndicator.isGeolocked ? Colors.red[600] : Colors.white
 		);
 		
 		TextStyle lesserTextStyle = TextStyle(
 			fontSize: 14,
-			color: PositionIndicator.isGeolocked ? Colors.red[600] : Colors.white, // DARKMODE
-			//color: PositionIndicator.isGeolocked ? Colors.red[600] : Colors.blue[800], //LIGHTMODE
+			color: PositionIndicator.isGeolocked ? Colors.red[600] : Colors.white
 		);
 		
 		var locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 11);
@@ -223,7 +209,6 @@ class _PositionIndicatorState extends State<PositionIndicator>
 					);
 				}
 		);
-		
 	}
 	
 	@override

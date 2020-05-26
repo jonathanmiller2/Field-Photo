@@ -3,30 +3,17 @@ import 'package:field_photo/SignedInScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'LoginScreen.dart';
 import 'LoginSession.dart';
 import 'constants.dart' as Constants;
 
-import 'LoginScreen.dart';
-
 void main() async {
-  
-  
-  
   await initialLogin();
-
-  LoginSession.shared.loggedIn ??= false;
   
-//  if(LoginSession.shared.loggedIn)
-//  {
-//    print('initial login success');
-//  }
-//  else
-//  {
-//    print('initial login failed');
-//  }
+  LoginSession.shared.loggedIn ??= false;
   
   runApp(MyApp());
 }
@@ -38,18 +25,20 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-  
+    
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
     
-    if(LoginSession.shared.loggedIn) {
+    if(LoginSession.shared.loggedIn)
+    {
       return MaterialApp(
           home: SignedInScreen()
       );
     }
-    else {
+    else
+    {
       return MaterialApp(
           home: LoginScreen()
       );
@@ -111,13 +100,14 @@ Future<bool> initialLogin() async {
   print('Response header: ${response.headers}');
   */
   
-  if(response.statusCode == 302) {
+  if(response.statusCode == 200)
+  {
     LoginSession.shared.loggedIn = true;
     LoginSession.shared.username = username;
     LoginSession.shared.password = password;
     return true;
   }
-
+  
   LoginSession.shared.loggedIn = false;
   return false;
 }

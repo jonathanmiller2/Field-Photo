@@ -1,7 +1,3 @@
-
-
-import 'dart:convert';
-
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';

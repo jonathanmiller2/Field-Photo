@@ -52,10 +52,12 @@ class InfoScreen extends StatelessWidget {
 									label: 'Visit the EOMF',
 									onPress: () async {
 										String url = 'http://eomf.ou.edu/photos/';
-										if (await canLaunch(url)) {
+										if (await canLaunch(url))
+										{
 											await launch(url);
 										}
-										else {
+										else
+										{
 											throw 'Could not launch $url';
 										}
 									},
@@ -68,5 +70,4 @@ class InfoScreen extends StatelessWidget {
 				)
 		);
 	}
-	
 }

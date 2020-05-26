@@ -98,6 +98,7 @@ class _SignedInScreenState extends State<SignedInScreen>
 									height: 45,
 									child: FlatButton(
 											onPressed: () async {
+												//TODO: I have no idea if this logout method actually works server-side. Whether or not it works depends on a complicated interaction between this app and Django session authentication middleware, which is very difficult to debug.
 												
 												//Make a request to the register url for CSRF token
 												http.Response response = await http.get(Constants.REGISTER_URL);
@@ -113,8 +114,6 @@ class _SignedInScreenState extends State<SignedInScreen>
 												};
 												
 												Map<String, String> body = {
-//													'username': LoginSession.shared.username,
-//													'password': LoginSession.shared.password,
 													'csrfmiddlewaretoken': justToken,
 												};
 												

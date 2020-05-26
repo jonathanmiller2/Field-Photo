@@ -1,14 +1,10 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import 'main.dart';
 
-
-
 class CameraPassthrough extends StatefulWidget {
-	
 	@override
 	_CameraPassthroughState createState() => _CameraPassthroughState();
 }
@@ -28,8 +24,7 @@ class _CameraPassthroughState extends State<CameraPassthrough> {
 	}
 	
 	@override
-	Widget build(BuildContext context)
-	{
+	Widget build(BuildContext context) {
 		//TODO: This may need to be a future builder. As it stands, if the aspect ratio isn't defined when the app builds, it will likely never rebuild to show the preview
 		if(MyApp.cameraController?.value?.aspectRatio == null)
 		{
@@ -55,7 +50,6 @@ class _CameraPassthroughState extends State<CameraPassthrough> {
 	
 	@override
 	void dispose() {
-		// Dispose of the controller when the widget is disposed.
 		MyApp.cameraController.dispose();
 		super.dispose();
 	}

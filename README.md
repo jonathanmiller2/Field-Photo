@@ -16,8 +16,6 @@ If specifically land cover classes are being put into the database incorrectly, 
 Otherwise, look at the constants.dart file, and check that each URL is still correct. You can check them by sending requests, or by looking at the urls.py files on the server to make sure the server is still handling those URLs. 
 Make sure the app is checking for the right HTTP status codes. If the server changes it's response codes or response messages, it's possible that the app will start misbehaving.
 
-If the app just no longer compiles or works at all, check packages. Make sure everything agrees with one another and the app references things that still exist.
-
 If corner-case bugs crop up, and you absolutely cannot figure out how the app works or what's going on, you can try e-mailing me at jonathanmiller2@hotmail.com. Hopefully I'll remember enough to help.
 
 ## Info for Future Maintainers

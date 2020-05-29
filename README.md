@@ -25,6 +25,7 @@ To make changes to this app, you need to [install Flutter's tools](https://flutt
 Every file represents a different screen/widget of the app. If a particular screen is broken, that screen's file is a good place to start.
 
 IMPORTANT NOTE: If you need to change any of the wording, or if you are adding new text, you will need to know how the localization system works. Basically, all text gets run through `AppLocalizations.of(context).translate("A keyword to lookup in a JSON translation file")`. On startup, the app will read from the device's OS to figure out which locale/language is appropriate, then read from the JSON file associated with that locale. It defaults to English if a locale is missing. When you call `.translate` as shown above, it looks up the string you pass it in the JSON translation file associated with the chosen locale. It will return the value associated with the string key you pass it.
+
 If you add text, you will need to add the translated version of that text to **EVERY** JSON translation file. If you don't, people using other languages will just see a big red error.
 
 This app interfaces with the [EOMF website](http://eomf.ou.edu/). It uses the following endpoints on the website to operate. 

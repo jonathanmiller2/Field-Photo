@@ -3,6 +3,8 @@ import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'localizations.dart';
+
 class InfoScreen extends StatelessWidget {
 	@override
 	Widget build(BuildContext context)
@@ -10,7 +12,7 @@ class InfoScreen extends StatelessWidget {
 		return Scaffold(
 				appBar: AppBar(
 					title: Text(
-							'About',
+							AppLocalizations.of(context).translate('About'),
 							style: TextStyle(
 								fontSize: 22.0,
 								color: Colors.black,
@@ -34,11 +36,10 @@ class InfoScreen extends StatelessWidget {
 								Padding(
 									padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
 									child: Container(
-										height: 200,
+										height: 375,
 										child: Center(
 											child: Text(
-												'This citizen science effort enables you to share your field photos, show your footprint of travel, and support monitoring of our planet Earth \n\n'
-														'Visit the Earth Observation and Modeling Facility (EOMF) website to view photos and satellite data.',
+												AppLocalizations.of(context).translate('about-text'),
 												style: TextStyle(
 													fontSize: 18,
 													color: Colors.grey[800],
@@ -49,7 +50,7 @@ class InfoScreen extends StatelessWidget {
 									),
 								),
 								LabelledInvisibleButton(
-									label: 'Visit the EOMF',
+									label: AppLocalizations.of(context).translate("Visit the EOMF"),
 									onPress: () async {
 										String url = 'http://eomf.ou.edu/photos/';
 										if (await canLaunch(url))

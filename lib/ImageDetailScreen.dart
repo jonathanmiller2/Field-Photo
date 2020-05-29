@@ -12,6 +12,7 @@ import 'package:http_parser/http_parser.dart';
 import 'LabelledInvisibleButton.dart';
 import 'LoginSession.dart';
 import 'constants.dart' as Constants;
+import 'localizations.dart';
 
 class ImageDetailScreen extends StatefulWidget {
 	
@@ -28,7 +29,6 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 	int selectedLandcoverClass;
 	int savedLandcoverClass;
 	String savedDescription;
-	
 	bool uploadState;
 	
 	TextEditingController fieldNoteController;
@@ -49,6 +49,8 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 	@override
 	Widget build(BuildContext context) {
 		
+		Map<int, String> landcoverMap = Constants.LandcoverMap().getLandcoverClassMap(context);
+		
 		const double horizontalPadding = 12;
 		const double verticalPadding = 15;
 		const double labelWidth = 90;
@@ -67,7 +69,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 					backgroundColor: Colors.grey[200],
 					appBar: AppBar(
 						title: Text(
-								'Field Photo Metadata',
+								AppLocalizations.of(context).translate("Field Photo Metadata"),
 								style: TextStyle(
 									fontSize: 22,
 									color: Colors.black,
@@ -79,7 +81,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 							Padding(
 								padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 								child: LabelledInvisibleButton(
-									label: 'Cancel',
+									label: AppLocalizations.of(context).translate("Cancel"),
 									onPress: () {
 										setState(() {
 											editMode = false;
@@ -112,7 +114,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 													Container(
 														width: labelWidth,
 														child: Text(
-															"Latitude",
+															AppLocalizations.of(context).translate("Latitude"),
 															style: labelStyle,
 														),
 													),
@@ -131,7 +133,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 													Container(
 														width: labelWidth,
 														child: Text(
-															"Longitude",
+															AppLocalizations.of(context).translate("Longitude"),
 															style: labelStyle,
 														),
 													),
@@ -154,7 +156,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 													Container(
 														width: labelWidth,
 														child: Text(
-															"Land Cover",
+															AppLocalizations.of(context).translate("Land Cover"),
 															style: labelStyle,
 														),
 													),
@@ -173,7 +175,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 																	return DropdownMenuItem<int>(
 																			value: value,
 																			child: Text(
-																					Constants.landcoverClassMap[value],
+																					landcoverMap[value],
 																					style: TextStyle(
 																							fontSize: 15
 																					)
@@ -199,7 +201,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 													Container(
 														width: labelWidth,
 														child: Text(
-															"Field Notes",
+															AppLocalizations.of(context).translate("Field Notes"),
 															style: labelStyle,
 														),
 													),
@@ -236,7 +238,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 												child: Align(
 														alignment: Alignment.centerRight,
 														child: LabelledInvisibleButton(
-															label: "Save",
+															label: AppLocalizations.of(context).translate("Save"),
 															onPress: () async {
 																await widget.database.rawUpdate('UPDATE photos SET description = ?, categoryid = ? WHERE id = ?', [fieldNoteController.text, selectedLandcoverClass, widget.image['id']]);
 																setState(() {
@@ -270,7 +272,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 					backgroundColor: Colors.grey[200],
 					appBar: AppBar(
 						title: Text(
-								'Field Photo Metadata',
+								AppLocalizations.of(context).translate("Field Photo Metadata"),
 								style: TextStyle(
 									fontSize: 22.0,
 									color: Colors.black,
@@ -286,7 +288,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 							Padding(
 								padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 								child: LabelledInvisibleButton(
-									label: 'Edit',
+									label: AppLocalizations.of(context).translate("Edit"),
 									onPress: () {
 										setState(() {
 											editMode = true;
@@ -317,7 +319,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 													Container(
 														width: labelWidth,
 														child: Text(
-															"Latitude",
+															AppLocalizations.of(context).translate("Latitude"),
 															style: labelStyle,
 														),
 													),
@@ -336,7 +338,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 													Container(
 														width: labelWidth,
 														child: Text(
-															"Longitude",
+															AppLocalizations.of(context).translate("Longitude"),
 															style: labelStyle,
 														),
 													),
@@ -359,7 +361,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 													Container(
 														width: labelWidth,
 														child: Text(
-															"Uploaded",
+															AppLocalizations.of(context).translate("Uploaded"),
 															style: labelStyle,
 														),
 													),
@@ -380,13 +382,13 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 													Container(
 														width: labelWidth,
 														child: Text(
-															"Land Cover",
+															AppLocalizations.of(context).translate("Land Cover"),
 															style: labelStyle,
 														),
 													),
 													Expanded(
 															child: Text(
-																	Constants.landcoverClassMap[selectedLandcoverClass],
+																	landcoverMap[selectedLandcoverClass],
 																	style: TextStyle(
 																			fontSize: 15
 																	)
@@ -406,7 +408,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 													Container(
 														width: labelWidth,
 														child: Text(
-															"Field Notes",
+															AppLocalizations.of(context).translate("Field Notes"),
 															style: labelStyle,
 														),
 													),
@@ -440,7 +442,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 												child: Padding(
 													padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 													child: LabelledInvisibleButton(
-														label: "Share",
+														label: AppLocalizations.of(context).translate("Share"),
 														onPress: () async {
 															ByteData byteData = await rootBundle.load(widget.image['path'].toString());
 															Share.files('Field Photo', {basename(widget.image['path']) : byteData.buffer.asUint8List()}, '*/*');
@@ -459,7 +461,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 												child: Padding(
 													padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 													child: LabelledInvisibleButton(
-														label: "Upload",
+														label: AppLocalizations.of(context).translate("Upload"),
 														onPress: () async {
 															
 															if(widget.image['uploaded'] == 1)
@@ -470,15 +472,15 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 																			return AlertDialog(
 																				title: Center(
 																						child: Text(
-																								"Photo already uploaded"
+																								AppLocalizations.of(context).translate("Photo already uploaded")
 																						)
 																				),
 																				content: Text(
-																					"This photo has already been uploaded",
+																					AppLocalizations.of(context).translate("This photo has already been uploaded"),
 																				),
 																				actions: <Widget>[
 																					FlatButton(
-																						child: Text("Dismiss"),
+																						child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																						onPressed: () {
 																							Navigator.pop(context);
 																							return;
@@ -499,22 +501,22 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 																			return AlertDialog(
 																				title: Center(
 																						child: Text(
-																								"Login required"
+																								AppLocalizations.of(context).translate("Login required")
 																						)
 																				),
 																				content: Text(
-																					"In order to upload photos you must first be logged in",
+																					AppLocalizations.of(context).translate("In order to upload photos you must first be logged in"),
 																				),
 																				actions: <Widget>[
 																					FlatButton(
-																						child: Text("Cancel"),
+																						child: Text(AppLocalizations.of(context).translate("Cancel")),
 																						onPressed: () {
 																							Navigator.pop(context);
 																							return;
 																						},
 																					),
 																					FlatButton(
-																						child: Text("Login"),
+																						child: Text(AppLocalizations.of(context).translate("Login")),
 																						onPressed: () {
 																							Navigator.pop(context);
 																							Navigator.pop(context);
@@ -558,12 +560,12 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 																		child: AlertDialog(
 																			title: Center(
 																					child: Text(
-																							"Upload succeeded"
+																							AppLocalizations.of(context).translate("Upload succeeded")
 																					)
 																			),
 																			actions: <Widget>[
 																				FlatButton(
-																					child: Text("Dismiss"),
+																					child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																					onPressed: () {
 																						Navigator.pop(context);
 																					},
@@ -580,15 +582,15 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 																		child: AlertDialog(
 																			title: Center(
 																					child: Text(
-																							"Upload failed"
+																							AppLocalizations.of(context).translate("Upload failed")
 																					)
 																			),
 																			content: Text(
-																				"The upload failed, please try again",
+																				AppLocalizations.of(context).translate("The upload failed, please try again"),
 																			),
 																			actions: <Widget>[
 																				FlatButton(
-																					child: Text("Dismiss"),
+																					child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																					onPressed: () {
 																						Navigator.pop(context);
 																					},
@@ -614,23 +616,23 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 												child: Padding(
 													padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 													child: LabelledInvisibleButton(
-														label: "Delete",
+														label: AppLocalizations.of(context).translate("Delete"),
 														onPress: () {
 															showDialog(
 																	context: context,
 																	builder: (BuildContext context) {
 																		return AlertDialog(
-																			title: Text("Delete image?"),
-																			content: Text("Deleting a image permanently removes it."),
+																			title: Text(AppLocalizations.of(context).translate("Delete image?")),
+																			content: Text(AppLocalizations.of(context).translate("Deleting a image permanently removes it.")),
 																			actions: <Widget>[
 																				FlatButton(
-																					child: Text("Cancel"),
+																					child: Text(AppLocalizations.of(context).translate("Cancel")),
 																					onPressed: () {
 																						Navigator.pop(context);
 																					},
 																				),
 																				FlatButton(
-																					child: Text("Delete"),
+																					child: Text(AppLocalizations.of(context).translate("Delete")),
 																					onPressed: () async {
 																						await widget.database.rawDelete('DELETE FROM photos WHERE id = ?', [widget.image['id']]);
 																						Navigator.pop(context);

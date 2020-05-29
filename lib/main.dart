@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'localizations.dart';
 
 import 'LoginScreen.dart';
 import 'LoginSession.dart';
@@ -12,13 +14,34 @@ import 'constants.dart' as Constants;
 
 void main() async {
   await initialLogin();
-  
   LoginSession.shared.loggedIn ??= false;
+  
+  Locale chosenLocale;
+  
+  List<Locale> locales = WidgetsBinding.instance.window.locales;
+  for(Locale l in locales)
+  {
+    if(AppLocalizations.delegate.isSupported(l))
+    {
+      chosenLocale = l;
+    }
+  }
+  
+  if(chosenLocale != null)
+  {
+    await AppLocalizations.delegate.load(chosenLocale);
+  }
+  else
+  {
+    await AppLocalizations.delegate.load(Locale('en'));
+  }
+  
   
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  
   
   static Geolocator geolocator = Geolocator();
   static CameraController cameraController;
@@ -26,23 +49,36 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
+    
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
     
+    Widget child;
+    
     if(LoginSession.shared.loggedIn)
     {
-      return MaterialApp(
-          home: SignedInScreen()
-      );
+      child = SignedInScreen();
     }
     else
     {
-      return MaterialApp(
-          home: LoginScreen()
-      );
+      child = LoginScreen();
     }
+    
+    return MaterialApp(
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en'),
+          const Locale('zh'),
+        ],
+        home: child
+    );
   }
 }
 

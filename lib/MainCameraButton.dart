@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'CameraScreen.dart';
+import 'localizations.dart';
 
 class MainCameraButton extends StatelessWidget {
 	@override
@@ -22,21 +23,21 @@ class MainCameraButton extends StatelessWidget {
 								return AlertDialog(
 									title: Center(
 											child: Text(
-													"Camera access not granted"
+													AppLocalizations.of(context).translate("Camera access not granted")
 											)
 									),
 									content: Text(
-										"This app needs permission to use your camera in order to take field photos, please allow camera access in your settings",
+											AppLocalizations.of(context).translate("camera-permission-required")
 									),
 									actions: <Widget>[
 										FlatButton(
-											child: Text("Dismiss"),
+											child: Text(AppLocalizations.of(context).translate("Dismiss")),
 											onPressed: () {
 												Navigator.pop(context);
 											},
 										),
 										FlatButton(
-											child: Text("Settings"),
+											child: Text(AppLocalizations.of(context).translate("Settings")),
 											onPressed: () {
 												openAppSettings();
 												Navigator.pop(context);
@@ -56,21 +57,21 @@ class MainCameraButton extends StatelessWidget {
 								return AlertDialog(
 									title: Center(
 											child: Text(
-													"Location access not granted"
+													AppLocalizations.of(context).translate("Location access not granted")
 											)
 									),
 									content: Text(
-										"This app needs permission to use your location in order to tag field photos, please allow location access in your settings",
+											AppLocalizations.of(context).translate("location-permission-required")
 									),
 									actions: <Widget>[
 										FlatButton(
-											child: Text("Dismiss"),
+											child: Text(AppLocalizations.of(context).translate("Dismiss")),
 											onPressed: () {
 												Navigator.pop(context);
 											},
 										),
 										FlatButton(
-											child: Text("Settings"),
+											child: Text(AppLocalizations.of(context).translate("Settings")),
 											onPressed: () {
 												openAppSettings();
 												Navigator.pop(context);

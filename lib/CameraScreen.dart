@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'ImagePreviewScreen.dart';
 import 'PositionIndicator.dart';
+import 'localizations.dart';
 import 'main.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -50,7 +51,7 @@ class _CameraScreenState extends State<CameraScreen> {
 										child: Align(
 												alignment: Alignment.centerLeft,
 												child: LabelledInvisibleButton(
-													label: "Close",
+													label: AppLocalizations.of(context).translate("Close"),
 													onPress: () {
 														Navigator.pop(context);
 													},
@@ -68,7 +69,7 @@ class _CameraScreenState extends State<CameraScreen> {
 										child: Align(
 												alignment: Alignment.centerRight,
 												child: LabelledInvisibleButton(
-													label: "Geolock",
+													label: AppLocalizations.of(context).translate("Geolock"),
 													onPress: () {
 														if(!PositionIndicator.isGeolocked)
 														{
@@ -76,17 +77,17 @@ class _CameraScreenState extends State<CameraScreen> {
 																	context: context,
 																	builder: (BuildContext context) {
 																		return AlertDialog(
-																			title: Text("Enable geolock?"),
-																			content: Text("Enabling geolock saves the current latitude and longitude and saves them for future photos"),
+																			title: Text(AppLocalizations.of(context).translate("Enable geolock?")),
+																			content: Text(AppLocalizations.of(context).translate("geolock-explanation")),
 																			actions: <Widget>[
 																				FlatButton(
-																					child: Text("Cancel"),
+																					child: Text(AppLocalizations.of(context).translate("Cancel")),
 																					onPressed: () {
 																						Navigator.pop(context);
 																					},
 																				),
 																				FlatButton(
-																					child: Text("Enable"),
+																					child: Text(AppLocalizations.of(context).translate("Enable")),
 																					onPressed: () {
 																						Navigator.pop(context);
 																						PositionIndicator.toggleGeolock();
@@ -127,15 +128,15 @@ class _CameraScreenState extends State<CameraScreen> {
 									return AlertDialog(
 										title: Center(
 												child: Text(
-														"Error retrieving position"
+														AppLocalizations.of(context).translate("Error retrieving position")
 												)
 										),
 										content: Text(
-												"There was an error retrieving your position. This app requires your position to geotag photos for our database."
+												AppLocalizations.of(context).translate("position-retrieval-error-text")
 										),
 										actions: <Widget>[
 											FlatButton(
-												child: Text("Dismiss"),
+												child: Text(AppLocalizations.of(context).translate("Dismiss")),
 												onPressed: () {
 													Navigator.pop(context);
 												},
@@ -177,11 +178,11 @@ class _CameraScreenState extends State<CameraScreen> {
 										return AlertDialog(
 												title: Center(
 														child: Text(
-																"Error taking photo"
+																AppLocalizations.of(context).translate("Error taking photo")
 														)
 												),
 												content: Text(
-														"The image could not be taken. Error text:\n" + e.toString()
+														AppLocalizations.of(context).translate("photo-capture-error-text") + e.toString()
 												)
 										);
 									}

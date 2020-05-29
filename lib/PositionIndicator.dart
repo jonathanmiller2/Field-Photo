@@ -1,13 +1,10 @@
 
-
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 
-import 'main.dart';
+import 'localizations.dart';
 
 class PositionIndicator extends StatefulWidget {
 	static Position mostRecentPosition;
@@ -122,13 +119,13 @@ class _PositionIndicatorState extends State<PositionIndicator>
 	Widget build(BuildContext context) {
 		
 		TextStyle mainTextStyle = TextStyle(
-			fontSize: 18,
-			color: PositionIndicator.isGeolocked ? Colors.red[600] : Colors.white
+				fontSize: 18,
+				color: PositionIndicator.isGeolocked ? Colors.red[600] : Colors.white
 		);
 		
 		TextStyle lesserTextStyle = TextStyle(
-			fontSize: 14,
-			color: PositionIndicator.isGeolocked ? Colors.red[600] : Colors.white
+				fontSize: 14,
+				color: PositionIndicator.isGeolocked ? Colors.red[600] : Colors.white
 		);
 		
 		var locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 11);
@@ -138,74 +135,74 @@ class _PositionIndicatorState extends State<PositionIndicator>
 				stream: geolocator.getPositionStream(locationOptions),
 				builder: (context, positionSnapshot) {
 					return StreamBuilder<double>(
-						stream: FlutterCompass.events,
-						builder: (context, compassSnapshot){
-							
-							if (compassSnapshot.hasError || !compassSnapshot.hasData || positionSnapshot.hasError || !positionSnapshot.hasData)
-							{
-								print("Position/Compass error");
-								PositionIndicator.mostRecentPosition = PositionIndicator.isGeolocked ? PositionIndicator.mostRecentPosition : null;
-								DMSPosition = "Unknown";
-								locationAccuracy = "";
-								heading = "Unknown";
-							}
-							else
-							{
-								Position pos = positionSnapshot.data;
+							stream: FlutterCompass.events,
+							builder: (context, compassSnapshot){
 								
-								PositionIndicator.mostRecentPosition = PositionIndicator.isGeolocked ? PositionIndicator.mostRecentPosition : pos;
-								PositionIndicator.mostRecentHeading = compassSnapshot.data.truncate();
-								DMSPosition = PositionIndicator.formatPositionAsDMS(pos);
-								locationAccuracy = "\u00B1" + pos.accuracy.truncate().toString() + "m";
-								heading = compassSnapshot.data.truncate().toString() + "\u00B0 " + PositionIndicator.getDirFromHeading(compassSnapshot.data);
+								if (compassSnapshot.hasError || !compassSnapshot.hasData || positionSnapshot.hasError || !positionSnapshot.hasData)
+								{
+									print("Position/Compass error");
+									PositionIndicator.mostRecentPosition = PositionIndicator.isGeolocked ? PositionIndicator.mostRecentPosition : null;
+									DMSPosition = AppLocalizations.of(context).translate("Unknown");
+									locationAccuracy = "";
+									heading = AppLocalizations.of(context).translate("Unknown");
+								}
+								else
+								{
+									Position pos = positionSnapshot.data;
+									
+									PositionIndicator.mostRecentPosition = PositionIndicator.isGeolocked ? PositionIndicator.mostRecentPosition : pos;
+									PositionIndicator.mostRecentHeading = compassSnapshot.data.truncate();
+									DMSPosition = PositionIndicator.formatPositionAsDMS(pos);
+									locationAccuracy = "\u00B1" + pos.accuracy.truncate().toString() + "m";
+									heading = compassSnapshot.data.truncate().toString() + "\u00B0 " + PositionIndicator.getDirFromHeading(compassSnapshot.data);
+									
+								}
 								
-							}
-							
-							if(!showingHeading) {
-								buttonChild = Column(
-									mainAxisAlignment: MainAxisAlignment.center,
-									children: <Widget>[
-										Text(
-												"Current Position",
-												style: mainTextStyle
-										),
-										Text(
-												DMSPosition,
-												style: mainTextStyle
-										),
-										Text(
-												locationAccuracy,
-												style: lesserTextStyle
-										),
-									],
+								if(!showingHeading) {
+									buttonChild = Column(
+										mainAxisAlignment: MainAxisAlignment.center,
+										children: <Widget>[
+											Text(
+													AppLocalizations.of(context).translate("Current Position"),
+													style: mainTextStyle
+											),
+											Text(
+													DMSPosition,
+													style: mainTextStyle
+											),
+											Text(
+													locationAccuracy,
+													style: lesserTextStyle
+											),
+										],
+									);
+								}
+								else {
+									buttonChild = Column(
+										mainAxisAlignment: MainAxisAlignment.center,
+										children: <Widget>[
+											Text(
+													"Heading",
+													style: mainTextStyle
+											),
+											Text(
+													heading,
+													style: mainTextStyle
+											),
+										],
+									);
+								}
+								
+								return FlatButton(
+									child: buttonChild,
+									color: Color.fromARGB(0, 0, 0, 0),
+									onPressed: () {
+										setState(() {
+											showingHeading = !showingHeading;
+										});
+									},
 								);
 							}
-							else {
-								buttonChild = Column(
-									mainAxisAlignment: MainAxisAlignment.center,
-									children: <Widget>[
-										Text(
-												"Heading",
-												style: mainTextStyle
-										),
-										Text(
-												heading,
-												style: mainTextStyle
-										),
-									],
-								);
-							}
-							
-							return FlatButton(
-								child: buttonChild,
-								color: Color.fromARGB(0, 0, 0, 0),
-								onPressed: () {
-									setState(() {
-										showingHeading = !showingHeading;
-									});
-								},
-							);
-						}
 					);
 				}
 		);

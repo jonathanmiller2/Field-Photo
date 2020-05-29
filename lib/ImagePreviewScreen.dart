@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'LabelledInvisibleButton.dart';
 import 'ImageInfoEntryScreen.dart';
+import 'localizations.dart';
 
 
 class ImagePreviewScreen extends StatelessWidget {
@@ -38,7 +39,7 @@ class ImagePreviewScreen extends StatelessWidget {
 										child: Align(
 												alignment: Alignment.centerLeft,
 												child: LabelledInvisibleButton(
-													label: "Retake",
+													label: AppLocalizations.of(context).translate("Retake"),
 													onPress: () {
 														Navigator.pop(context);
 													},
@@ -56,7 +57,7 @@ class ImagePreviewScreen extends StatelessWidget {
 										child: Align(
 												alignment: Alignment.centerRight,
 												child: LabelledInvisibleButton(
-													label: "Use",
+													label: AppLocalizations.of(context).translate("Use"),
 													onPress: () {
 														Navigator.push(
 															context,

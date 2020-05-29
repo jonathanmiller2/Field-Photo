@@ -9,6 +9,7 @@ import 'constants.dart' as Constants;
 import 'LoginScreen.dart';
 import 'LoginSession.dart';
 import 'MainCameraButton.dart';
+import 'localizations.dart';
 
 class SignedInScreen extends StatefulWidget {
 	@override
@@ -54,7 +55,7 @@ class _SignedInScreenState extends State<SignedInScreen>
 			resizeToAvoidBottomInset: false,
 			appBar: AppBar(
 				title: Text(
-						'Field Photo',
+						AppLocalizations.of(context).translate('Field Photo'),
 						style: TextStyle(
 							fontSize: 22.0,
 							color: Colors.black,
@@ -81,7 +82,7 @@ class _SignedInScreenState extends State<SignedInScreen>
 									height: 60,
 									child: Center(
 										child: Text(
-											'Signed in as ' + username,
+											AppLocalizations.of(context).translate("Signed in as") + ' ' + username,
 											style: TextStyle(
 												fontSize: 15,
 												color: Colors.grey[700],
@@ -136,7 +137,7 @@ class _SignedInScreenState extends State<SignedInScreen>
 											},
 											color: Color.fromARGB(255, 20, 20, 20),
 											child: Text(
-												'Sign Out',
+												AppLocalizations.of(context).translate("Sign Out"),
 												style: TextStyle(
 														color: Colors.white,
 														fontSize: 18

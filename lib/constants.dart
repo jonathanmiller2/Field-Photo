@@ -1,5 +1,9 @@
 library constants;
 
+import 'package:flutter/cupertino.dart';
+
+import 'localizations.dart';
+
 const String EOMF_SITE_USERNAME_TAKEN_MESSAGE = "A user with that username already exists";
 const String EOMF_SITE_EMAIL_TAKEN_MESSAGE = "This email address is already in use";
 
@@ -10,22 +14,29 @@ const String UPLOAD_URL = "http://eomf.ou.edu/photos/mobile/upload3/";
 
 //TODO: It would be far better to request this from the EOMF API
 //TODO: Update this any time the field cover category numbers change! This should always match the EOMF categories defined by the categories section of the admin site, and the category table in the database
-const Map<int, String> landcoverClassMap =
-{0: 'Unclassified',
-	1:'Evergreen Needleleaf Forest',
-	2:'Evergreen Broadleaf Forest',
-	3:'Deciduous Needleleaf Forest',
-	4:'Deciduous Broadleaf Forest',
-	5:'Mixed Forest',
-	6:'Closed Shrublands',
-	7:'Open Shrublands',
-	8:'Woody Savannas',
-	9:'Savannas',
-	10:'Grasslands',
-	11:'Permanent Wetlands',
-	12:'Croplands',
-	13:'Urban and Built-Up',
-	14:'Cropland/Natural Vegetation Mosaic',
-	15:'Snow and Ice',
-	16:'Barren or Sparsely Vegetated',
-	17:'Water Body',};
+
+class LandcoverMap {
+	Map<int, String> getLandcoverClassMap(BuildContext context) {
+		return {
+			0: AppLocalizations.of(context).translate('Unclassified'),
+			1: AppLocalizations.of(context).translate('Evergreen Needleleaf Forest'),
+			2: AppLocalizations.of(context).translate('Evergreen Broadleaf Forest'),
+			3: AppLocalizations.of(context).translate('Deciduous Needleleaf Forest'),
+			4: AppLocalizations.of(context).translate('Deciduous Broadleaf Forest'),
+			5: AppLocalizations.of(context).translate('Mixed Forest'),
+			6: AppLocalizations.of(context).translate('Closed Shrublands'),
+			7: AppLocalizations.of(context).translate('Open Shrublands'),
+			8: AppLocalizations.of(context).translate('Woody Savannas'),
+			9: AppLocalizations.of(context).translate('Savannas'),
+			10: AppLocalizations.of(context).translate('Grasslands'),
+			11: AppLocalizations.of(context).translate('Permanent Wetlands'),
+			12: AppLocalizations.of(context).translate('Croplands'),
+			13: AppLocalizations.of(context).translate('Urban and Built-Up'),
+			14: AppLocalizations.of(context).translate('Cropland/Natural Vegetation Mosaic'),
+			15: AppLocalizations.of(context).translate('Snow and Ice'),
+			16: AppLocalizations.of(context).translate('Barren or Sparsely Vegetated'),
+			17: AppLocalizations.of(context).translate('Water Body'),
+		};
+	}
+	
+}

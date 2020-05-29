@@ -1,13 +1,13 @@
-import 'package:url_launcher/url_launcher.dart';
 import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:http/http.dart' as http;
-import 'constants.dart' as Constants;
+import 'package:url_launcher/url_launcher.dart';
 
 import 'MainBottomBar.dart';
 import 'MainCameraButton.dart';
+import 'constants.dart' as Constants;
+import 'localizations.dart';
 
 class SignupScreen extends StatefulWidget {
 	@override
@@ -35,7 +35,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 				resizeToAvoidBottomInset: false,
 				appBar: AppBar(
 						title: Text(
-								'Field Photo',
+								AppLocalizations.of(context).translate('Field Photo'),
 								style: TextStyle(
 									fontSize: 22.0,
 									color: Colors.black,
@@ -79,7 +79,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 															decoration: InputDecoration(
 																border: InputBorder.none,
 																fillColor: Colors.white,
-																hintText: 'Username',
+																hintText: AppLocalizations.of(context).translate("Username"),
 															),
 															controller: usernameController,
 														),
@@ -93,7 +93,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 														child: TextField(
 															decoration: InputDecoration(
 																border: InputBorder.none,
-																hintText: 'Email Address',
+																hintText: AppLocalizations.of(context).translate("Email Address"),
 															),
 															controller: emailController,
 														),
@@ -108,7 +108,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 															obscureText: true,
 															decoration: InputDecoration(
 																border: InputBorder.none,
-																hintText: 'Password',
+																hintText: AppLocalizations.of(context).translate("Password"),
 															),
 															controller: password1Controller,
 														),
@@ -123,7 +123,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 															obscureText: true,
 															decoration: InputDecoration(
 																border: InputBorder.none,
-																hintText: 'Re-type Password',
+																hintText: AppLocalizations.of(context).translate("Re-type Password"),
 															),
 															controller: password2Controller,
 														),
@@ -147,15 +147,15 @@ class _SignupScreenState extends State<StatefulWidget> {
 																return AlertDialog(
 																	title: Center(
 																			child: Text(
-																					"Missing username"
+																					AppLocalizations.of(context).translate("Missing username")
 																			)
 																	),
 																	content: Text(
-																		"Please enter a username",
+																		AppLocalizations.of(context).translate("Please enter a username"),
 																	),
 																	actions: <Widget>[
 																		FlatButton(
-																			child: Text("Dismiss"),
+																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
 																			},
@@ -174,15 +174,15 @@ class _SignupScreenState extends State<StatefulWidget> {
 																return AlertDialog(
 																	title: Center(
 																			child: Text(
-																					"Invalid Email"
+																				AppLocalizations.of(context).translate("Invalid Email"),
 																			)
 																	),
 																	content: Text(
-																		"Email invalid, please check your email",
+																		AppLocalizations.of(context).translate("Email invalid, please check your email"),
 																	),
 																	actions: <Widget>[
 																		FlatButton(
-																			child: Text("Dismiss"),
+																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
 																			},
@@ -201,15 +201,15 @@ class _SignupScreenState extends State<StatefulWidget> {
 																return AlertDialog(
 																	title: Center(
 																			child: Text(
-																					"Missing password"
+																					AppLocalizations.of(context).translate("Missing password")
 																			)
 																	),
 																	content: Text(
-																		"Please enter your password",
+																		AppLocalizations.of(context).translate("Please enter your password"),
 																	),
 																	actions: <Widget>[
 																		FlatButton(
-																			child: Text("Dismiss"),
+																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
 																			},
@@ -228,15 +228,15 @@ class _SignupScreenState extends State<StatefulWidget> {
 																return AlertDialog(
 																	title: Center(
 																			child: Text(
-																					"Passwords don't match"
+																				AppLocalizations.of(context).translate("Passwords don't match"),
 																			)
 																	),
 																	content: Text(
-																		"The entered passwords don't match, please check your passwords",
+																		AppLocalizations.of(context).translate("The entered passwords don't match, please check your passwords"),
 																	),
 																	actions: <Widget>[
 																		FlatButton(
-																			child: Text("Dismiss"),
+																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
 																			},
@@ -258,12 +258,12 @@ class _SignupScreenState extends State<StatefulWidget> {
 																return AlertDialog(
 																	title: Center(
 																			child: Text(
-																					"Account created!"
+																					AppLocalizations.of(context).translate("Account created!")
 																			)
 																	),
 																	actions: <Widget>[
 																		FlatButton(
-																			child: Text("Dismiss"),
+																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
 																				Navigator.pop(context);
@@ -283,15 +283,15 @@ class _SignupScreenState extends State<StatefulWidget> {
 																return AlertDialog(
 																	title: Center(
 																			child: Text(
-																					"Username taken"
+																					AppLocalizations.of(context).translate("Username taken")
 																			)
 																	),
 																	content: Text(
-																		"That username is already taken, please try another",
+																		AppLocalizations.of(context).translate("That username is already taken, please try another"),
 																	),
 																	actions: <Widget>[
 																		FlatButton(
-																			child: Text("Dismiss"),
+																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
 																			},
@@ -310,15 +310,15 @@ class _SignupScreenState extends State<StatefulWidget> {
 																return AlertDialog(
 																	title: Center(
 																			child: Text(
-																					"Email taken"
+																					AppLocalizations.of(context).translate("Email taken")
 																			)
 																	),
 																	content: Text(
-																		"That email is already taken, please try another",
+																		AppLocalizations.of(context).translate("That email is already taken, please try another"),
 																	),
 																	actions: <Widget>[
 																		FlatButton(
-																			child: Text("Dismiss"),
+																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
 																			},
@@ -337,15 +337,15 @@ class _SignupScreenState extends State<StatefulWidget> {
 																return AlertDialog(
 																	title: Center(
 																			child: Text(
-																					"Signup failed"
+																					AppLocalizations.of(context).translate("Signup failed")
 																			)
 																	),
 																	content: Text(
-																		"Creating the account failed for an unknown reason. Please try again or sign up online.",
+																			AppLocalizations.of(context).translate("signup-failure-message")
 																	),
 																	actions: <Widget>[
 																		FlatButton(
-																			child: Text("Dismiss"),
+																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
 																			},
@@ -359,7 +359,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 											},
 											color: Colors.blue[700],
 											child: Text(
-												'Create Account',
+												AppLocalizations.of(context).translate("Create Account"),
 												style: TextStyle(
 														color: Colors.white,
 														fontSize: 18
@@ -373,7 +373,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 									child: Container(
 										height: 45,
 										child: LabelledInvisibleButton(
-											label: 'Cancel',
+											label: AppLocalizations.of(context).translate("Cancel"),
 											onPress: () {
 												Navigator.pop(context);
 											},
@@ -393,7 +393,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 													padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
 													child: Center(
 														child: Text(
-																'Having trouble signing up?',
+																AppLocalizations.of(context).translate("Having trouble signing up?"),
 																style: TextStyle(
 																	fontSize: 15,
 																	color: Colors.grey[700],
@@ -404,7 +404,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 												Padding(
 													padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
 													child: new LabelledInvisibleButton(
-														label: 'Sign up online',
+														label: AppLocalizations.of(context).translate("Sign up online"),
 														onPress: () async {
 															String url = 'http://eomf.ou.edu/accounts/register/';
 															if (await canLaunch(url)) {

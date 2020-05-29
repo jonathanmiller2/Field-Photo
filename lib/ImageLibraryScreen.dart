@@ -12,6 +12,7 @@ import 'ImageDetailScreen.dart';
 import 'ImageSquare.dart';
 import 'LoginSession.dart';
 import 'constants.dart' as Constants;
+import 'localizations.dart';
 
 class ImageLibraryScreen extends StatefulWidget {
 	
@@ -57,11 +58,11 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 								return AlertDialog(
 									title: Center(
 											child: Text(
-													"Library error"
+													AppLocalizations.of(context).translate("Library error")
 											)
 									),
 									content: Text(
-											"There was an error showing your photo library. Please contact support "
+											AppLocalizations.of(context).translate("There was an error showing your photo library.")
 									),
 									actions: <Widget>[
 										FlatButton(
@@ -227,7 +228,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 						backgroundColor: Colors.grey[200],
 						appBar: AppBar(
 							title: Text(
-									'All Field Photos',
+									AppLocalizations.of(context).translate("All Field Photos"),
 									style: TextStyle(
 										fontSize: 22.0,
 										color: Colors.black,
@@ -242,7 +243,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 								Padding(
 									padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 									child: LabelledInvisibleButton(
-										label: selectMode ? 'Cancel' : 'Select',
+										label: selectMode ? AppLocalizations.of(context).translate("Cancel") : AppLocalizations.of(context).translate("Select"),
 										onPress: () {
 											setState(() {
 												if(selectMode)
@@ -285,7 +286,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 													child: Padding(
 														padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 														child: LabelledInvisibleButton(
-															label: "Share",
+															label: AppLocalizations.of(context).translate("Share"),
 															onPress: () async {
 																if(!selectionMade)
 																{
@@ -330,7 +331,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 													child: Padding(
 														padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 														child: LabelledInvisibleButton(
-															label: "Upload",
+															label: AppLocalizations.of(context).translate("Upload"),
 															onPress: () async {
 																if(!selectionMade)
 																{
@@ -426,15 +427,15 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																			child: AlertDialog(
 																				title: Center(
 																						child: Text(
-																								"Upload success"
+																								AppLocalizations.of(context).translate("Upload succeeded")
 																						)
 																				),
 																				content: Text(
-																					"All images were uploaded successfully.",
+																					AppLocalizations.of(context).translate("All images were uploaded successfully."),
 																				),
 																				actions: <Widget>[
 																					FlatButton(
-																						child: Text("Dismiss"),
+																						child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																						onPressed: () {
 																							Navigator.pop(context);
 																						},
@@ -450,15 +451,15 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																			child: AlertDialog(
 																				title: Center(
 																						child: Text(
-																								"Upload failed"
+																								AppLocalizations.of(context).translate("Upload failed")
 																						)
 																				),
 																				content: Text(
-																					"One of the images you were trying to upload failed to upload",
+																					AppLocalizations.of(context).translate("library-upload-error"),
 																				),
 																				actions: <Widget>[
 																					FlatButton(
-																						child: Text("Dismiss"),
+																						child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																						onPressed: () {
 																							Navigator.pop(context);
 																						},
@@ -490,7 +491,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 													child: Padding(
 														padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 														child: LabelledInvisibleButton(
-															label: "Delete",
+															label: AppLocalizations.of(context).translate("Delete"),
 															onPress: () {
 																if(!selectionMade)
 																{
@@ -501,17 +502,17 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																		context: context,
 																		builder: (BuildContext context) {
 																			return AlertDialog(
-																				title: Text("Delete image?"),
-																				content: Text("Deleting a image permanently removes it."),
+																				title: Text(AppLocalizations.of(context).translate("Delete image?")),
+																				content: Text(AppLocalizations.of(context).translate("Deleting a image permanently removes it.")),
 																				actions: <Widget>[
 																					FlatButton(
-																						child: Text("Cancel"),
+																						child: Text(AppLocalizations.of(context).translate("Cancel")),
 																						onPressed: () {
 																							Navigator.pop(context);
 																						},
 																					),
 																					FlatButton(
-																						child: Text("Delete"),
+																						child: Text(AppLocalizations.of(context).translate("Delete")),
 																						onPressed: () async {
 																							List<int> selectedIDs = new List<int>();
 																							for(MapEntry<int, bool> selectionEntry in imageSelections.entries)
@@ -560,7 +561,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 							backgroundColor: Colors.grey[200],
 							appBar: AppBar(
 								title: Text(
-										'All Field Photos',
+										AppLocalizations.of(context).translate("All Field Photos"),
 										style: TextStyle(
 											fontSize: 22.0,
 											color: Colors.black,
@@ -575,7 +576,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 									Padding(
 										padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
 										child: LabelledInvisibleButton(
-											label: selectMode ? 'Cancel' : 'Select',
+											label: selectMode ? AppLocalizations.of(context).translate("Cancel") : AppLocalizations.of(context).translate("Select"),
 											onPress: () {
 												setState(() {
 													selectMode = !selectMode;
@@ -636,8 +637,8 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 		
 		
 		http.StreamedResponse response = await request.send();
-		
-		
+
+
 //		response.stream.transform(utf8.decoder).listen((x) {
 //			print(x);
 //		});

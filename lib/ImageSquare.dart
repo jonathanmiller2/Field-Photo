@@ -15,5 +15,5 @@ class ImageSquare extends StatelessWidget {
 				fit: BoxFit.fitWidth, //Change to BoxFit.fill for previews stretched to show full photo
 			),
 		);
-  }
+	}
 }

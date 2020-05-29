@@ -8,6 +8,7 @@ import 'LabelledInvisibleButton.dart';
 import 'PositionIndicator.dart';
 
 import 'constants.dart' as Constants;
+import 'localizations.dart';
 
 class ImageInfoEntryScreen extends StatefulWidget {
 	final String imagePath;
@@ -66,6 +67,8 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 	@override
 	Widget build(BuildContext context) {
 		
+		Map<int, String> landcoverMap = Constants.LandcoverMap().getLandcoverClassMap(context);
+		
 		const double horizontalPadding = 12;
 		const double verticalPadding = 15;
 		const double labelWidth = 90;
@@ -82,7 +85,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 				backgroundColor: Colors.grey[200],
 				appBar: AppBar(
 					title: Text(
-							'Field Photo Metadata',
+							AppLocalizations.of(context).translate("Field Photo Metadata"),
 							style: TextStyle(
 								fontSize: 22,
 								color: Colors.black,
@@ -100,7 +103,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 												Container(
 													width: labelWidth,
 													child: Text(
-														"Latitude",
+														AppLocalizations.of(context).translate("Latitude"),
 														style: labelStyle,
 													),
 												),
@@ -119,7 +122,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 												Container(
 													width: labelWidth,
 													child: Text(
-														"Longitude",
+														AppLocalizations.of(context).translate("Longitude"),
 														style: labelStyle,
 													),
 												),
@@ -142,7 +145,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 												Container(
 													width: labelWidth,
 													child: Text(
-														"Land Cover",
+														AppLocalizations.of(context).translate("Land Cover"),
 														style: labelStyle,
 													),
 												),
@@ -161,7 +164,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 																return DropdownMenuItem<int>(
 																		value: value,
 																		child: Text(
-																				Constants.landcoverClassMap[value],
+																				landcoverMap[value],
 																				style: TextStyle(
 																						fontSize: 15
 																				)
@@ -187,7 +190,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 												Container(
 													width: labelWidth,
 													child: Text(
-														"Field Notes",
+														AppLocalizations.of(context).translate("Field Notes"),
 														style: labelStyle,
 													),
 												),
@@ -224,7 +227,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 											child: Align(
 													alignment: Alignment.centerLeft,
 													child: LabelledInvisibleButton(
-														label: "Cancel",
+														label: AppLocalizations.of(context).translate("Cancel"),
 														onPress: () {
 															Navigator.pop(context);
 															Navigator.pop(context);
@@ -243,7 +246,7 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 											child: Align(
 													alignment: Alignment.centerRight,
 													child: LabelledInvisibleButton(
-														label: "Save",
+														label: AppLocalizations.of(context).translate("Save"),
 														onPress: () async {
 															if(landcoverClass == 0)
 															{
@@ -253,22 +256,22 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 																			return AlertDialog(
 																				title: Center(
 																						child: Text(
-																								"Land cover unspecified"
+																								AppLocalizations.of(context).translate("Land cover unspecified")
 																						)
 																				),
 																				content: Text(
-																					"Are you sure you don't want to specify the land cover class?",
+																					AppLocalizations.of(context).translate("land-cover-unspecified-msg-text"),
 																				),
 																				actions: <Widget>[
 																					FlatButton(
-																						child: Text("Cancel"),
+																						child: Text(AppLocalizations.of(context).translate("Cancel")),
 																						onPressed: () {
 																							Navigator.pop(context);
 																							return;
 																						},
 																					),
 																					FlatButton(
-																						child: Text("Continue"),
+																						child: Text(AppLocalizations.of(context).translate("Continue")),
 																						onPressed: () {
 																							_saveImage(widget.imagePath, fieldNoteController.text, widget.longitude, widget.latitude, widget.altitude, widget.timestamp, landcoverClass, PositionIndicator.getDirFromHeading(widget.heading), widget.heading);
 																							

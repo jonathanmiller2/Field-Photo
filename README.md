@@ -28,6 +28,8 @@ IMPORTANT NOTE: If you need to change any of the wording, or if you are adding n
 
 If you add text, you will need to add the translated version of that text to **EVERY** JSON translation file. If you don't, people using other languages will just see a big red error.
 
+To add a language, you need to add a new JSON translation file to /assets/locale/ titled "xx.json" where "xx" is the ISO language code for the new language. The formatting for this file can be found in the other JSON files. **You need to register the new JSON asset in the pubspec.yaml.** Otherwise you would get an unexplained "could not read file" error. Once the JSON file is added, go to constants.dart and add the ISO language code and locale to the supported languages constants.
+
 This app interfaces with the [EOMF website](http://eomf.ou.edu/). It uses the following endpoints on the website to operate. 
 - Upload: http://eomf.ou.edu/photos/mobile/upload3/
 - Register: http://eomf.ou.edu/accounts/register/

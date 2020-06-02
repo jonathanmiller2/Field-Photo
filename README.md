@@ -36,7 +36,7 @@ This app interfaces with the [EOMF website](http://eomf.ou.edu/). It uses the fo
 - Login: http://eomf.ou.edu/accounts/mobile_login/
 - Logout: http://eomf.ou.edu/accounts/logout
 
-Be warned, these endpoints are janky. Currently, these are hosted on OU's Mangrove machine, however this will likely be changing soon. If you don't know which machine the website is being hosted on, you can hunt down which server has the code by logging into each machine and using the locate command to locate the folder "eomf-admin", which should contain all the code required.
+Be warned, these endpoints are janky. Currently, these are hosted on OU's Mangrove machine, however this will likely be changing soon. If you don't know which machine the website is being hosted on, you can hunt down which server has the code by logging into each of OU's machines and using the `locate` command to locate the folder "eomf-admin", which should contain all the code required.
 
 In the future, packages may update and ruin the stability of the app.
 The first draft of the app used these packages:

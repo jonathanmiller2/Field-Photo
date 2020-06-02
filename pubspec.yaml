@@ -80,6 +80,9 @@ flutter:
   assets:
     - assets/locale/en.json
     - assets/locale/zh.json
+    - assets/locale/pt.json
+    - assets/locale/es.json
+    - assets/locale/fr.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

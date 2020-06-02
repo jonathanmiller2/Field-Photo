@@ -12,6 +12,16 @@ const String LOGOUT_URL = "http://eomf.ou.edu/accounts/logout";
 const String REGISTER_URL = "http://eomf.ou.edu/accounts/register/";
 const String UPLOAD_URL = "http://eomf.ou.edu/photos/mobile/upload3/";
 
+//If adding a language, update both the locale and language lists below
+const List<String> SUPPORTED_LANGUAGES = ['en', 'zh', 'pt', 'es', 'fr'];
+const List<Locale> SUPPORTED_LOCALES = [
+	const Locale('en'),
+	const Locale('zh'),
+	const Locale('pt'),
+	const Locale('es'),
+	const Locale('fr'),
+];
+
 //TODO: It would be far better to request this from the EOMF API
 //TODO: Update this any time the field cover category numbers change! This should always match the EOMF categories defined by the categories section of the admin site, and the category table in the database
 

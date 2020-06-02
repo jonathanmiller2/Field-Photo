@@ -227,12 +227,14 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 					return Scaffold(
 						backgroundColor: Colors.grey[200],
 						appBar: AppBar(
-							title: Text(
-									AppLocalizations.of(context).translate("All Field Photos"),
-									style: TextStyle(
-										fontSize: 22.0,
-										color: Colors.black,
-									)
+							title: FittedBox(
+								fit: BoxFit.fitWidth,
+							  child: Text(
+							  		AppLocalizations.of(context).translate("All Field Photos"),
+							  		style: TextStyle(
+							  			color: Colors.black,
+							  		)
+							  ),
 							),
 							backgroundColor: Colors.white,
 							centerTitle: true,
@@ -560,13 +562,15 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 					return Scaffold(
 							backgroundColor: Colors.grey[200],
 							appBar: AppBar(
-								title: Text(
-										AppLocalizations.of(context).translate("All Field Photos"),
-										style: TextStyle(
-											fontSize: 22.0,
-											color: Colors.black,
-										)
-								),
+									title: FittedBox(
+										fit: BoxFit.fitWidth,
+										child: Text(
+												AppLocalizations.of(context).translate("All Field Photos"),
+												style: TextStyle(
+													color: Colors.black,
+												)
+										),
+									),
 								iconTheme: IconThemeData(
 										color: Colors.black
 								),

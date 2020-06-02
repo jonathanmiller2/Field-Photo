@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'constants.dart' as Constants;
 
 class AppLocalizations {
 	final Locale locale;
@@ -47,7 +48,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
 	@override
 	bool isSupported(Locale locale) {
 		// Include all of your supported language codes here
-		return ['en', 'ar'].contains(locale.languageCode);
+		return Constants.SUPPORTED_LANGUAGES.contains(locale.languageCode);
 	}
 	
 	@override

@@ -14,7 +14,7 @@ If user registration specifically stops working, it is likely due to the two con
 If specifically land cover classes are being put into the database incorrectly, it is likely due to the landcover mapping in the constants.dart file. The number-landcover pairs should match the EOMF admin website's number-landcover pairs (in the "Categories" section). (ALSO, SEE THE IMPORTANT TRANSLATION NOTE BELOW)
 
 Otherwise, look at the constants.dart file, and check that each URL is still correct. You can check them by sending requests, or by looking at the urls.py files on the server to make sure the server is still handling those URLs. 
-Make sure the app is checking for the right HTTP status codes. If the server changes it's response codes or response messages, it's possible that the app will start misbehaving.
+Make sure the app is checking for the right HTTP status codes. If the server changes its response codes or response messages, it's possible that the app will start misbehaving.
 
 If corner-case bugs crop up, and you absolutely cannot figure out how the app works or what's going on, you can try e-mailing me at jonathanmiller2@hotmail.com. Hopefully I'll remember enough to help.
 
@@ -28,13 +28,15 @@ IMPORTANT NOTE: If you need to change any of the wording, or if you are adding n
 
 If you add text, you will need to add the translated version of that text to **EVERY** JSON translation file. If you don't, people using other languages will just see a big red error.
 
+To add a language, you need to add a new JSON translation file to /assets/locale/ titled "xx.json" where "xx" is the ISO language code for the new language. The formatting for this file can be found in the other JSON files. **You need to register the new JSON asset in the pubspec.yaml.** Otherwise you would get an unexplained "could not read file" error. Once the JSON file is added, go to constants.dart and add the ISO language code and locale to the supported languages constants.
+
 This app interfaces with the [EOMF website](http://eomf.ou.edu/). It uses the following endpoints on the website to operate. 
 - Upload: http://eomf.ou.edu/photos/mobile/upload3/
 - Register: http://eomf.ou.edu/accounts/register/
 - Login: http://eomf.ou.edu/accounts/mobile_login/
 - Logout: http://eomf.ou.edu/accounts/logout
 
-Be warned, these endpoints are janky. Currently, these are hosted on OU's Mangrove machine, however this will likely be changing soon. If you don't know which machine the website is being hosted on, you can hunt down which server has the code by logging into each machine and using the locate command to locate the folder "eomf-admin", which should contain all the code required.
+Be warned, these endpoints are janky. Currently, these are hosted on OU's Mangrove machine, however this will likely be changing soon. If you don't know which machine the website is being hosted on, you can hunt down which server has the code by logging into each of OU's machines and using the `locate` command to locate the folder "eomf-admin", which should contain all the code required. You may also need to run the `updatedb` command if it hasn't been run recently.
 
 In the future, packages may update and ruin the stability of the app.
 The first draft of the app used these packages:

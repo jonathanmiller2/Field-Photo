@@ -21,14 +21,25 @@ void main() async {
   List<Locale> locales = WidgetsBinding.instance.window.locales;
   for(Locale l in locales)
   {
+    print("checking if this locale is supported:" + l.toString());
+    
     if(AppLocalizations.delegate.isSupported(l))
     {
+      print(l.toString() + "was supported, choosing this one");
       chosenLocale = l;
+      break;
+    }
+    else
+    {
+      print(l.toString() + "wasn't supported, moving on");
     }
   }
   
+  print("chosen locale: " + chosenLocale.toString());
+  
   if(chosenLocale != null)
   {
+    print("loading locale: " + chosenLocale.toString());
     await AppLocalizations.delegate.load(chosenLocale);
   }
   else

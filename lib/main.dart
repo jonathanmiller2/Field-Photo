@@ -19,6 +19,13 @@ void main() async {
   Locale chosenLocale;
   
   List<Locale> locales = WidgetsBinding.instance.window.locales;
+  WidgetsBinding.instance.window.onLocaleChanged = () {
+    print('Locales changed');
+    print('new locales are: ' + WidgetsBinding.instance.window.locales.toString());
+  };
+  
+  print('locales retrieved: ' + locales.toString());
+  
   for(Locale l in locales)
   {
     print("checking if this locale is supported:" + l.toString());

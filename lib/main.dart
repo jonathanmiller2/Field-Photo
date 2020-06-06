@@ -16,6 +16,8 @@ void main() async {
   await initialLogin();
   LoginSession.shared.loggedIn ??= false;
   
+  /* Old code for fixing a debugging/fixing a language loading issue
+  
   Locale chosenLocale;
   
   List<Locale> locales = WidgetsBinding.instance.window.locales;
@@ -32,13 +34,13 @@ void main() async {
     
     if(AppLocalizations.delegate.isSupported(l))
     {
-      print(l.toString() + "was supported, choosing this one");
+      print(l.toString() + " was supported, choosing this one");
       chosenLocale = l;
       break;
     }
     else
     {
-      print(l.toString() + "wasn't supported, moving on");
+      print(l.toString() + " wasn't supported, moving on");
     }
   }
   
@@ -52,7 +54,7 @@ void main() async {
   else
   {
     await AppLocalizations.delegate.load(Locale('en'));
-  }
+  }*/
   
   
   runApp(MyApp());

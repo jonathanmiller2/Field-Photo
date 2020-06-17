@@ -64,8 +64,6 @@
     <string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
     <key>NSCalendarsUsageDescription</key>
     <string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
-    <key>NSCameraUsageDescription</key>
-    <string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
     <key>NSContactsUsageDescription</key>
     <string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
     <key>NSMicrophoneUsageDescription</key>

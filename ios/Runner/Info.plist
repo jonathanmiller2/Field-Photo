@@ -45,7 +45,7 @@
 
 
 	<key>NSCameraUsageDescription</key>
-	<string>Camera access is required to take field photos</string>
+	<string>This app accesses your phone's camera to allow you to take photos of the landscape</string>
 
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location is required to geotag the field photos</string>

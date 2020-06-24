@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Field Photo 2</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -12,8 +14,6 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>edu.self.Field-Photo</string>
-	<key>CFBundleDisplayName</key>
-	<string>Field Photo 2</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -24,7 +24,32 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-
+	<key>NSAppleMusicUsageDescription</key>
+	<string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app accesses your phone's camera to allow you to take photos of the landscape</string>
+	<key>NSContactsUsageDescription</key>
+	<string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Your location is required to geotag the field photos</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location is required to geotag the field photos</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Your location is required to geotag the field photos</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is required to geotag the field photos</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -44,40 +69,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-
-
-	<key>NSCameraUsageDescription</key>
-	<string>This app accesses your phone's camera to allow you to take photos of the landscape</string>
-
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location is required to geotag the field photos</string>
-
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Your location is required to geotag the field photos</string>
-    <key>NSLocationUsageDescription</key>
-    <string>Your location is required to geotag the field photos</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>Your location is required to geotag the field photos</string>
-
-
-    <key>NSAppleMusicUsageDescription</key>
-    <string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
-    <key>kTCCServiceMediaLibrary</key>
-    <string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
-    <key>NSCalendarsUsageDescription</key>
-    <string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
-    <key>NSContactsUsageDescription</key>
-    <string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
-    <key>NSSpeechRecognitionUsageDescription</key>
-    <string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
-    <key>NSMotionUsageDescription</key>
-    <string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
-    <key>NSRemindersUsageDescription</key>
-    <string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
-
+	<key>kTCCServiceMediaLibrary</key>
+	<string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
 </dict>
 </plist>

@@ -627,7 +627,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 																	builder: (BuildContext context) {
 																		return AlertDialog(
 																			title: Text(AppLocalizations.of(context).translate("Delete image?")),
-																			content: Text(AppLocalizations.of(context).translate("Deleting a image permanently removes it.")),
+																			content: Text(AppLocalizations.of(context).translate("Deleting an image permanently removes it.")),
 																			actions: <Widget>[
 																				FlatButton(
 																					child: Text(AppLocalizations.of(context).translate("Cancel")),

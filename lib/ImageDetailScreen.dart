@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -444,7 +445,10 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 													child: LabelledInvisibleButton(
 														label: AppLocalizations.of(context).translate("Share"),
 														onPress: () async {
-															ByteData byteData = await rootBundle.load(widget.image['path'].toString());
+															Uri uri = new Uri.file(widget.image['path'].toString());
+															File imageFile = new File.fromUri(uri);
+															Uint8List bytes = await imageFile.readAsBytes();
+															ByteData byteData = ByteData.view(bytes.buffer);
 															Share.files('Field Photo', {basename(widget.image['path']) : byteData.buffer.asUint8List()}, '*/*');
 														},
 														defaultColor: Colors.blue[600],

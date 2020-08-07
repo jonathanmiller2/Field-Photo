@@ -329,6 +329,33 @@ class _SignupScreenState extends State<StatefulWidget> {
 													);
 													return;
 												}
+												else if(registerResult == "INVALID_EMAIL")
+													{
+														showDialog(
+																context: context,
+																builder: (BuildContext context) {
+																	return AlertDialog(
+																		title: Center(
+																				child: Text(
+																					AppLocalizations.of(context).translate("Invalid Email"),
+																				)
+																		),
+																		content: Text(
+																			AppLocalizations.of(context).translate("Email invalid, please check your email"),
+																		),
+																		actions: <Widget>[
+																			FlatButton(
+																				child: Text(AppLocalizations.of(context).translate("Dismiss")),
+																				onPressed: () {
+																					Navigator.pop(context);
+																				},
+																			),
+																		],
+																	);
+																}
+														);
+														return;
+													}
 												else if(registerResult == "FAILURE")
 												{
 													showDialog(
@@ -471,6 +498,10 @@ class _SignupScreenState extends State<StatefulWidget> {
 		}
 		else if (response.body.contains(Constants.EOMF_SITE_EMAIL_TAKEN_MESSAGE)) {
 			return "EMAIL_TAKEN";
+		}
+		else if (response.body.contains(Constants.EOMF_INVALID_EMAIL_MESSAGE)) {
+			//TODO: This only ever happens for bad emails that the website catches, but the app doesn't. I recognize it would be better to just have the regex be consistent, but right now the EOMF website is ENTIRELY inconsistent, so I'm just accounting for all cases here.
+			return "INVALID_EMAIL";
 		}
 		else {
 			return "FAILURE";

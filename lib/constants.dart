@@ -6,6 +6,7 @@ import 'localizations.dart';
 
 const String EOMF_SITE_USERNAME_TAKEN_MESSAGE = "A user with that username already exists";
 const String EOMF_SITE_EMAIL_TAKEN_MESSAGE = "This email address is already in use";
+const String EOMF_INVALID_EMAIL_MESSAGE = "Enter a valid email address";
 
 const String LOGIN_URL = "http://eomf.ou.edu/accounts/mobile_login/";
 const String LOGOUT_URL = "http://eomf.ou.edu/accounts/logout";

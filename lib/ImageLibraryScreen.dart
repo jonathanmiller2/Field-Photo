@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,12 +10,16 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:exif/exif.dart';
 
 import 'ImageDetailScreen.dart';
 import 'ImageSquare.dart';
 import 'LoginSession.dart';
 import 'constants.dart' as Constants;
 import 'localizations.dart';
+
+
 
 class ImageLibraryScreen extends StatefulWidget {
 	
@@ -24,6 +31,7 @@ class ImageLibraryScreen extends StatefulWidget {
 class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 	Database database;
 	bool selectMode = false;
+	final ImagePicker picker = ImagePicker();
 	Map<int, bool> imageSelections = new Map<int, bool>(); //<id, selected or not>
 	
 	
@@ -43,10 +51,36 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 		return await db.rawQuery('SELECT * FROM photos');
 	}
 	
+	static double getDecimalFromRatio(Ratio ratio)
+	{
+		return ratio.numerator / ratio.denominator;
+	}
+	
+	static double getCoordFromDMS(double deg, double min, double sec, String cardinalDir)
+	{
+		double decimal = deg + (min / 60) + (sec / 3600);
+		
+		if (cardinalDir == "N" || cardinalDir == "E") {
+			return decimal;
+		}
+		else if (cardinalDir == "S" || cardinalDir == "W") {
+			return -decimal;
+		}
+		else {
+			print("DIR NOT RECOGNIZED!!");
+		}
+	}
+	
+	_saveImage(path, description, longitude, latitude, altitude, timestamp, categoryid, dir, heading) async {
+		await database.transaction((txn) async {
+			await txn.rawInsert(
+					'INSERT INTO photos(path, description, long, lat, alt, takendate, categoryid, dir, dir_deg, uploaded) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [path, description, longitude, latitude, altitude, timestamp.toString(), categoryid, dir, heading, 0]
+			);
+		});
+	}
+	
 	@override
 	Widget build(BuildContext context) {
-		
-		
 		return new FutureBuilder<List<Object>>(
 			future: _loadImages(),
 			builder: (context, asyncSnapshot) {
@@ -229,12 +263,12 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 						appBar: AppBar(
 							title: FittedBox(
 								fit: BoxFit.fitWidth,
-							  child: Text(
-							  		AppLocalizations.of(context).translate("All Field Photos"),
-							  		style: TextStyle(
-							  			color: Colors.black,
-							  		)
-							  ),
+								child: Text(
+										AppLocalizations.of(context).translate("All Field Photos"),
+										style: TextStyle(
+											color: Colors.black,
+										)
+								),
 							),
 							backgroundColor: Colors.white,
 							centerTitle: true,
@@ -560,46 +594,128 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 				else
 				{
 					return Scaffold(
-							backgroundColor: Colors.grey[200],
-							appBar: AppBar(
-									title: FittedBox(
-										fit: BoxFit.fitWidth,
-										child: Text(
-												AppLocalizations.of(context).translate("All Field Photos"),
-												style: TextStyle(
-													color: Colors.black,
-												)
-										),
-									),
-								iconTheme: IconThemeData(
-										color: Colors.black
+						backgroundColor: Colors.grey[200],
+						appBar: AppBar(
+							title: FittedBox(
+								fit: BoxFit.fitWidth,
+								child: Text(
+										AppLocalizations.of(context).translate("All Field Photos"),
+										style: TextStyle(
+											color: Colors.black,
+										)
 								),
-								backgroundColor: Colors.white,
-								centerTitle: true,
-								actions: <Widget>[
-									Padding(
-										padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
-										child: LabelledInvisibleButton(
-											label: selectMode ? AppLocalizations.of(context).translate("Cancel") : AppLocalizations.of(context).translate("Select"),
-											onPress: () {
-												setState(() {
-													selectMode = !selectMode;
-												});
-											},
-											defaultColor: Colors.blue[600],
-											pressedColor: Colors.blue[200],
-											fontWeight: selectMode ? FontWeight.bold : FontWeight.normal,
-											fontSize: 20,
-										),
-									)
-								],
 							),
-							body: GridView.count(
-								crossAxisCount: 3,
-								crossAxisSpacing: 5,
-								mainAxisSpacing: 5,
-								children: imageSquares,
-							)
+							iconTheme: IconThemeData(
+									color: Colors.black
+							),
+							backgroundColor: Colors.white,
+							centerTitle: true,
+							actions: <Widget>[
+								Padding(
+									padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+									child: LabelledInvisibleButton(
+										label: selectMode ? AppLocalizations.of(context).translate("Cancel") : AppLocalizations.of(context).translate("Select"),
+										onPress: () {
+											setState(() {
+												selectMode = !selectMode;
+											});
+										},
+										defaultColor: Colors.blue[600],
+										pressedColor: Colors.blue[200],
+										fontWeight: selectMode ? FontWeight.bold : FontWeight.normal,
+										fontSize: 20,
+									),
+								)
+							],
+						),
+						body: GridView.count(
+							crossAxisCount: 3,
+							crossAxisSpacing: 5,
+							mainAxisSpacing: 5,
+							children: imageSquares,
+						),
+						bottomNavigationBar: BottomAppBar(
+							child: Container(
+									height: 50.0,
+									child: Row(
+										crossAxisAlignment: CrossAxisAlignment.stretch,
+										children: <Widget>[
+											Expanded(
+												child: Align(
+													alignment: Alignment.centerLeft,
+													child: Padding(
+														padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
+														child: IconButton(
+															icon: Icon(
+																	Icons.add_to_photos,
+																	color: Colors.blue[600],
+																	size: 32
+															),
+															onPressed: () async {
+																final pickedFile = await picker.getImage(source: ImageSource.gallery);
+																
+																Map<String, IfdTag> data = await readExifFromBytes(await new File(pickedFile.path).readAsBytes());
+																
+																if(data.containsKey('GPS GPSLatitude') && data.containsKey('GPS GPSLongitude') && data.containsKey("GPS GPSDate"))
+																{
+																	double lonDeg = getDecimalFromRatio(data['GPS GPSLongitude'].values[0]);
+																	double lonMin = getDecimalFromRatio(data['GPS GPSLongitude'].values[1]);
+																	double lonSec = getDecimalFromRatio(data['GPS GPSLongitude'].values[2]);
+																	
+																	double latDeg = getDecimalFromRatio(data['GPS GPSLatitude'].values[0]);
+																	double latMin = getDecimalFromRatio(data['GPS GPSLatitude'].values[1]);
+																	double latSec = getDecimalFromRatio(data['GPS GPSLatitude'].values[2]);
+																	
+																	double longitude = getCoordFromDMS(lonDeg, lonMin, lonSec, data['GPS GPSLongitudeRef'].toString());
+																	double latitude = getCoordFromDMS(latDeg, latMin, latSec, data['GPS GPSLatitudeRef'].toString());
+																	
+																	List<String> dateComponents = data["GPS GPSDate"].toString().split(':');
+																	DateTime timestamp = DateTime.utc(int.parse(dateComponents[0]), int.parse(dateComponents[1]), int.parse(dateComponents[2]));
+																	
+																	double altitude;
+																	
+																	if(data.containsKey('GPS GPSAltitude'))
+																	{
+																		altitude = getDecimalFromRatio(data['GPS GPSAltitude'].values[0]);
+																	}
+																	else
+																	{
+																		altitude = 0;
+																	}
+																	
+																	_saveImage(pickedFile.path, "", longitude, latitude, altitude, timestamp, 0, 'N', 0);
+																	setState(() {});
+																}
+																else
+																{
+																	showDialog(
+																			context: context,
+																			builder: (BuildContext context)
+																			{
+																				return AlertDialog(
+																					title: Text(AppLocalizations.of(context).translate("GPS information missing")),
+																					content: Text(AppLocalizations.of(context).translate("EXIF missing message")),
+																					actions: <Widget>[
+																						FlatButton(
+																							child: Text(AppLocalizations.of(context).translate("Dismiss")),
+																							onPressed: () {
+																								Navigator.pop(context);
+																							},
+																						)
+																					],
+																				);
+																			}
+																	);
+																}
+															},
+														),
+													),
+												),
+											),
+										],
+									)
+							),
+						),
 					);
 				}
 			},

@@ -64,7 +64,18 @@ class InfoScreen extends StatelessWidget {
 									},
 									defaultColor: Colors.blue[900],
 									pressedColor: Colors.white,
-								)
+								),
+								Spacer(),
+								Center(
+									child: Text(
+										"v2.0.5",
+										style: TextStyle(
+											fontSize: 18,
+											color: Colors.grey[800],
+										),
+										textAlign: TextAlign.center,
+									),
+								),
 							],
 						),
 					),

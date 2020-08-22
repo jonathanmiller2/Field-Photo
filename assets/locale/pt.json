@@ -102,5 +102,7 @@
 	"Heading":"Em direção a",
 	"Unknown":"Desconhecido",
 	"Sign Out":"Sair",
-	"Signed in as":"Conectado como"
+	"Signed in as":"Conectado como",
+	"GPS information missing":"",
+	"EXIF missing message":""
 }

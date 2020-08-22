@@ -52,8 +52,8 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 		setState(() {
 			database = db;
 		});
-	}
 	
+	}
 	
 	_saveImage(path, description, longitude, latitude, altitude, timestamp, categoryid, dir, heading) async {
 		await database.transaction((txn) async {

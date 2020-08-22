@@ -102,5 +102,7 @@
 	"Heading":"前方",
 	"Unknown":"未知的位置",
 	"Sign Out":"退出",
-	"Signed in as":"登录为"
+	"Signed in as":"登录为",
+	"GPS information missing":"",
+	"EXIF missing message":""
 }

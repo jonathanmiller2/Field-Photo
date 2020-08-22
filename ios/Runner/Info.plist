@@ -45,7 +45,7 @@
 	<key>NSMotionUsageDescription</key>
 	<string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
+	<string>Access to your photo library is required to upload images taken from outside the app.</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>This is not used, yet Apple is requiring a description of its usage to publish this app.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>

@@ -102,5 +102,7 @@
 	"Heading":"Encabezado",
 	"Unknown":"Desconocido",
 	"Sign Out":"finalizar sesion",
-	"Signed in as":"Ingresar como"
+	"Signed in as":"Ingresar como",
+	"GPS information missing":"",
+	"EXIF missing message":""
 }

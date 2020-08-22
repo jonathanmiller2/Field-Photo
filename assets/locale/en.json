@@ -102,5 +102,7 @@
 	"Heading":"Heading",
 	"Unknown":"Unknown",
 	"Sign Out":"Sign Out",
-	"Signed in as":"Signed in as"
+	"Signed in as":"Signed in as",
+	"GPS information missing":"GPS information missing",
+	"EXIF missing message":"This image doesn't have GPS coordinates tagged in its EXIF data. These coordinates are required for all images submitted to the Field Photo library.\n\nIn order for your phone to tag your photos with GPS information, you must enable GPS tagging in your phone's settings."
 }

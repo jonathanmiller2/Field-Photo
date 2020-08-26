@@ -103,6 +103,6 @@
 	"Unknown":"Desconocido",
 	"Sign Out":"finalizar sesion",
 	"Signed in as":"Ingresar como",
-	"GPS information missing":"",
-	"EXIF missing message":""
+	"GPS information missing":"Falta la informacion del GPS",
+	"EXIF missing message":"Esta imagen no tiene coordenadas de GPS asociadas en sus datos EXIF. Las coordenadas son necesarias para todas las imagenes enviadas a la liberia de Fotos de Campo.\n\nPara que su dispositivo mobil asocie las fotos con informacion de GPS, teneis que habilitar el GPS en los ajustes del dispositivo."
 }

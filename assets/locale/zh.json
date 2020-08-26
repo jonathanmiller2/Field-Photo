@@ -103,6 +103,6 @@
 	"Unknown":"未知的位置",
 	"Sign Out":"退出",
 	"Signed in as":"登录为",
-	"GPS information missing":"",
-	"EXIF missing message":""
+	"GPS information missing":"GPS信息缺失",
+	"EXIF missing message":"这张图片的EXIF数据中没有GPS坐标。所有上传到Field Photo Library的图片必须包含坐标系统。\n\n为了获得照片的GPS信息，您需要在手机设置里打开GPS功能"
 }

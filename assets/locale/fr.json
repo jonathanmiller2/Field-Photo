@@ -102,5 +102,7 @@
 	"Heading":"Titre",
 	"Unknown":"Inconnue",
 	"Sign Out":"Déconnexion",
-	"Signed in as":"Connecté en tant que"
+	"Signed in as":"Connecté en tant que",
+	"GPS information missing":"Information GPS manquante",
+	"EXIF missing message":"Cette image n'a pas de coordonnées GPS marquées dans ses données EXIF. Ces coordonnées sont requises pour toutes les images soumises à la photothèque Field Photo.\n\nAfin que votre téléphone puisse marquer vos photos avec des informations GPS, vous devez activer le marquage GPS dans les paramètres de votre téléphone."
 }

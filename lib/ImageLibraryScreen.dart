@@ -673,17 +673,19 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																	double longitude = getCoordFromDMS(lonDeg, lonMin, lonSec, data['GPS GPSLongitudeRef'].toString());
 																	double latitude = getCoordFromDMS(latDeg, latMin, latSec, data['GPS GPSLatitudeRef'].toString());
 																	
+																	DateTime timestamp;
+																	
 																	if(data.containsKey("GPS GPSDate"))
 																	{
 																		List<String> dateComponents = data["GPS GPSDate"].toString().split(':');
-																		DateTime timestamp = DateTime.utc(int.parse(dateComponents[0]), int.parse(dateComponents[1]), int.parse(dateComponents[2]));
-																		print(timestamp.toString());
+																		timestamp = DateTime.utc(int.parse(dateComponents[0]), int.parse(dateComponents[1]), int.parse(dateComponents[2]));
+																		print("GPSDATE:   " + timestamp.toString());
 																	}
 																	else if(data.containsKey("Image DateTime"))
 																	{
-																		List<String> dateComponents = data["GPS GPSDate"].toString().split(':');
-																		DateTime timestamp = DateTime.utc(int.parse(dateComponents[0]), int.parse(dateComponents[1]), int.parse(dateComponents[2]));
-																		print(timestamp.toString());
+																		List<String> dateComponents = data["Image DateTime"].toString().split(':');
+																		timestamp = DateTime.utc(int.parse(dateComponents[0]), int.parse(dateComponents[1]), int.parse(dateComponents[2]));
+																		print("DateTime:   " + timestamp.toString());
 																	}
 																	
 																	

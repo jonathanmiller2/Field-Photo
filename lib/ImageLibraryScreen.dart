@@ -675,19 +675,20 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																	
 																	DateTime timestamp;
 																	
-																	if(data.containsKey("GPS GPSDate"))
+																	if(data.containsKey("Image DateTime"))
+																	{
+																		List<String> dateAndTimeComponents = data["Image DateTime"].toString().split(' ');
+																		List<String> dateComponents = dateAndTimeComponents[0].split(':');
+																		List<String> timeComponents = dateAndTimeComponents[1].split(':');
+																		timestamp = DateTime.utc(int.parse(dateComponents[0]), int.parse(dateComponents[1]), int.parse(dateComponents[2]), int.parse(timeComponents[0]), int.parse(timeComponents[1]), int.parse(timeComponents[2]));
+																		print("DateTime:   " + timestamp.toString());
+																	}
+																	else if(data.containsKey("GPS GPSDate"))
 																	{
 																		List<String> dateComponents = data["GPS GPSDate"].toString().split(':');
 																		timestamp = DateTime.utc(int.parse(dateComponents[0]), int.parse(dateComponents[1]), int.parse(dateComponents[2]));
 																		print("GPSDATE:   " + timestamp.toString());
 																	}
-																	else if(data.containsKey("Image DateTime"))
-																	{
-																		List<String> dateComponents = data["Image DateTime"].toString().split(' ')[0].split(':');
-																		timestamp = DateTime.utc(int.parse(dateComponents[0]), int.parse(dateComponents[1]), int.parse(dateComponents[2]));
-																		print("DateTime:   " + timestamp.toString());
-																	}
-																	
 																	
 																	return;
 																	

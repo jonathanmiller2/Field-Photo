@@ -656,9 +656,9 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																
 																Map<String, IfdTag> data = await readExifFromBytes(await new File(pickedFile.path).readAsBytes());
 																
-																for (String key in data.keys) {
-																	print("$key (${data[key].tagType}): ${data[key]}");
-																}
+																//for (String key in data.keys) {
+																//	print("$key (${data[key].tagType}): ${data[key]}");
+																//}
 																
 																if(data.containsKey('GPS GPSLatitude') && data.containsKey('GPS GPSLongitude') && (data.containsKey("GPS GPSDate") || data.containsKey("Image DateTime")))
 																{

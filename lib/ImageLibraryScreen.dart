@@ -660,7 +660,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																	print("$key (${data[key].tagType}): ${data[key]}");
 																}
 																
-																if(data.containsKey('GPS GPSLatitude') && data.containsKey('GPS GPSLongitude') && data.containsKey("GPS GPSDate"))
+																if(data.containsKey('GPS GPSLatitude') && data.containsKey('GPS GPSLongitude') && (data.containsKey("GPS GPSDate") || data.containsKey("Image DateTime")))
 																{
 																	double lonDeg = getDecimalFromRatio(data['GPS GPSLongitude'].values[0]);
 																	double lonMin = getDecimalFromRatio(data['GPS GPSLongitude'].values[1]);
@@ -673,8 +673,21 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																	double longitude = getCoordFromDMS(lonDeg, lonMin, lonSec, data['GPS GPSLongitudeRef'].toString());
 																	double latitude = getCoordFromDMS(latDeg, latMin, latSec, data['GPS GPSLatitudeRef'].toString());
 																	
-																	List<String> dateComponents = data["GPS GPSDate"].toString().split(':');
-																	DateTime timestamp = DateTime.utc(int.parse(dateComponents[0]), int.parse(dateComponents[1]), int.parse(dateComponents[2]));
+																	if(data.containsKey("GPS GPSDate"))
+																	{
+																		List<String> dateComponents = data["GPS GPSDate"].toString().split(':');
+																		DateTime timestamp = DateTime.utc(int.parse(dateComponents[0]), int.parse(dateComponents[1]), int.parse(dateComponents[2]));
+																		print(timestamp.toString());
+																	}
+																	else if(data.containsKey("Image DateTime"))
+																	{
+																		List<String> dateComponents = data["GPS GPSDate"].toString().split(':');
+																		DateTime timestamp = DateTime.utc(int.parse(dateComponents[0]), int.parse(dateComponents[1]), int.parse(dateComponents[2]));
+																		print(timestamp.toString());
+																	}
+																	
+																	
+																	return;
 																	
 																	double altitude;
 																	

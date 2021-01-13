@@ -68,6 +68,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 		}
 		else {
 			print("DIR NOT RECOGNIZED!!");
+			return 0;
 		}
 	}
 	

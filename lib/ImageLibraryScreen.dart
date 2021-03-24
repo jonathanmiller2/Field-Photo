@@ -100,7 +100,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 											AppLocalizations.of(context).translate("There was an error showing your photo library.")
 									),
 									actions: <Widget>[
-										FlatButton(
+										TextButton(
 											child: Text("Return"),
 											onPressed: () {
 												Navigator.pop(context);
@@ -152,8 +152,10 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 										width: 3,
 									),
 								),
-								child: FlatButton(
-										padding: const EdgeInsets.all(0),
+								child: TextButton(
+										style: TextButton.styleFrom(
+												padding: const EdgeInsets.all(0),
+										),
 										child: AspectRatio(
 												aspectRatio: 1,
 												child: ImageSquare(
@@ -169,8 +171,10 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 						}
 						else
 						{
-							contents = FlatButton(
-									padding: const EdgeInsets.all(0),
+							contents = TextButton(
+									style: TextButton.styleFrom(
+											padding: const EdgeInsets.all(0)
+									),
 									child: AspectRatio(
 											aspectRatio: 1,
 											child: ImageSquare(
@@ -186,8 +190,10 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 					}
 					else
 					{
-						contents = FlatButton(
-								padding: const EdgeInsets.all(0),
+						contents = TextButton(
+								style: TextButton.styleFrom(
+										padding: const EdgeInsets.all(0),
+								),
 								child: AspectRatio(
 										aspectRatio: 1,
 										child: ImageSquare(
@@ -390,14 +396,14 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																						"In order to upload photos you must first be logged in",
 																					),
 																					actions: <Widget>[
-																						FlatButton(
+																						TextButton(
 																							child: Text("Cancel"),
 																							onPressed: () {
 																								Navigator.pop(context);
 																								return;
 																							},
 																						),
-																						FlatButton(
+																						TextButton(
 																							child: Text("Login"),
 																							onPressed: () {
 																								Navigator.pop(context);
@@ -461,7 +467,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																{
 																	showDialog(
 																			context: context,
-																			child: AlertDialog(
+																			builder: (_) => new AlertDialog(
 																				title: Center(
 																						child: Text(
 																								AppLocalizations.of(context).translate("Upload succeeded")
@@ -471,7 +477,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																					AppLocalizations.of(context).translate("All images were uploaded successfully."),
 																				),
 																				actions: <Widget>[
-																					FlatButton(
+																					TextButton(
 																						child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																						onPressed: () {
 																							Navigator.pop(context);
@@ -485,7 +491,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																{
 																	showDialog(
 																			context: context,
-																			child: AlertDialog(
+																			builder: (_) => new AlertDialog(
 																				title: Center(
 																						child: Text(
 																								AppLocalizations.of(context).translate("Upload failed")
@@ -495,7 +501,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																					AppLocalizations.of(context).translate("library-upload-error"),
 																				),
 																				actions: <Widget>[
-																					FlatButton(
+																					TextButton(
 																						child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																						onPressed: () {
 																							Navigator.pop(context);
@@ -542,13 +548,13 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																				title: Text(AppLocalizations.of(context).translate("Delete image?")),
 																				content: Text(AppLocalizations.of(context).translate("Deleting an image permanently removes it.")),
 																				actions: <Widget>[
-																					FlatButton(
+																					TextButton(
 																						child: Text(AppLocalizations.of(context).translate("Cancel")),
 																						onPressed: () {
 																							Navigator.pop(context);
 																						},
 																					),
-																					FlatButton(
+																					TextButton(
 																						child: Text(AppLocalizations.of(context).translate("Delete")),
 																						onPressed: () async {
 																							List<int> selectedIDs = new List<int>();
@@ -712,7 +718,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																					title: Text(AppLocalizations.of(context).translate("GPS information missing")),
 																					content: Text(AppLocalizations.of(context).translate("EXIF missing message")),
 																					actions: <Widget>[
-																						FlatButton(
+																						TextButton(
 																							child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																							onPressed: () {
 																								Navigator.pop(context);

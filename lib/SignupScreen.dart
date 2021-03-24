@@ -136,7 +136,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 								
 								Container(
 									height: 45,
-									child: FlatButton(
+									child: TextButton(
 											onPressed: () async {
 												final emailPattern = RegExp("[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
 												
@@ -154,7 +154,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 																		AppLocalizations.of(context).translate("Please enter a username"),
 																	),
 																	actions: <Widget>[
-																		FlatButton(
+																		TextButton(
 																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
@@ -181,7 +181,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 																		AppLocalizations.of(context).translate("Email invalid, please check your email"),
 																	),
 																	actions: <Widget>[
-																		FlatButton(
+																		TextButton(
 																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
@@ -208,7 +208,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 																		AppLocalizations.of(context).translate("Please enter your password"),
 																	),
 																	actions: <Widget>[
-																		FlatButton(
+																		TextButton(
 																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
@@ -235,7 +235,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 																		AppLocalizations.of(context).translate("The entered passwords don't match, please check your passwords"),
 																	),
 																	actions: <Widget>[
-																		FlatButton(
+																		TextButton(
 																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
@@ -262,7 +262,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 																			)
 																	),
 																	actions: <Widget>[
-																		FlatButton(
+																		TextButton(
 																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
@@ -290,7 +290,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 																		AppLocalizations.of(context).translate("That username is already taken, please try another"),
 																	),
 																	actions: <Widget>[
-																		FlatButton(
+																		TextButton(
 																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
@@ -317,7 +317,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 																		AppLocalizations.of(context).translate("That email is already taken, please try another"),
 																	),
 																	actions: <Widget>[
-																		FlatButton(
+																		TextButton(
 																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
@@ -344,7 +344,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 																			AppLocalizations.of(context).translate("Email invalid, please check your email"),
 																		),
 																		actions: <Widget>[
-																			FlatButton(
+																			TextButton(
 																				child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																				onPressed: () {
 																					Navigator.pop(context);
@@ -371,7 +371,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 																			AppLocalizations.of(context).translate("signup-failure-message")
 																	),
 																	actions: <Widget>[
-																		FlatButton(
+																		TextButton(
 																			child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																			onPressed: () {
 																				Navigator.pop(context);
@@ -384,7 +384,9 @@ class _SignupScreenState extends State<StatefulWidget> {
 													return;
 												}
 											},
-											color: Colors.blue[700],
+											style: TextButton.styleFrom(
+												backgroundColor: Colors.blue[700],
+											),
 											child: Text(
 												AppLocalizations.of(context).translate("Create Account"),
 												style: TextStyle(

@@ -30,13 +30,13 @@ class MainCameraButton extends StatelessWidget {
 											AppLocalizations.of(context).translate("camera-permission-required")
 									),
 									actions: <Widget>[
-										FlatButton(
+										TextButton(
 											child: Text(AppLocalizations.of(context).translate("Dismiss")),
 											onPressed: () {
 												Navigator.pop(context);
 											},
 										),
-										FlatButton(
+										TextButton(
 											child: Text(AppLocalizations.of(context).translate("Settings")),
 											onPressed: () {
 												openAppSettings();
@@ -64,13 +64,13 @@ class MainCameraButton extends StatelessWidget {
 											AppLocalizations.of(context).translate("location-permission-required")
 									),
 									actions: <Widget>[
-										FlatButton(
+										TextButton(
 											child: Text(AppLocalizations.of(context).translate("Dismiss")),
 											onPressed: () {
 												Navigator.pop(context);
 											},
 										),
-										FlatButton(
+										TextButton(
 											child: Text(AppLocalizations.of(context).translate("Settings")),
 											onPressed: () {
 												openAppSettings();

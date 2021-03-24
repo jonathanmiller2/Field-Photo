@@ -10,21 +10,21 @@ class PositionIndicator extends StatefulWidget {
 	static Position mostRecentPosition;
 	static int mostRecentHeading;
 	static bool isGeolocked = false;
-	
+
 	@override
 	_PositionIndicatorState createState() => _PositionIndicatorState();
-	
+
 	static Position getMostRecentPosition() {
 		return mostRecentPosition;
 	}
 	static int getMostRecentHeading() {
 		return mostRecentHeading;
 	}
-	
+
 	static void toggleGeolock() {
 		isGeolocked = !isGeolocked;
 	}
-	
+
 	static String formatPositionAsDMS(Position position) {
 		String latDir;
 		if (position.latitude >= 0) {
@@ -33,7 +33,7 @@ class PositionIndicator extends StatefulWidget {
 		else {
 			latDir = "S";
 		}
-		
+
 		String lonDir;
 		if (position.longitude >= 0) {
 			lonDir = "E";
@@ -41,23 +41,23 @@ class PositionIndicator extends StatefulWidget {
 		else {
 			lonDir = "W";
 		}
-		
+
 		double lat = position.latitude.abs();
 		double lon = position.longitude.abs();
-		
+
 		int latDeg = lat.truncate();
 		int latMin = ((lat % 1) * 60).truncate();
 		int latSec = ((((lat % 1) * 60) % 1) * 60).truncate();
 		String latDMS = latDeg.toString() + "\u00b0 " + latMin.toString() + "\' " + latSec.toString() + "\"" + " " + latDir;
-		
+
 		int lonDeg = lon.truncate();
 		int lonMin = ((lon % 1) * 60).truncate();
 		int lonSec = ((((lon % 1) * 60) % 1) * 60).truncate();
 		String lonDMS = lonDeg.toString() + "\u00b0 " + lonMin.toString() + "\' " + lonSec.toString() + "\"" + " " + lonDir;
-		
+
 		return latDMS + ", " + lonDMS;
 	}
-	
+
 	static String getDirFromHeading(double heading)
 	{
 		if(heading <= 22.5)
@@ -101,7 +101,7 @@ class PositionIndicator extends StatefulWidget {
 			return "ERR";
 		}
 	}
-	
+
 }
 
 class _PositionIndicatorState extends State<PositionIndicator>
@@ -113,31 +113,31 @@ class _PositionIndicatorState extends State<PositionIndicator>
 	String heading = "";
 	bool showingHeading = false;
 	Widget buttonChild;
-	
-	
+
+
 	@override
 	Widget build(BuildContext context) {
-		
+
 		TextStyle mainTextStyle = TextStyle(
 				fontSize: 18,
 				color: PositionIndicator.isGeolocked ? Colors.red[600] : Colors.white
 		);
-		
+
 		TextStyle lesserTextStyle = TextStyle(
 				fontSize: 14,
 				color: PositionIndicator.isGeolocked ? Colors.red[600] : Colors.white
 		);
-		
+
 		var locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 11);
 		var geolocator = Geolocator();
-		
+
 		return StreamBuilder<Position>(
 				stream: geolocator.getPositionStream(locationOptions),
 				builder: (context, positionSnapshot) {
 					return StreamBuilder<double>(
 							stream: FlutterCompass.events,
 							builder: (context, compassSnapshot){
-								
+
 								if (compassSnapshot.hasError || !compassSnapshot.hasData || positionSnapshot.hasError || !positionSnapshot.hasData)
 								{
 									print("Position/Compass error");
@@ -149,15 +149,15 @@ class _PositionIndicatorState extends State<PositionIndicator>
 								else
 								{
 									Position pos = positionSnapshot.data;
-									
+
 									PositionIndicator.mostRecentPosition = PositionIndicator.isGeolocked ? PositionIndicator.mostRecentPosition : pos;
 									PositionIndicator.mostRecentHeading = compassSnapshot.data.truncate();
 									DMSPosition = PositionIndicator.formatPositionAsDMS(pos);
 									locationAccuracy = "\u00B1" + pos.accuracy.truncate().toString() + "m";
 									heading = compassSnapshot.data.truncate().toString() + "\u00B0 " + PositionIndicator.getDirFromHeading(compassSnapshot.data);
-									
+
 								}
-								
+
 								if(!showingHeading) {
 									buttonChild = Column(
 										mainAxisAlignment: MainAxisAlignment.center,
@@ -192,10 +192,13 @@ class _PositionIndicatorState extends State<PositionIndicator>
 										],
 									);
 								}
-								
-								return FlatButton(
+
+								return TextButton(
 									child: buttonChild,
-									color: Color.fromARGB(0, 0, 0, 0),
+									style: TextButton.styleFrom(
+											backgroundColor: Colors.transparent,
+											primary: Colors.transparent
+									),
 									onPressed: () {
 										setState(() {
 											showingHeading = !showingHeading;
@@ -207,7 +210,7 @@ class _PositionIndicatorState extends State<PositionIndicator>
 				}
 		);
 	}
-	
+
 	@override
 	void dispose() {
 		super.dispose();

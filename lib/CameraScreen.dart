@@ -23,13 +23,14 @@ class _CameraScreenState extends State<CameraScreen> {
 
     return Scaffold(
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Container(
             color: Colors.black,
             child: CameraPassthrough(),
           ),
           Expanded(
-            child: Container(color: Color.fromARGB(255, 20, 20, 20), child: Center(child: PositionIndicator())),
+            child: Container(color: Color.fromARGB(255, 20, 20, 20), child: PositionIndicator()),
           ),
         ],
       ),
@@ -73,13 +74,13 @@ class _CameraScreenState extends State<CameraScreen> {
                                       title: Text(AppLocalizations.of(context).translate("Enable geolock?")),
                                       content: Text(AppLocalizations.of(context).translate("geolock-explanation")),
                                       actions: <Widget>[
-                                        FlatButton(
+                                        TextButton(
                                           child: Text(AppLocalizations.of(context).translate("Cancel")),
                                           onPressed: () {
                                             Navigator.pop(context);
                                           },
                                         ),
-                                        FlatButton(
+                                        TextButton(
                                           child: Text(AppLocalizations.of(context).translate("Enable")),
                                           onPressed: () {
                                             Navigator.pop(context);
@@ -116,7 +117,7 @@ class _CameraScreenState extends State<CameraScreen> {
                     title: Center(child: Text(AppLocalizations.of(context).translate("Error retrieving position"))),
                     content: Text(AppLocalizations.of(context).translate("position-retrieval-error-text")),
                     actions: <Widget>[
-                      FlatButton(
+                      TextButton(
                         child: Text(AppLocalizations.of(context).translate("Dismiss")),
                         onPressed: () {
                           Navigator.pop(context);
@@ -134,6 +135,8 @@ class _CameraScreenState extends State<CameraScreen> {
               double heading = PositionIndicator.getMostRecentHeading().toDouble();
 
               final path = join((await getTemporaryDirectory()).path, '${timestamp.year.toString()}-${timestamp.month.toString()}-${timestamp.day.toString()}-${timestamp.hour.toString()}-${timestamp.minute.toString()}-${timestamp.second.toString()}.jpg');
+
+              //TODO: The image needs to be saved as an actually zoomed image
 
               XFile newPicture;
               newPicture = await MyApp.cameraController.takePicture();

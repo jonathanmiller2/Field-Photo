@@ -263,14 +263,14 @@ class _ImageInfoEntryScreenState extends State<ImageInfoEntryScreen>
 																					AppLocalizations.of(context).translate("land-cover-unspecified-msg-text"),
 																				),
 																				actions: <Widget>[
-																					FlatButton(
+																					TextButton(
 																						child: Text(AppLocalizations.of(context).translate("Cancel")),
 																						onPressed: () {
 																							Navigator.pop(context);
 																							return;
 																						},
 																					),
-																					FlatButton(
+																					TextButton(
 																						child: Text(AppLocalizations.of(context).translate("Continue")),
 																						onPressed: () {
 																							_saveImage(widget.imagePath, fieldNoteController.text, widget.longitude, widget.latitude, widget.altitude, widget.timestamp, landcoverClass, PositionIndicator.getDirFromHeading(widget.heading), widget.heading);

@@ -31,7 +31,7 @@ dependencies:
   
   provider: ^4.0.0
 
-  camera: ^0.6.4+5
+  camera: ^0.8.0
   path_provider: ^1.1.0
   path: ^1.6.2
   esys_flutter_share: ^1.0.2
@@ -50,7 +50,6 @@ dev_dependencies:
     sdk: flutter
 
   flutter_launcher_icons: ^0.7.5
-  intl_translation: ^0.17.1
 
 
 flutter_icons:

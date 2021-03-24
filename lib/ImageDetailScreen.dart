@@ -483,7 +483,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 																					AppLocalizations.of(context).translate("This photo has already been uploaded"),
 																				),
 																				actions: <Widget>[
-																					FlatButton(
+																					TextButton(
 																						child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																						onPressed: () {
 																							Navigator.pop(context);
@@ -512,14 +512,14 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 																					AppLocalizations.of(context).translate("In order to upload photos you must first be logged in"),
 																				),
 																				actions: <Widget>[
-																					FlatButton(
+																					TextButton(
 																						child: Text(AppLocalizations.of(context).translate("Cancel")),
 																						onPressed: () {
 																							Navigator.pop(context);
 																							return;
 																						},
 																					),
-																					FlatButton(
+																					TextButton(
 																						child: Text(AppLocalizations.of(context).translate("Login")),
 																						onPressed: () {
 																							Navigator.pop(context);
@@ -561,14 +561,14 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 																
 																showDialog(
 																		context: context,
-																		child: AlertDialog(
+																		builder: (_) => new AlertDialog(
 																			title: Center(
 																					child: Text(
 																							AppLocalizations.of(context).translate("Upload succeeded")
 																					)
 																			),
 																			actions: <Widget>[
-																				FlatButton(
+																				TextButton(
 																					child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																					onPressed: () {
 																						Navigator.pop(context);
@@ -583,7 +583,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 															else {
 																showDialog(
 																		context: context,
-																		child: AlertDialog(
+																		builder: (_) => new AlertDialog(
 																			title: Center(
 																					child: Text(
 																							AppLocalizations.of(context).translate("Upload failed")
@@ -593,7 +593,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 																				AppLocalizations.of(context).translate("The upload failed, please try again"),
 																			),
 																			actions: <Widget>[
-																				FlatButton(
+																				TextButton(
 																					child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																					onPressed: () {
 																						Navigator.pop(context);
@@ -629,13 +629,13 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 																			title: Text(AppLocalizations.of(context).translate("Delete image?")),
 																			content: Text(AppLocalizations.of(context).translate("Deleting an image permanently removes it.")),
 																			actions: <Widget>[
-																				FlatButton(
+																				TextButton(
 																					child: Text(AppLocalizations.of(context).translate("Cancel")),
 																					onPressed: () {
 																						Navigator.pop(context);
 																					},
 																				),
-																				FlatButton(
+																				TextButton(
 																					child: Text(AppLocalizations.of(context).translate("Delete")),
 																					onPressed: () async {
 																						await widget.database.rawDelete('DELETE FROM photos WHERE id = ?', [widget.image['id']]);

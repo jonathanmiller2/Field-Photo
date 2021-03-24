@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 import 'main.dart';
 
@@ -39,9 +38,11 @@ class _CameraPassthroughState extends State<CameraPassthrough> {
     return FutureBuilder(
         future: asyncTasks(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          final size = MediaQuery.of(context).size;
+          final deviceRatio = size.width / (size.height+50);
           if (snapshot.hasData) {
             return AspectRatio(
-                aspectRatio: MyApp.cameraController.value.aspectRatio,
+                aspectRatio: MyApp.cameraController.value.aspectRatio * deviceRatio,
                 child: Listener(
                   onPointerDown: (x) {
                     pointers = (pointers + 1).clamp(0, 2);

@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen>
 											horizontal: 0, vertical: 15),
 									child: Container(
 										height: 45,
-										child: FlatButton(
+										child: TextButton(
 												onPressed: () async {
 													showDialog(
 															context: context,
@@ -141,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen>
 																			AppLocalizations.of(context).translate("check-details"),
 																		),
 																		actions: <Widget>[
-																			FlatButton(
+																			TextButton(
 																				child: Text(AppLocalizations.of(context).translate("Dismiss")),
 																				onPressed: () {
 																					Navigator.pop(context);
@@ -155,7 +155,9 @@ class _LoginScreenState extends State<LoginScreen>
 														);
 													}
 												},
-												color: Colors.green[700],
+												style: TextButton.styleFrom(
+													backgroundColor: Colors.green[700],
+												),
 												child: Text(
 													AppLocalizations.of(context).translate("Sign In"),
 													style: TextStyle(

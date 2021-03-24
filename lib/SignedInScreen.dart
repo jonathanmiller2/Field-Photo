@@ -97,7 +97,7 @@ class _SignedInScreenState extends State<SignedInScreen>
 										horizontal: 0, vertical: 0),
 								child: Container(
 									height: 45,
-									child: FlatButton(
+									child: TextButton(
 											onPressed: () async {
 												//TODO: I have no idea if this logout method actually works server-side. Whether or not it works depends on a complicated interaction between this app and Django session authentication middleware, which is very difficult to debug.
 												
@@ -135,7 +135,9 @@ class _SignedInScreenState extends State<SignedInScreen>
 													new MaterialPageRoute(builder: (context) => new LoginScreen()),
 												);
 											},
-											color: Color.fromARGB(255, 20, 20, 20),
+											style: TextButton.styleFrom(
+													backgroundColor: Color.fromARGB(255, 20, 20, 20),
+											),
 											child: Text(
 												AppLocalizations.of(context).translate("Sign Out"),
 												style: TextStyle(

@@ -50,9 +50,9 @@ class InfoScreen extends StatelessWidget {
 									),
 								),
 								LabelledInvisibleButton(
-									label: AppLocalizations.of(context).translate("Visit the EOMF"),
+									label: AppLocalizations.of(context).translate("Visit the CEOM"),
 									onPress: () async {
-										String url = 'http://eomf.ou.edu/photos/';
+										String url = 'https://www.ceom.ou.edu/photos/';
 										if (await canLaunch(url))
 										{
 											await launch(url);
@@ -68,7 +68,7 @@ class InfoScreen extends StatelessWidget {
 								Spacer(),
 								Center(
 									child: Text(
-										"v2.0.5",
+										"v2.1.0",
 										style: TextStyle(
 											fontSize: 18,
 											color: Colors.grey[800],

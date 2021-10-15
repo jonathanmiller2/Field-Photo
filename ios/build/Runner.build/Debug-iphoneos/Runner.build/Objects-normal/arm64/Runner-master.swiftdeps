@@ -1,0 +1,6 @@
+version: "Apple Swift version 5.5 (swiftlang-1300.0.31.1 clang-1300.0.29.1)"
+options: "2e0509377dd6fe86b72400134486372197c84a7f518a83c80d4dde996669de0b"
+build_start_time: [1634267066, 629554986]
+build_end_time: [1634267067, 655814170]
+inputs:
+  "/Users/jonathanmiller/Desktop/Field Photo/Field-Photo/ios/Runner/AppDelegate.swift": [1589841611, 581449508]

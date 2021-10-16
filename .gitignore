@@ -30,8 +30,10 @@
 .pub/
 /build/
 
-upload-keystore.jks
 key.properties
+upload-keystore.jks
+keystore.jks
+upload_certificate.pem
 
 # Web related
 lib/generated_plugin_registrant.dart

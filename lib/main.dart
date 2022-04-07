@@ -120,33 +120,20 @@ Future<bool> initialLogin() async {
     return false;
   }
   
-  if(username == null || password == null)
+  if(username == "" || password == "" || username == null || password == null)
   {
     print("Username or password were null on initial login");
     LoginSession.shared.loggedIn = false;
     return false;
   }
-  
-  //Make a request to the register url for CSRF token
-  http.Response response = await http.get(Constants.REGISTER_URL);
-  String rawCookie = response.headers['set-cookie'];
-  String justToken;
-  
-  int startIndex = rawCookie.indexOf('=') + 1;
-  int stopIndex = rawCookie.indexOf(';');
-  justToken = (startIndex == -1 || stopIndex == -1) ? rawCookie : rawCookie.substring(startIndex, stopIndex);
-  
-  Map<String, String> header = {
-    'cookie': response.headers.toString(),
-  };
+
   
   Map<String, String> body = {
     'username': username,
     'password': password,
-    'csrfmiddlewaretoken': justToken,
   };
-  
-  response = await http.post(Constants.LOGIN_URL, headers:header, body:body);
+
+  http.Response response = await http.post(Uri.parse(Constants.LOGIN_URL), body:body);
   
   /*
   print('Response status: ${response.statusCode}');

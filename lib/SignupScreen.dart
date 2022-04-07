@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:field_photo/LabelledInvisibleButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -248,7 +250,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 													return;
 												}
 												
-												String registerResult = await register(usernameController.text, emailController.text, password1Controller.text, password2Controller.text);
+												String registerResult = await register(usernameController.text, emailController.text, password1Controller.text);
 												
 												if(registerResult == "SUCCESS")
 												{
@@ -435,7 +437,7 @@ class _SignupScreenState extends State<StatefulWidget> {
 													child: new LabelledInvisibleButton(
 														label: AppLocalizations.of(context).translate("Sign up online"),
 														onPress: () async {
-															String url = 'http://eomf.ou.edu/accounts/register/';
+															String url = 'https://www.ceom.ou.edu/accounts/register/';
 															if (await canLaunch(url)) {
 																await launch(url);
 															}
@@ -463,46 +465,31 @@ class _SignupScreenState extends State<StatefulWidget> {
 	}
 	
 	
-	Future<String> register(String username, String email, String password1, String password2) async {
-		//Make a request to the register url for CSRF token
-		http.Response response = await http.get(Constants.REGISTER_URL);
-		String rawCookie = response.headers['set-cookie'];
-		String justToken;
-		
-		int startIndex = rawCookie.indexOf('=') + 1;
-		int stopIndex = rawCookie.indexOf(';');
-		justToken = (startIndex == -1 || stopIndex == -1) ? rawCookie : rawCookie.substring(startIndex, stopIndex);
-		
-		Map<String, String> header = {
-			'cookie': response.headers.toString(),
-		};
-		
+	Future<String> register(String username, String email, String password) async {
+
 		Map<String, String> body = {
 			'username': username,
 			'email': email,
-			'password1': password1,
-			'password2': password2,
-			'csrfmiddlewaretoken': justToken,
-			'next': ""
+			'password': password,
 		};
 		
-		response = await http.post(Constants.REGISTER_URL, headers: header, body: body);
+		http.Response response = await http.post(Uri.parse(Constants.REGISTER_URL), body: body);
 		
 		print('Response status: ${response.statusCode}');
 		printWrapped('Response body: ${response.body}');
-		print('Response header: ${response.headers}');
+
+		var parsedResult = json.decode(response.body);
 		
-		if (response.statusCode == 302) {
+		if (response.statusCode == 200) {
 			return "SUCCESS";
 		}
-		else if (response.body.contains(Constants.EOMF_SITE_USERNAME_TAKEN_MESSAGE)) {
+		else if (parsedResult['status'] == 'username-taken') {
 			return "USERNAME_TAKEN";
 		}
-		else if (response.body.contains(Constants.EOMF_SITE_EMAIL_TAKEN_MESSAGE)) {
+		else if (parsedResult['status'] == 'email-taken') {
 			return "EMAIL_TAKEN";
 		}
-		else if (response.body.contains(Constants.EOMF_INVALID_EMAIL_MESSAGE)) {
-			//TODO: This only ever happens for bad emails that the website catches, but the app doesn't. I recognize it would be better to just have the regex be consistent, but right now the EOMF website is ENTIRELY inconsistent, so I'm just accounting for all cases here.
+		else if (parsedResult['status'] == 'email-invalid') {
 			return "INVALID_EMAIL";
 		}
 		else {

@@ -337,7 +337,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																}
 																
 																Map<String, List<int>> byteDataMap = new Map<String, List<int>>();
-																List<int> selectedIds = new List<int>();
+																List<int> selectedIds = [];
 																
 																for(MapEntry<int, bool> selectionEntry in imageSelections.entries)
 																{
@@ -433,7 +433,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																			);
 																		});
 																
-																List<int> selectedIDs = new List<int>();
+																List<int> selectedIDs = [];
 																for(MapEntry<int, bool> selectionEntry in imageSelections.entries)
 																{
 																	if(selectionEntry.value)
@@ -557,7 +557,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																					TextButton(
 																						child: Text(AppLocalizations.of(context).translate("Delete")),
 																						onPressed: () async {
-																							List<int> selectedIDs = new List<int>();
+																							List<int> selectedIDs = [];
 																							for(MapEntry<int, bool> selectionEntry in imageSelections.entries)
 																							{
 																								if(selectionEntry.value)
@@ -659,23 +659,23 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																	size: 32
 															),
 															onPressed: () async {
-																final pickedFile = await picker.getImage(source: ImageSource.gallery);
+																final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 																
 																Map<String, IfdTag> data = await readExifFromBytes(await new File(pickedFile.path).readAsBytes());
 																
-																//for (String key in data.keys) {
-																//	print("$key (${data[key].tagType}): ${data[key]}");
-																//}
+																for (String key in data.keys) {
+																	print("$key (${data[key].tagType}): ${data[key]}");
+																}
 																
 																if(data.containsKey('GPS GPSLatitude') && data.containsKey('GPS GPSLongitude') && (data.containsKey("GPS GPSDate") || data.containsKey("Image DateTime")))
 																{
-																	double lonDeg = getDecimalFromRatio(data['GPS GPSLongitude'].values[0]);
-																	double lonMin = getDecimalFromRatio(data['GPS GPSLongitude'].values[1]);
-																	double lonSec = getDecimalFromRatio(data['GPS GPSLongitude'].values[2]);
+																	double lonDeg = getDecimalFromRatio(data['GPS GPSLongitude'].values.toList()[0]);
+																	double lonMin = getDecimalFromRatio(data['GPS GPSLongitude'].values.toList()[1]);
+																	double lonSec = getDecimalFromRatio(data['GPS GPSLongitude'].values.toList()[2]);
 																	
-																	double latDeg = getDecimalFromRatio(data['GPS GPSLatitude'].values[0]);
-																	double latMin = getDecimalFromRatio(data['GPS GPSLatitude'].values[1]);
-																	double latSec = getDecimalFromRatio(data['GPS GPSLatitude'].values[2]);
+																	double latDeg = getDecimalFromRatio(data['GPS GPSLatitude'].values.toList()[0]);
+																	double latMin = getDecimalFromRatio(data['GPS GPSLatitude'].values.toList()[1]);
+																	double latSec = getDecimalFromRatio(data['GPS GPSLatitude'].values.toList()[2]);
 																	
 																	double longitude = getCoordFromDMS(lonDeg, lonMin, lonSec, data['GPS GPSLongitudeRef'].toString());
 																	double latitude = getCoordFromDMS(latDeg, latMin, latSec, data['GPS GPSLatitudeRef'].toString());
@@ -698,7 +698,7 @@ class _ImageLibraryScreenState extends State<ImageLibraryScreen> {
 																	double altitude;
 																	if(data.containsKey('GPS GPSAltitude'))
 																	{
-																		altitude = getDecimalFromRatio(data['GPS GPSAltitude'].values[0]);
+																		altitude = getDecimalFromRatio(data['GPS GPSAltitude'].values.toList()[0]);
 																	}
 																	else
 																	{

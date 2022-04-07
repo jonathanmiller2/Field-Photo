@@ -99,26 +99,7 @@ class _SignedInScreenState extends State<SignedInScreen>
 									height: 45,
 									child: TextButton(
 											onPressed: () async {
-												//TODO: I have no idea if this logout method actually works server-side. Whether or not it works depends on a complicated interaction between this app and Django session authentication middleware, which is very difficult to debug.
-												
-												//Make a request to the register url for CSRF token
-												http.Response response = await http.get(Constants.REGISTER_URL);
-												String rawCookie = response.headers['set-cookie'];
-												String justToken;
-												
-												int startIndex = rawCookie.indexOf('=') + 1;
-												int stopIndex = rawCookie.indexOf(';');
-												justToken = (startIndex == -1 || stopIndex == -1) ? rawCookie : rawCookie.substring(startIndex, stopIndex);
-												
-												Map<String, String> header = {
-													'cookie': response.headers.toString(),
-												};
-												
-												Map<String, String> body = {
-													'csrfmiddlewaretoken': justToken,
-												};
-												
-												response = await http.post(Constants.LOGOUT_URL, headers:header, body:body);
+												http.Response response = await http.post(Uri.parse(Constants.LOGOUT_URL));
 												print('Response status: ${response.statusCode}');
 												print('Response header: ${response.headers}');
 												print('Response Body: ${response.body}');
@@ -127,8 +108,8 @@ class _SignedInScreenState extends State<SignedInScreen>
 												LoginSession.shared.username = "";
 												LoginSession.shared.password = "";
 												
-												prefs.setString('savedUsername', null);
-												prefs.setString('savedPassword', null);
+												prefs.setString('savedUsername', "");
+												prefs.setString('savedPassword', "");
 												
 												Navigator.pushReplacement(
 													context,

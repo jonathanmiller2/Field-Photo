@@ -128,16 +128,14 @@ class _PositionIndicatorState extends State<PositionIndicator>
 				color: PositionIndicator.isGeolocked ? Colors.red[600] : Colors.white
 		);
 
-		var locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 11);
-		var geolocator = Geolocator();
+		var locationSettings = LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 11);
 
 		return StreamBuilder<Position>(
-				stream: geolocator.getPositionStream(locationOptions),
+				stream: Geolocator.getPositionStream(locationSettings: locationSettings),
 				builder: (context, positionSnapshot) {
-					return StreamBuilder<double>(
+					return StreamBuilder<CompassEvent>(
 							stream: FlutterCompass.events,
 							builder: (context, compassSnapshot){
-
 								if (compassSnapshot.hasError || !compassSnapshot.hasData || positionSnapshot.hasError || !positionSnapshot.hasData)
 								{
 									print("Position/Compass error");
@@ -151,10 +149,20 @@ class _PositionIndicatorState extends State<PositionIndicator>
 									Position pos = positionSnapshot.data;
 
 									PositionIndicator.mostRecentPosition = PositionIndicator.isGeolocked ? PositionIndicator.mostRecentPosition : pos;
-									PositionIndicator.mostRecentHeading = compassSnapshot.data.truncate();
+
+									double heading_degrees = 0;
+
+									if(compassSnapshot.data.heading.truncate() != 0) {
+										heading_degrees = compassSnapshot.data.heading;
+									}
+									if(compassSnapshot.data.headingForCameraMode.truncate() != 0) {
+										heading_degrees = compassSnapshot.data.headingForCameraMode;
+									}
+
+									PositionIndicator.mostRecentHeading = heading_degrees.truncate();
 									DMSPosition = PositionIndicator.formatPositionAsDMS(pos);
 									locationAccuracy = "\u00B1" + pos.accuracy.truncate().toString() + "m";
-									heading = compassSnapshot.data.truncate().toString() + "\u00B0 " + PositionIndicator.getDirFromHeading(compassSnapshot.data);
+									heading = heading_degrees.truncate().toString() + "\u00B0 " + PositionIndicator.getDirFromHeading(heading_degrees);
 
 								}
 

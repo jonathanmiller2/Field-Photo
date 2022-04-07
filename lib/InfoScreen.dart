@@ -68,7 +68,7 @@ class InfoScreen extends StatelessWidget {
 								Spacer(),
 								Center(
 									child: Text(
-										"v2.1.0",
+										"v2.1.1",
 										style: TextStyle(
 											fontSize: 18,
 											color: Colors.grey[800],

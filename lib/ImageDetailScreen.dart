@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -696,9 +697,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
 		
 		http.StreamedResponse response = await request.send();
 
-//		response.stream.transform(utf8.decoder).listen((x) {
-//			print(x);
-//		});
+		print(await response.stream.bytesToString());
 		
 		if(response.statusCode == 200)
 		{

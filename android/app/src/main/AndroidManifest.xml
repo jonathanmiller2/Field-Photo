@@ -15,7 +15,7 @@
         </intent>
     </queries>
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name="${applicationName}"
         android:label="Field Photo"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">

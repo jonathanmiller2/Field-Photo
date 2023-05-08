@@ -5,7 +5,7 @@ This project is a iPhone/Android app for the Earth Observation and Modelling Fac
 # What to do when this app breaks
 
 This app will likely break for three reasons:
-- The interface between the app and the EOMF website changes
+- The interface between the app and the CEOM website changes
 - Packages update and change their API's
 - Strange, corner-case bugs crop up
 
